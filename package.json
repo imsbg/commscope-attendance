@@ -1,0 +1,12 @@
+{
+  "name": "commscope-attendance-parser",
+  "version": "1.0.0",
+  "description": "Parses PDF to JSON for GitHub Pages",
+  "main": "parser.js",
+  "scripts": {
+    "start": "node parser.js"
+  },
+  "dependencies": {
+    "pdfjs-dist": "^3.11.174"
+  }
+}
