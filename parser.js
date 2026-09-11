@@ -54,11 +54,26 @@ async function fetchAndParsePDF() {
 
         if (items.length === 0) continue;
 
+        // Group elements by Y coordinate to form rows
+        // FIXED: Tightened threshold and find "closest" match to prevent adjacent rows from merging
         let rows = [];
         items.forEach(item => {
-            let foundRow = rows.find(r => Math.abs(r.y - item.y) < 8);
-            if (foundRow) foundRow.items.push(item);
-            else rows.push({ y: item.y, items: [item] });
+            let closestRow = null;
+            let minDiff = 3.5; // Reduced from 8 to strictly separate tight rows
+
+            for (let r of rows) {
+                let diff = Math.abs(r.y - item.y);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closestRow = r;
+                }
+            }
+
+            if (closestRow) {
+                closestRow.items.push(item);
+            } else {
+                rows.push({ y: item.y, items: [item] });
+            }
         });
 
         for (let row of rows) {
