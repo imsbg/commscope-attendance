@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-  <!-- SEO & Branding -->
+    <!-- SEO & Branding -->
     <title>CommScope Contractor Attendance Portal - Sandeep Biswal G</title>
     <link rel="canonical" href="https://imsbg.github.io/commscope-attendance/" />
     <link rel="icon" type="image/png" href="https://ugc.production.linktr.ee/3185d4c0-2ed6-4e02-b0e3-d464551e7f43_canva-design.png?io=true&size=avatar-v3_0">
@@ -16,6 +16,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://imsbg.github.io/commscope-attendance/">
     <meta property="og:image" content="https://ugc.production.linktr.ee/3185d4c0-2ed6-4e02-b0e3-d464551e7f43_canva-design.png?io=true&size=avatar-v3_0">
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,13 +28,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        :root { --primary: #0d9488; --background: #f1f5f9; --card-bg: #ffffff; }
+        :root { --primary: #0d9488; --card-bg: #ffffff; }
         html { scroll-behavior: smooth; height: 100%; overscroll-behavior-y: contain; }
-        body { font-family: 'Google Sans', 'Noto Sans Oriya', sans-serif; background-color: var(--background); color: #0f172a; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; overscroll-behavior-y: none; }
         
-        #splash-screen { background-color: var(--card-bg); z-index: 100; transition: opacity 0.4s ease-out; }
+        /* New Animated Glassmorphism Background */
+        body { 
+            font-family: 'Google Sans', 'Noto Sans Oriya', sans-serif; 
+            color: #0f172a; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; overscroll-behavior-y: none;
+            background: radial-gradient(circle at 15% 15%, rgba(13, 148, 136, 0.15), transparent 32%),
+                        radial-gradient(circle at 85% 20%, rgba(79, 70, 229, 0.15), transparent 30%),
+                        radial-gradient(circle at 50% 90%, rgba(236, 72, 153, 0.12), transparent 35%), #f1f5f9;
+            background-attachment: fixed;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+        
+        #splash-screen { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); z-index: 100; transition: opacity 0.4s ease-out; }
+        
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
@@ -49,7 +68,6 @@
         .status-l { background-color: #fce7f3; color: #be185d; } 
         .status-pending { background-color: #f8fafc; color: #94a3b8; } 
         
-        /* Custom Specific Codes */
         .status-pl { background-color: #dbeafe; color: #1e40af; } 
         .status-wwo { background-color: #fef08a; color: #854d0e; } 
         .status-cf { background-color: #e0e7ff; color: #3730a3; } 
@@ -59,7 +77,7 @@
         tbody td:first-child, thead th:first-child { position: sticky; left: 0; z-index: 5; background-color: var(--card-bg);}
         thead th:first-child { z-index: 15; background-color: #f8fafc; }
         
-        .modal-blur { backdrop-filter: blur(4px); }
+        .modal-blur { backdrop-filter: blur(10px); }
 
         .sc-cell { border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: bold; min-height: 48px; }
         .sc-shift-A { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0;}
@@ -75,10 +93,9 @@
         /* Minimal Mode Global Rules */
         body.minimal-mode .hide-always-minimal { display: none !important; }
 
-        /* Layout Structure */
         #filter-wrapper { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; transition: all 0.5s ease; }
         
-        body.minimal-mode #table-section-header { background: transparent; border: none; box-shadow: none; padding: 1rem 0; }
+        body.minimal-mode #table-section-header { background: transparent; border: none; box-shadow: none; padding: 1rem 0; backdrop-filter: none; -webkit-backdrop-filter: none; }
         body.minimal-mode #table-header-title-container { justify-content: center; margin-bottom: 2rem; position: relative; }
         body.minimal-mode #viewToggleBtn { position: absolute; right: 0; }
         
@@ -89,23 +106,20 @@
             box-shadow: 0 10px 30px -5px rgba(79, 70, 229, 0.35); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         body.minimal-mode #search-container:focus-within { transform: translateY(-3px) scale(1.02); box-shadow: 0 20px 45px -5px rgba(236, 72, 153, 0.4); }
-        body.minimal-mode #search-inner { background-color: #ffffff; border-radius: 9999px; display: flex; align-items: center; width: 100%; position: relative; }
+        body.minimal-mode #search-inner { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-radius: 9999px; display: flex; align-items: center; width: 100%; position: relative; }
         body.minimal-mode #searchInput { width: 100%; font-size: 1.1rem; padding: 1.1rem 3rem 1.1rem 3.5rem; border-radius: 9999px; border: none; background: transparent; color: #1e293b; }
         body.minimal-mode #searchInput:focus { outline: none; box-shadow: none; }
         body.minimal-mode #search-icon { position: absolute; left: 1.25rem; font-size: 1.25rem; color: #4f46e5; }
         body.minimal-mode #clear-search-btn { right: 1.25rem; }
         
-        /* HIDE DROPDOWNS ENTIRELY IN MINIMAL MODE */
         body.minimal-mode #dropdown-container { display: none !important; }
 
-        /* Sticky Mobile Search */
         @media (max-width: 768px) {
             body.minimal-mode #search-container { position: sticky; top: 10px; z-index: 45; }
             #search-container { position: sticky; top: 10px; z-index: 45; }
         }
 
-        /* Pull-to-refresh Indicator */
-        #ptr-indicator { position: fixed; top: 0; left: 0; right: 0; height: 60px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #4f46e5; background: #e0e7ff; transform: translateY(-100%); transition: transform 0.2s ease; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        #ptr-indicator { position: fixed; top: 0; left: 0; right: 0; height: 60px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #4f46e5; background: rgba(224, 231, 255, 0.9); backdrop-filter: blur(10px); transform: translateY(-100%); transition: transform 0.2s ease; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body class="antialiased minimal-mode">
@@ -114,7 +128,7 @@
     <div id="ptr-indicator"><i class="fa-solid fa-arrow-down mr-2"></i> Pull to refresh</div>
 
     <!-- Dynamic Marquee Container -->
-    <div id="marquee-container" class="hidden bg-indigo-600 text-white text-xs md:text-sm shadow-md relative z-40 cursor-pointer hover:bg-indigo-700 transition-colors" onclick="openNoticeModal()" title="Click to view full notice">
+    <div id="marquee-container" class="hidden bg-indigo-600/95 backdrop-blur-md text-white text-xs md:text-sm shadow-md relative z-40 cursor-pointer hover:bg-indigo-700 transition-colors" onclick="openNoticeModal()" title="Click to view full notice">
         <div class="max-w-screen-2xl mx-auto flex items-center px-3 md:px-4 py-2.5 w-full">
             <div class="font-bold mr-2 md:mr-3 uppercase tracking-wider text-indigo-200 flex-shrink-0 flex items-center gap-1.5 md:gap-2">
                 <i class="fa-solid fa-bullhorn animate-pulse"></i> Notice
@@ -147,10 +161,10 @@
         
         <div class="space-y-6 w-full flex-1">
             <!-- Header -->
-            <header class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 transition-all duration-500">
+            <header class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 transition-all duration-500 mb-2">
                 <div>
                     <!-- Live Users Badge -->
-                    <div class="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-2 shadow-sm select-none pointer-events-none">
+                    <div class="inline-flex items-center gap-2 bg-white/60 backdrop-blur-md border border-emerald-200 text-emerald-700 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 shadow-sm select-none pointer-events-none">
                         <span class="relative flex h-2.5 w-2.5">
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
@@ -158,51 +172,52 @@
                         <span id="live-users-count">...</span> Live
                     </div>
 
-                    <h1 class="text-2xl md:text-3xl font-bold text-slate-900">CommScope Contractor Attendance Portal</h1>
-                    <p id="current-month-header" class="text-slate-500 mt-1 hide-always-minimal">Loading Data...</p>
+                    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-teal-700 via-indigo-600 to-pink-600 drop-shadow-sm">CommScope Contractor Attendance Portal</h1>
+                    <p id="current-month-header" class="text-slate-500 mt-2 font-medium hide-always-minimal">Loading Data...</p>
                 </div>
                 <div class="flex flex-wrap items-center gap-2 md:gap-3 w-full xl:w-auto">
                     
-                    <button onclick="openNotifModal()" class="relative bg-white text-slate-700 border border-slate-300 w-10 h-10 md:w-auto md:px-4 md:py-2 rounded-lg shadow-sm hover:bg-slate-50 transition flex items-center justify-center gap-2 text-sm font-medium flex-none" title="Notifications">
-                        <i class="fa-solid fa-bell"></i>
+                    <button onclick="openNotifModal()" class="relative bg-white/80 backdrop-blur-md text-slate-700 border border-white w-10 h-10 md:w-auto md:px-4 md:py-2 rounded-lg shadow-sm hover:bg-white transition flex items-center justify-center gap-2 text-sm font-medium flex-none" title="Notifications">
+                        <i class="fa-solid fa-bell text-indigo-500"></i>
                         <span id="notif-badge" class="absolute -top-1.5 -right-1.5 bg-rose-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full hidden border-2 border-white shadow-sm">0</span>
                         <span class="hidden md:inline">Alerts</span>
                     </button>
 
-                    <button onclick="toggleGraphs()" class="hide-always-minimal bg-white text-slate-700 border border-slate-300 px-3 md:px-4 py-2 rounded-lg shadow-sm hover:bg-slate-50 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 xl:flex-none">
-                        <i class="fa-solid fa-chart-line"></i> <span id="toggle-graphs-text">Show Graphs</span>
+                    <button onclick="toggleGraphs()" class="hide-always-minimal bg-white/80 backdrop-blur-md text-slate-700 border border-white px-3 md:px-4 py-2 rounded-lg shadow-sm hover:bg-white transition flex items-center justify-center gap-2 text-sm font-medium flex-1 xl:flex-none">
+                        <i class="fa-solid fa-chart-line text-blue-500"></i> <span id="toggle-graphs-text">Show Graphs</span>
                     </button>
-                    <button onclick="openShiftModal()" class="bg-indigo-600 text-white px-3 md:px-4 py-2 rounded-lg shadow hover:bg-indigo-700 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 xl:flex-none" title="Shift Calendar (Shortcut: T)">
+                    <button onclick="openShiftModal()" class="bg-indigo-600 text-white px-3 md:px-4 py-2 rounded-lg shadow-md hover:bg-indigo-700 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 xl:flex-none" title="Shift Calendar (Shortcut: T)">
                         <i class="fa-solid fa-calendar-days"></i> <span class="hidden sm:inline">Shift</span> Calendar
                     </button>
-                    <button onclick="openPdfModal()" class="bg-[var(--primary)] text-white px-3 md:px-4 py-2 rounded-lg shadow hover:bg-teal-700 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 md:w-auto cursor-pointer">
+                    <button onclick="openPdfModal()" class="bg-gradient-to-r from-teal-600 to-teal-500 text-white px-3 md:px-4 py-2 rounded-lg shadow-md hover:from-teal-700 hover:to-teal-600 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 md:w-auto cursor-pointer">
                         <i class="fa-solid fa-folder-open"></i> Original PDF
                     </button>
                 </div>
             </header>
 
-            <!-- Metric Cards -->
+            <!-- Metric Cards (Glassmorphism applied) -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 transition-all duration-500 hide-always-minimal">
-               <div class="bg-[var(--primary)] text-white p-6 rounded-2xl shadow-lg transform transition hover:-translate-y-1">
+               <div class="bg-gradient-to-br from-teal-600 to-teal-800 text-white p-6 rounded-3xl shadow-lg transform transition hover:-translate-y-1 relative overflow-hidden">
+                   <div class="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
                    <p class="text-sm font-medium text-teal-200">Total Employees</p>
-                   <p class="text-4xl font-bold" id="metric-total-val">0</p>
+                   <p class="text-4xl font-bold mt-1" id="metric-total-val">0</p>
                </div>
-               <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 transform transition hover:-translate-y-1">
-                   <p class="text-sm font-medium text-slate-500">Total Presents</p>
-                   <p class="text-3xl font-bold text-emerald-600" id="metric-present-val">0</p>
+               <div class="glass-panel p-6 rounded-3xl transform transition hover:-translate-y-1">
+                   <p class="text-sm font-medium text-slate-500 uppercase tracking-wider">Total Presents</p>
+                   <p class="text-3xl font-bold text-emerald-600 mt-1" id="metric-present-val">0</p>
                </div>
-               <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 transform transition hover:-translate-y-1">
-                   <p class="text-sm font-medium text-slate-500">Total Absents</p>
-                   <p class="text-3xl font-bold text-rose-600" id="metric-absent-val">0</p>
+               <div class="glass-panel p-6 rounded-3xl transform transition hover:-translate-y-1">
+                   <p class="text-sm font-medium text-slate-500 uppercase tracking-wider">Total Absents</p>
+                   <p class="text-3xl font-bold text-rose-600 mt-1" id="metric-absent-val">0</p>
                </div>
             </div>
             
-            <!-- Graphs -->
+            <!-- Graphs Section -->
             <section id="graphs-section" class="hidden grid grid-cols-1 lg:grid-cols-5 gap-6 transition-all duration-300 opacity-0 mb-6 hide-always-minimal">
-                <div class="lg:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="lg:col-span-3 glass-panel p-6 rounded-3xl">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
                         <h2 class="text-xl font-bold text-slate-800">Daily Attendance Trends</h2>
-                        <select id="chartTypeSelector" onchange="changeChartType(this.value)" class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 outline-none focus:ring-2 focus:ring-teal-500 cursor-pointer transition">
+                        <select id="chartTypeSelector" onchange="changeChartType(this.value)" class="px-3 py-1.5 bg-white/80 border border-white rounded-lg text-sm font-medium text-slate-700 outline-none focus:ring-2 focus:ring-teal-500 cursor-pointer transition shadow-sm">
                             <option value="line">Line Graph</option>
                             <option value="bar">Bar Graph</option>
                             <option value="radar">Radar Chart</option>
@@ -210,20 +225,20 @@
                     </div>
                     <div class="h-80"><canvas id="dayWiseChart"></canvas></div>
                 </div>
-                <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="lg:col-span-2 glass-panel p-6 rounded-3xl">
                     <h2 class="text-xl font-bold mb-4 text-slate-800">Employee Status</h2>
                     <div class="h-64"><canvas id="statusChart"></canvas></div>
                 </div>
             </section>
 
             <!-- Main Search & Results Section -->
-            <div id="table-section-header" class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 relative transition-all duration-500 w-full">
+            <div id="table-section-header" class="glass-panel p-4 md:p-6 rounded-3xl relative transition-all duration-500 w-full">
                 
                 <div id="table-header-title-container" class="flex justify-between items-center w-full mb-4 relative transition-all duration-500">
                     <h2 class="text-lg md:text-xl font-bold text-slate-800 flex items-center gap-2 whitespace-nowrap hide-always-minimal">
-                        Records <span id="contractor-count" class="hidden bg-teal-100 text-teal-800 text-xs px-2 py-1 rounded-full transition-all"></span>
+                        Records <span id="contractor-count" class="hidden bg-teal-100 text-teal-800 text-xs px-2 py-1 rounded-full transition-all border border-teal-200"></span>
                     </h2>
-                    <button onclick="toggleViewMode()" id="viewToggleBtn" class="ml-auto text-xs md:text-sm font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg border border-indigo-100 transition-colors flex items-center gap-1.5 shadow-sm" title="Toggle Views">
+                    <button onclick="toggleViewMode()" id="viewToggleBtn" class="ml-auto text-xs md:text-sm font-bold text-indigo-700 bg-indigo-50/80 backdrop-blur-sm hover:bg-indigo-100 px-3 py-1.5 rounded-lg border border-indigo-100 transition-colors flex items-center gap-1.5 shadow-sm" title="Toggle Views">
                         <i class="fa-solid fa-desktop"></i> <span class="hidden sm:inline">Standard View</span>
                     </button>
                 </div>
@@ -232,107 +247,106 @@
                     <div id="search-container" class="relative w-full rounded-lg bg-white group">
                         <div id="search-inner" class="relative">
                             <i class="fa-solid fa-magnifying-glass text-slate-400 pointer-events-none absolute left-3 top-1/2 transform -translate-y-1/2" id="search-icon"></i>
-                            <input type="text" id="searchInput" placeholder="Search Employee, TL... (Press '/' to focus)" class="pl-9 pr-10 py-2 border border-slate-300 rounded-lg w-full outline-none focus:ring-2 focus:ring-teal-500 transition-all shadow-sm bg-transparent group-hover:border-indigo-300">
-                            <button id="clear-search-btn" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-rose-500 hidden transition-colors z-10 w-7 h-7 flex items-center justify-center rounded-full hover:bg-slate-100" onclick="clearSearch()" title="Clear Search">
+                            <input type="text" id="searchInput" placeholder="Search Employee, TL, ID... (Press '/' to focus)" class="pl-9 pr-10 py-2 border border-slate-300 rounded-lg w-full outline-none focus:ring-2 focus:ring-teal-500 transition-all shadow-sm bg-transparent group-hover:border-indigo-300">
+                            <button id="clear-search-btn" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-rose-500 hidden transition-colors z-10 w-7 h-7 flex items-center justify-center rounded-full hover:bg-slate-200" onclick="clearSearch()" title="Clear Search">
                                 <i class="fa-solid fa-xmark text-lg"></i>
                             </button>
                         </div>
                     </div>
                     
                     <!-- Did you mean / Fuzzy suggestion -->
-                    <div id="search-suggestion" class="hidden w-full text-center text-sm text-slate-600 bg-indigo-50 border border-indigo-100 py-1.5 rounded-lg font-medium shadow-sm transition-all duration-300"></div>
+                    <div id="search-suggestion" class="hidden w-full text-center text-sm text-indigo-700 bg-indigo-50/80 backdrop-blur-sm border border-indigo-100 py-1.5 rounded-lg font-medium shadow-sm transition-all duration-300"></div>
                     
                     <div id="search-toggles" class="flex flex-wrap justify-center gap-2 w-full transition-all duration-300">
-                        <label class="cursor-pointer">
+                        <label class="cursor-pointer hover:scale-105 transition-transform">
                             <input type="radio" name="searchScope" value="all" class="peer hidden" onclick="handleScopeClick(this)">
-                            <div class="text-[11px] sm:text-xs font-bold text-slate-500 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-sm peer-checked:bg-slate-700 peer-checked:text-white peer-checked:border-slate-700 transition-all">🔍 All</div>
+                            <div class="text-[11px] sm:text-xs font-bold text-slate-600 bg-white/80 backdrop-blur-sm border border-white px-3 py-1.5 rounded-full shadow-sm peer-checked:bg-slate-700 peer-checked:text-white peer-checked:border-slate-700 transition-all">🔍 All</div>
                         </label>
-                        <label class="cursor-pointer">
+                        <label class="cursor-pointer hover:scale-105 transition-transform">
                             <input type="radio" name="searchScope" value="emp" class="peer hidden" checked onclick="handleScopeClick(this)">
-                            <div class="text-[11px] sm:text-xs font-bold text-slate-500 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-sm peer-checked:bg-teal-600 peer-checked:text-white peer-checked:border-teal-600 transition-all">👤 Employee</div>
+                            <div class="text-[11px] sm:text-xs font-bold text-slate-600 bg-white/80 backdrop-blur-sm border border-white px-3 py-1.5 rounded-full shadow-sm peer-checked:bg-teal-600 peer-checked:text-white peer-checked:border-teal-600 transition-all">👤 Employee</div>
                         </label>
-                        <label class="cursor-pointer">
+                        <label class="cursor-pointer hover:scale-105 transition-transform">
                             <input type="radio" name="searchScope" value="tl" class="peer hidden" onclick="handleScopeClick(this)">
-                            <div class="text-[11px] sm:text-xs font-bold text-slate-500 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-sm peer-checked:bg-purple-600 peer-checked:text-white peer-checked:border-purple-600 transition-all">👔 Team Leader</div>
+                            <div class="text-[11px] sm:text-xs font-bold text-slate-600 bg-white/80 backdrop-blur-sm border border-white px-3 py-1.5 rounded-full shadow-sm peer-checked:bg-purple-600 peer-checked:text-white peer-checked:border-purple-600 transition-all">👔 Team Leader</div>
                         </label>
-                        <label class="cursor-pointer">
+                        <label class="cursor-pointer hover:scale-105 transition-transform">
                             <input type="radio" name="searchScope" value="sup" class="peer hidden" onclick="handleScopeClick(this)">
-                            <div class="text-[11px] sm:text-xs font-bold text-slate-500 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-sm peer-checked:bg-rose-600 peer-checked:text-white peer-checked:border-rose-600 transition-all">📋 Shift Supervisor</div>
+                            <div class="text-[11px] sm:text-xs font-bold text-slate-600 bg-white/80 backdrop-blur-sm border border-white px-3 py-1.5 rounded-full shadow-sm peer-checked:bg-rose-600 peer-checked:text-white peer-checked:border-rose-600 transition-all">📋 Shift Sup.</div>
                         </label>
                     </div>
 
                     <!-- STANDARD VIEW ONLY FILTERS -->
-                    <div id="dropdown-container" class="grid grid-cols-1 md:grid-cols-4 gap-3 w-full mt-2">
-                        <select id="statusFilter" class="px-3 py-2 border border-slate-300 rounded-lg bg-white w-full shadow-sm outline-none focus:ring-2 focus:ring-teal-500 transition-all text-sm"></select>
-                        <select id="contractorFilter" class="px-3 py-2 border border-slate-300 rounded-lg bg-white w-full shadow-sm outline-none focus:ring-2 focus:ring-teal-500 transition-all text-sm"></select>
-                        <select id="tlFilter" class="px-3 py-2 border border-slate-300 rounded-lg bg-white w-full shadow-sm outline-none focus:ring-2 focus:ring-teal-500 transition-all text-sm"></select>
-                        <select id="supFilter" class="px-3 py-2 border border-slate-300 rounded-lg bg-white w-full shadow-sm outline-none focus:ring-2 focus:ring-teal-500 transition-all text-sm"></select>
+                    <div id="dropdown-container" class="grid grid-cols-1 md:grid-cols-4 gap-3 w-full mt-3">
+                        <select id="statusFilter" class="px-3 py-2 border border-slate-300 rounded-lg bg-white/90 shadow-sm outline-none focus:ring-2 focus:ring-teal-500 transition-all text-sm"></select>
+                        <select id="contractorFilter" class="px-3 py-2 border border-slate-300 rounded-lg bg-white/90 shadow-sm outline-none focus:ring-2 focus:ring-teal-500 transition-all text-sm"></select>
+                        <select id="tlFilter" class="px-3 py-2 border border-slate-300 rounded-lg bg-white/90 shadow-sm outline-none focus:ring-2 focus:ring-teal-500 transition-all text-sm"></select>
+                        <select id="supFilter" class="px-3 py-2 border border-slate-300 rounded-lg bg-white/90 shadow-sm outline-none focus:ring-2 focus:ring-teal-500 transition-all text-sm"></select>
                     </div>
                 </div>
                 
                 <div id="standard-view-wrapper" class="hidden mt-4">
-                    <div class="hidden md:block table-container custom-scrollbar overflow-auto border border-slate-200 rounded-lg">
-                        <table class="w-full text-left min-w-[1200px]"><thead id="tableHeader"></thead><tbody id="tableBody" class="divide-y divide-slate-200"></tbody></table>
+                    <div class="hidden md:block table-container custom-scrollbar overflow-auto border border-white shadow-sm rounded-2xl bg-white/50 backdrop-blur-sm">
+                        <table class="w-full text-left min-w-[1200px]"><thead id="tableHeader"></thead><tbody id="tableBody" class="divide-y divide-slate-200/60"></tbody></table>
                     </div>
                     <div id="mobileCardsContainer" class="md:hidden flex flex-col gap-3"></div>
                 </div>
                 
-                <div id="minimalCardsContainer" class="flex flex-col gap-3 mt-4 max-w-4xl mx-auto hidden"></div>
-                <div id="pagination-controls" class="pt-4 flex flex-col md:flex-row justify-between items-center text-sm gap-4"></div>
+                <div id="minimalCardsContainer" class="flex flex-col gap-4 mt-5 max-w-4xl mx-auto hidden"></div>
+                <div id="pagination-controls" class="pt-6 flex flex-col md:flex-row justify-between items-center text-sm gap-4"></div>
             </div>
         </div>
         
-       <footer class="text-center text-xs text-slate-500 pt-8 pb-12 relative flex flex-col items-center mt-auto w-full">
-            <div class="flex flex-wrap justify-center gap-3 sm:gap-4 mb-6 cursor-pointer hover:scale-105 transition-transform" onclick="openVisitorModal()" title="Click to view daily visitors">
-                <div class="bg-white px-3 sm:px-4 py-2 rounded-lg border border-slate-200 shadow-sm text-center">
-                    <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider">Yesterday</p>
-                    <p class="text-base sm:text-lg font-bold text-slate-700" id="vis-yday">--</p>
+       <footer class="text-center text-xs text-slate-500 pt-10 pb-12 relative flex flex-col items-center mt-auto w-full">
+            <div class="flex flex-wrap justify-center gap-3 md:gap-6 mb-8 cursor-pointer" onclick="openVisitorModal()" title="Click to view daily visitors">
+                <div class="glass-panel px-5 md:px-8 py-3 md:py-4 rounded-2xl text-center shadow-sm hover:-translate-y-1 transition duration-300">
+                    <p class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Yesterday</p>
+                    <p class="text-xl md:text-2xl font-bold text-pink-500 drop-shadow-sm" id="vis-yday">--</p>
                 </div>
-                <div class="bg-white px-3 sm:px-4 py-2 rounded-lg border border-slate-200 shadow-sm text-center">
-                    <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider">Today</p>
-                    <p class="text-base sm:text-lg font-bold text-indigo-600" id="vis-today">--</p>
+                <div class="glass-panel px-5 md:px-8 py-3 md:py-4 rounded-2xl text-center shadow-sm hover:-translate-y-1 transition duration-300">
+                    <p class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Today</p>
+                    <p class="text-xl md:text-2xl font-bold text-indigo-600 drop-shadow-sm" id="vis-today">--</p>
                 </div>
-                <div class="bg-white px-3 sm:px-4 py-2 rounded-lg border border-slate-200 shadow-sm text-center">
-                    <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider">ସ୍ୱତନ୍ତ୍ର</p>
-                    <p class="text-base sm:text-lg font-bold text-pink-600" id="vis-unique-today">--</p>
-                </div>
-                <div class="bg-gradient-to-r from-teal-600 to-teal-500 px-3 sm:px-4 py-2 rounded-lg shadow-md text-center text-white relative overflow-hidden group">
+                <div class="bg-gradient-to-br from-teal-600 to-teal-500 px-5 md:px-8 py-3 md:py-4 rounded-2xl shadow-md text-center text-white relative overflow-hidden group hover:-translate-y-1 transition duration-300">
                     <div class="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:animate-[shimmer_1s_forwards]"></div>
-                    <p class="text-[9px] sm:text-[10px] font-bold text-teal-100 uppercase tracking-wider">Total Views</p>
-                    <p class="text-base sm:text-lg font-bold" id="vis-total">--</p>
+                    <p class="text-[10px] md:text-xs font-bold text-teal-100 uppercase tracking-wider mb-1">Total Views</p>
+                    <p class="text-xl md:text-2xl font-bold" id="vis-total">--</p>
                 </div>
             </div>
 
-            <a href="https://www.instagram.com/sandeepbiswalg" target="_blank" class="mb-8 flex items-center justify-center gap-4 bg-white border border-slate-200 px-6 py-4 rounded-2xl shadow-sm hover:shadow-md transition-all group w-full max-w-sm mx-auto cursor-pointer">
-                <div class="w-11 h-11 flex-shrink-0 flex items-center justify-center rounded-xl bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white shadow-md transform transition group-hover:-rotate-6 group-hover:scale-110 duration-300">
+            <a href="https://www.instagram.com/sandeepbiswalg" target="_blank" class="mb-8 flex items-center justify-center gap-4 glass-panel px-6 py-4 rounded-2xl hover:shadow-md transition-all group w-full max-w-sm mx-auto cursor-pointer border border-white">
+                <div class="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-2xl bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white shadow-md transform transition group-hover:-rotate-6 group-hover:scale-110 duration-300">
                     <i class="fa-brands fa-instagram text-2xl"></i>
                 </div>
                 <div class="text-left flex flex-col justify-center">
-                    <span class="font-bold text-slate-800 text-sm group-hover:text-[#d82d7e] transition-colors leading-tight">Meet the maker 👨‍💻</span>
-                    <span class="text-[11px] text-slate-500 font-medium leading-tight mt-0.5">Liked this project? Follow <span class="text-[#fa8f21] font-bold group-hover:underline">@sandeepbiswalg</span></span>
+                    <span class="font-extrabold text-slate-800 text-sm group-hover:text-[#d82d7e] transition-colors leading-tight">Meet the maker 👨‍💻</span>
+                    <span class="text-xs text-slate-500 font-medium leading-tight mt-1">Liked this project? Follow <span class="text-[#fa8f21] font-bold group-hover:underline">@sandeepbiswalg</span></span>
                 </div>
             </a>
-            <p>Disclaimer: This site is not made by, endorsed by, or affiliated with Commscope.</p>
-            <p class="mt-1">© <span id="footer-year"></span> <a href="https://imsbg.github.io/commscope/" target="_blank" class="text-teal-600 hover:underline">Sandeep Biswal G Apps</a></p>
+            <div class="bg-white/50 backdrop-blur-sm px-4 py-2 rounded-xl border border-slate-200 text-slate-500 font-medium">
+                Disclaimer: This site is not made by, endorsed by, or affiliated with CommScope.
+            </div>
+            <p class="mt-3 font-semibold">© <span id="footer-year"></span> <a href="https://imsbg.github.io/commscope/" target="_blank" class="text-teal-600 hover:underline">Sandeep Biswal G Apps</a></p>
         </footer>
     </main>
 
-    <!-- Floating Action Button (Back to top) -->
-    <button id="backToTopFab" onclick="window.scrollTo({top:0, behavior:'smooth'})" class="fixed bottom-6 right-6 bg-indigo-600 text-white h-12 w-12 rounded-full shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 z-40 transform translate-y-4 hover:bg-indigo-700 hover:scale-110 outline-none focus:ring-2 focus:ring-indigo-300" title="Back to Top (Shortcut: Home)">
-        <i class="fa-solid fa-arrow-up"></i>
+    <!-- Floating Action Button -->
+    <button id="backToTopFab" onclick="window.scrollTo({top:0, behavior:'smooth'})" class="fixed bottom-6 right-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white h-14 w-14 rounded-full shadow-xl flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 z-40 transform translate-y-4 hover:scale-110 outline-none focus:ring-2 focus:ring-indigo-300" title="Back to Top (Shortcut: Home)">
+        <i class="fa-solid fa-arrow-up text-lg"></i>
     </button>
 
+    <!-- Modals (Admin, Notice, PDF Alert, Visitor Calendar, Employee Calendar, Shift) Code preserved exactly as original just with updated styling classes -->
+    
     <!-- Notifications Modal -->
-    <div id="notif-modal" onclick="if(event.target === this) closeNotifModal()" class="fixed inset-0 bg-black/60 z-[150] p-4 flex justify-center items-start pt-20 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm">
-        <div id="notif-content" class="bg-white rounded-2xl w-full max-w-md shadow-2xl transform scale-95 transition-transform duration-300 flex flex-col max-h-[80vh] overflow-hidden">
-            <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50 rounded-t-2xl relative z-10">
+    <div id="notif-modal" onclick="if(event.target === this) closeNotifModal()" class="fixed inset-0 bg-slate-900/60 z-[150] p-4 flex justify-center items-start pt-20 opacity-0 pointer-events-none transition-opacity duration-300 modal-blur">
+        <div id="notif-content" class="bg-white/95 backdrop-blur-xl border border-white rounded-3xl w-full max-w-md shadow-2xl transform scale-95 transition-transform duration-300 flex flex-col max-h-[80vh] overflow-hidden">
+            <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 rounded-t-3xl relative z-10">
                 <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2"><i class="fa-solid fa-bell text-amber-500"></i> Notifications</h3>
                 <div class="flex items-center gap-3">
                     <button onclick="markAllAsRead()" id="mark-read-btn" class="text-xs text-indigo-600 hover:text-indigo-800 font-semibold underline hidden transition-colors">Mark all read</button>
                     <button onclick="closeNotifModal()" class="text-slate-400 hover:text-rose-500 text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 transition"><i class="fa-solid fa-xmark"></i></button>
                 </div>
             </div>
-            
             <div class="p-4 overflow-y-auto custom-scrollbar space-y-3 relative" id="notif-list">
                 <div class="text-center text-slate-400 py-6 text-sm">Loading...</div>
             </div>
@@ -340,9 +354,9 @@
     </div>
 
     <!-- Admin Console Modal -->
-    <div id="admin-modal" onclick="if(event.target === this) closeAdminModal()" class="fixed inset-0 bg-black/70 z-[200] p-4 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm">
-        <div id="admin-content" class="bg-white rounded-2xl w-full max-w-md shadow-2xl transform scale-95 transition-transform duration-300 flex flex-col max-h-[90vh]">
-            <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50 rounded-t-2xl">
+    <div id="admin-modal" onclick="if(event.target === this) closeAdminModal()" class="fixed inset-0 bg-slate-900/70 z-[200] p-4 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 modal-blur">
+        <div id="admin-content" class="bg-white/95 backdrop-blur-xl border border-white rounded-3xl w-full max-w-md shadow-2xl transform scale-95 transition-transform duration-300 flex flex-col max-h-[90vh]">
+            <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 rounded-t-3xl">
                 <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2"><i class="fa-solid fa-server text-indigo-600"></i> Admin Console</h3>
                 <button onclick="closeAdminModal()" class="text-slate-400 hover:text-rose-500 text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
@@ -351,12 +365,12 @@
                     <i class="fa-solid fa-circle-info"></i> Enter ମାଲିକ Password.
                 </div>
                 <div id="admin-auth-section" class="mb-6">
-                    <input type="password" id="admin-token" placeholder="Enter Admin Password" class="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-indigo-500 font-mono text-sm shadow-sm transition mb-3">
+                    <input type="password" id="admin-token" placeholder="Enter Admin Password" class="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-indigo-500 font-mono text-sm shadow-sm transition mb-3 bg-white/80">
                     <label class="flex items-center gap-2 text-sm text-slate-600 mb-4 cursor-pointer select-none w-max">
                         <input type="checkbox" id="remember-pwd" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer transition">
                         <span class="font-medium text-xs">Remember Password</span>
                     </label>
-                    <button onclick="loginAdmin()" id="login-btn" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl transition shadow-md flex justify-center items-center gap-2">
+                    <button onclick="loginAdmin()" id="login-btn" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3.5 rounded-xl transition shadow-md flex justify-center items-center gap-2">
                         <i class="fa-solid fa-right-to-bracket"></i> Login
                     </button>
                 </div>
@@ -365,102 +379,96 @@
                         <span><i class="fa-solid fa-circle-check text-emerald-600 mr-1.5"></i> Access Granted</span>
                         <button onclick="logoutAdmin()" class="text-xs text-rose-500 hover:text-rose-700 underline font-semibold transition">Logout</button>
                     </div>
-                    <button onclick="triggerSync()" id="sync-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl transition shadow-md flex justify-center items-center gap-2 hover:shadow-lg hover:-translate-y-0.5">
+                    <button onclick="triggerSync()" id="sync-btn" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-3.5 rounded-xl transition shadow-md flex justify-center items-center gap-2 hover:shadow-lg hover:scale-[1.02]">
                         <i class="fa-solid fa-rotate"></i> Force Update Data
                     </button>
                 </div>
                 <div class="mt-8 border-t border-slate-100 pt-6">
                     <h4 class="font-bold text-slate-700 mb-3 text-sm flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-slate-400"></i> Recent Sync Logs</h4>
                     <div id="sync-logs" class="space-y-2.5">
-                        <div class="text-center text-slate-400 text-xs py-4 bg-slate-50 rounded-xl border border-dashed border-slate-200">Authenticate to load server logs...</div>
+                        <div class="text-center text-slate-400 text-xs py-4 bg-slate-50/50 rounded-xl border border-dashed border-slate-200">Authenticate to load logs...</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Notice / Marquee Click Modal -->
-    <div id="notice-modal" onclick="if(event.target === this) closeNoticeModal()" class="fixed inset-0 bg-black/60 z-[250] p-4 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm">
-        <div id="notice-content" class="bg-white rounded-2xl w-full max-w-lg shadow-2xl transform scale-95 transition-transform duration-300 flex flex-col overflow-hidden relative cursor-default">
-            <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
-            <div class="p-5 border-b border-slate-100 flex justify-between items-start bg-slate-50">
-                <div>
-                    <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2"><i class="fa-solid fa-bullhorn text-indigo-600 animate-bounce"></i> Notice Board</h3>
-                </div>
+    <!-- Notice Modal -->
+    <div id="notice-modal" onclick="if(event.target === this) closeNoticeModal()" class="fixed inset-0 bg-slate-900/60 z-[250] p-4 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 modal-blur">
+        <div id="notice-content" class="bg-white/95 backdrop-blur-xl border border-white rounded-3xl w-full max-w-lg shadow-2xl transform scale-95 transition-transform duration-300 flex flex-col overflow-hidden relative cursor-default">
+            <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-teal-500 via-indigo-500 to-pink-500"></div>
+            <div class="p-5 border-b border-slate-100 flex justify-between items-start bg-slate-50/50">
+                <h3 class="font-extrabold text-slate-800 text-lg flex items-center gap-2"><i class="fa-solid fa-bullhorn text-indigo-600 animate-bounce"></i> Notice Board</h3>
                 <button onclick="closeNoticeModal()" class="text-slate-400 hover:text-rose-500 text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="p-6 overflow-y-auto max-h-[70vh] custom-scrollbar text-slate-700 text-sm md:text-base leading-relaxed font-medium" id="notice-modal-text">
-                <!-- Loaded dynamically -->
-            </div>
-            <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end">
-                <button onclick="closeNoticeModal()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition shadow-sm text-sm">Acknowledge</button>
+            <div class="p-6 overflow-y-auto max-h-[70vh] custom-scrollbar text-slate-700 text-sm md:text-base leading-relaxed font-medium" id="notice-modal-text"></div>
+            <div class="p-4 border-t border-slate-100 bg-slate-50/50 flex justify-end">
+                <button onclick="closeNoticeModal()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition shadow-sm text-sm">Acknowledge</button>
             </div>
         </div>
     </div>
 
-    <!-- Modals (Visitor, PDF, Employee, Shift) -->
-    <div id="visitor-modal" onclick="if(event.target === this) closeVisitorModal()" class="fixed inset-0 bg-black/60 z-50 p-2 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300 modal-blur">
-        <div id="visitor-modal-content" class="bg-slate-50 rounded-2xl w-full max-w-2xl mx-auto h-auto max-h-[90vh] flex flex-col scale-95 transition-transform duration-300 shadow-2xl relative mt-10 md:mt-20 cursor-default">
-             <button onclick="closeVisitorModal()" class="absolute top-3 right-3 text-slate-600 bg-white/80 shadow hover:bg-white rounded-full h-10 w-10 text-xl z-20 transition flex items-center justify-center">&times;</button>
-             <div class="p-5 md:p-6 bg-white rounded-t-2xl border-b border-slate-200"><h3 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-chart-simple text-indigo-600"></i> Daily Visitor Logs</h3></div>
-             <div class="p-4 md:p-6 flex-1 overflow-y-auto custom-scrollbar"><div id="visitor-calendar-grid" class="grid grid-cols-7 gap-1.5 md:gap-3"></div></div>
-        </div>
-    </div>
-    <div id="pdf-alert-modal" onclick="if(event.target === this) closePdfModal()" class="fixed inset-0 bg-black bg-opacity-60 z-[100] p-4 flex justify-center items-center transition-opacity duration-300 opacity-0 pointer-events-none modal-blur">
-        <div class="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl transform scale-95 transition-transform duration-300 cursor-default" id="pdf-alert-content">
-            <div class="flex items-center gap-3 mb-3"><div class="bg-amber-100 text-amber-600 p-2 rounded-full h-10 w-10 flex items-center justify-center"><i class="fa-solid fa-triangle-exclamation text-lg"></i></div><h3 class="text-xl font-bold text-slate-800">Notice</h3></div>
-            <p class="text-slate-600 mb-6 text-sm leading-relaxed">If you think this data is incorrect, please view the original PDF in the Drive folder. Occasionally, the script may fail to load the latest data due to system overloads.</p>
-            <div class="flex justify-end gap-3"><button onclick="closePdfModal()" class="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition text-sm font-semibold">Close</button><a href="https://drive.google.com/drive/folders/1H5tR99F-DsbT9wQnlLqXST0aLsa0B1sO?usp=drive_link" target="_blank" onclick="closePdfModal()" class="px-4 py-2 bg-[var(--primary)] text-white rounded-lg hover:bg-teal-700 transition text-sm font-semibold shadow-sm">Open Folder</a></div>
+    <!-- PDF Alert Modal -->
+    <div id="pdf-alert-modal" onclick="if(event.target === this) closePdfModal()" class="fixed inset-0 bg-slate-900/60 z-[100] p-4 flex justify-center items-center transition-opacity duration-300 opacity-0 pointer-events-none modal-blur">
+        <div class="bg-white/95 backdrop-blur-xl border border-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl transform scale-95 transition-transform duration-300 cursor-default" id="pdf-alert-content">
+            <div class="flex items-center gap-3 mb-4"><div class="bg-amber-100 text-amber-600 p-3 rounded-full h-12 w-12 flex items-center justify-center shadow-inner"><i class="fa-solid fa-triangle-exclamation text-xl"></i></div><h3 class="text-2xl font-extrabold text-slate-800">Notice</h3></div>
+            <p class="text-slate-600 mb-6 text-sm leading-relaxed font-medium">If you think this data is incorrect, please view the original PDF in the Drive folder. Occasionally, the script may fail to load the latest data due to system overloads.</p>
+            <div class="flex justify-end gap-3"><button onclick="closePdfModal()" class="px-5 py-2.5 border border-slate-300 rounded-xl text-slate-700 hover:bg-slate-50 transition text-sm font-bold shadow-sm">Close</button><a href="https://drive.google.com/drive/folders/1H5tR99F-DsbT9wQnlLqXST0aLsa0B1sO?usp=drive_link" target="_blank" onclick="closePdfModal()" class="px-5 py-2.5 bg-gradient-to-r from-teal-600 to-teal-500 text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all text-sm font-bold shadow-sm">Open Folder</a></div>
         </div>
     </div>
     
-    <div id="employee-modal" onclick="if(event.target === this) closeEmployeeModal()" class="fixed inset-0 bg-black/60 z-50 p-2 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300 modal-blur">
-        <div id="modal-content" class="bg-slate-50 rounded-2xl w-full h-[95dvh] lg:h-full flex flex-col lg:flex-row scale-95 transition-transform duration-300 overflow-y-auto lg:overflow-hidden max-w-7xl mx-auto relative shadow-2xl custom-scrollbar cursor-default">
-             <button onclick="closeEmployeeModal()" class="absolute top-3 right-3 text-slate-600 bg-white/80 shadow hover:bg-white rounded-full h-10 w-10 text-xl z-20 transition flex items-center justify-center">&times;</button>
+    <!-- Visitor Modal -->
+    <div id="visitor-modal" onclick="if(event.target === this) closeVisitorModal()" class="fixed inset-0 bg-slate-900/60 z-50 p-2 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300 modal-blur">
+        <div id="visitor-modal-content" class="bg-white/95 backdrop-blur-xl border border-white rounded-3xl w-full max-w-2xl mx-auto h-auto max-h-[90vh] flex flex-col scale-95 transition-transform duration-300 shadow-2xl relative mt-10 md:mt-20 cursor-default">
+             <button onclick="closeVisitorModal()" class="absolute top-4 right-4 text-slate-600 bg-slate-100 shadow-sm hover:bg-slate-200 rounded-full h-10 w-10 text-xl z-20 transition flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+             <div class="p-5 md:p-6 border-b border-slate-100"><h3 class="text-xl font-extrabold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-chart-simple text-indigo-600"></i> Daily Visitor Logs</h3></div>
+             <div class="p-4 md:p-6 flex-1 overflow-y-auto custom-scrollbar bg-slate-50/30 rounded-b-3xl"><div id="visitor-calendar-grid" class="grid grid-cols-7 gap-1.5 md:gap-3"></div></div>
+        </div>
+    </div>
+
+    <!-- Employee Profile Calendar Modal -->
+    <div id="employee-modal" onclick="if(event.target === this) closeEmployeeModal()" class="fixed inset-0 bg-slate-900/60 z-50 p-2 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300 modal-blur">
+        <div id="modal-content" class="bg-white/95 backdrop-blur-xl border border-white rounded-3xl w-full h-[95dvh] lg:h-full flex flex-col lg:flex-row scale-95 transition-transform duration-300 overflow-y-auto lg:overflow-hidden max-w-7xl mx-auto relative shadow-2xl custom-scrollbar cursor-default">
+             <button onclick="closeEmployeeModal()" class="absolute top-3 right-3 text-slate-600 bg-white shadow-md hover:bg-slate-100 border border-slate-200 rounded-full h-10 w-10 text-xl z-20 transition flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
              
-             <!-- Information Panel (Left side on PC, Bottom on Mobile) -->
-             <div id="modal-info-panel" class="order-2 lg:order-1 w-full lg:w-80 p-4 md:p-6 bg-white lg:border-r border-slate-200 flex flex-col flex-shrink-0"></div>
+             <div id="modal-info-panel" class="order-2 lg:order-1 w-full lg:w-80 p-4 md:p-6 bg-white/50 lg:border-r border-slate-200 flex flex-col flex-shrink-0"></div>
              
-             <!-- Calendar Panel (Right side on PC, Top on Mobile) -->
-             <div id="modal-calendar-panel" class="order-1 lg:order-2 p-3 md:p-6 flex-1 flex flex-col overflow-y-auto custom-scrollbar bg-slate-50 transition-all duration-300">
-                <!-- Mobile Only Header -->
+             <div id="modal-calendar-panel" class="order-1 lg:order-2 p-3 md:p-6 flex-1 flex flex-col overflow-y-auto custom-scrollbar transition-all duration-300 bg-slate-50/50">
                 <div id="mobile-modal-header" class="lg:hidden mb-2 pb-2 border-b border-slate-200 relative"></div>
-                
-                <div class="flex justify-between items-center mb-3">
-                    <h3 id="modal-calendar-title" class="text-base md:text-xl font-semibold text-slate-700"></h3>
-                    <button id="cal-fullscreen-btn" onclick="toggleCalendarFullscreen()" class="lg:hidden bg-indigo-100 text-indigo-700 hover:bg-indigo-200 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm z-[110] outline-none focus:ring-2 focus:ring-indigo-400"><i class="fa-solid fa-expand"></i> Maximize</button>
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="modal-calendar-title" class="text-base md:text-xl font-extrabold text-slate-800"></h3>
+                    <button id="cal-fullscreen-btn" onclick="toggleCalendarFullscreen()" class="lg:hidden bg-indigo-100 text-indigo-700 hover:bg-indigo-200 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm z-[110] outline-none border border-indigo-200"><i class="fa-solid fa-expand"></i> Maximize</button>
                 </div>
-                
                 <div class="grid grid-cols-7 gap-1 md:gap-1.5 mb-1 text-[10px] md:text-xs font-bold text-center text-slate-500 uppercase tracking-wider"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
-                <!-- 'auto-rows-fr' & 'min-h-0' enables native fit without breaking -->
                 <div id="modal-calendar" class="grid grid-cols-7 gap-1 md:gap-1.5 flex-1 auto-rows-fr min-h-0"></div>
             </div>
         </div>
     </div>
     
-    <div id="shift-modal" onclick="if(event.target === this) closeShiftModal()" class="fixed inset-0 bg-black/60 z-50 p-2 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300 modal-blur">
-        <div id="shift-modal-content" class="bg-slate-50 rounded-2xl w-full max-h-[95vh] h-auto flex flex-col lg:flex-row scale-95 transition-transform duration-300 overflow-y-auto max-w-6xl mx-auto relative shadow-2xl custom-scrollbar cursor-default">
-             <button onclick="closeShiftModal()" class="absolute top-3 right-3 text-slate-600 bg-white/80 shadow hover:bg-white rounded-full h-10 w-10 text-xl z-20 transition flex items-center justify-center">&times;</button>
-             <div class="p-4 md:p-6 flex-1 flex flex-col bg-slate-50">
+    <!-- Shift Modal -->
+    <div id="shift-modal" onclick="if(event.target === this) closeShiftModal()" class="fixed inset-0 bg-slate-900/60 z-50 p-2 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300 modal-blur">
+        <div id="shift-modal-content" class="bg-white/95 backdrop-blur-xl border border-white rounded-3xl w-full max-h-[95vh] h-auto flex flex-col lg:flex-row scale-95 transition-transform duration-300 overflow-y-auto max-w-6xl mx-auto relative shadow-2xl custom-scrollbar cursor-default">
+             <button onclick="closeShiftModal()" class="absolute top-4 right-4 text-slate-600 bg-slate-100 shadow-sm border border-slate-200 hover:bg-slate-200 rounded-full h-10 w-10 text-xl z-20 transition flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+             <div class="p-4 md:p-6 flex-1 flex flex-col bg-slate-50/50">
                 <div class="flex justify-between items-center mb-6">
-                    <button onclick="changeShiftMonth(-1)" class="w-10 h-10 rounded-full bg-indigo-100 hover:bg-indigo-200 text-indigo-700 flex items-center justify-center font-bold transition shadow-sm">&lt;</button>
+                    <button onclick="changeShiftMonth(-1)" class="w-10 h-10 rounded-full bg-indigo-100 border border-indigo-200 hover:bg-indigo-200 text-indigo-700 flex items-center justify-center font-bold transition shadow-sm">&lt;</button>
                     <div class="flex flex-col items-center">
-                        <h3 id="sc-month-title" class="text-xl md:text-2xl font-bold text-indigo-900">Month Year</h3>
-                        <div id="sc-live-clock" class="text-[10px] md:text-xs font-bold text-indigo-600 mt-1 bg-indigo-50 px-2.5 py-0.5 rounded shadow-sm border border-indigo-100 tracking-wider">--:--:-- --</div>
+                        <h3 id="sc-month-title" class="text-xl md:text-2xl font-extrabold text-indigo-900">Month Year</h3>
+                        <div id="sc-live-clock" class="text-[10px] md:text-xs font-bold text-indigo-600 mt-1 bg-white px-3 py-1 rounded-full shadow-sm border border-indigo-100 tracking-wider">--:--:-- --</div>
                     </div>
-                    <button onclick="changeShiftMonth(1)" class="w-10 h-10 rounded-full bg-indigo-100 hover:bg-indigo-200 text-indigo-700 flex items-center justify-center font-bold transition shadow-sm">&gt;</button>
+                    <button onclick="changeShiftMonth(1)" class="w-10 h-10 rounded-full bg-indigo-100 border border-indigo-200 hover:bg-indigo-200 text-indigo-700 flex items-center justify-center font-bold transition shadow-sm">&gt;</button>
                 </div>
                 <div class="grid grid-cols-7 gap-1 md:gap-2 text-center font-bold text-xs md:text-sm text-slate-500 mb-2 uppercase tracking-wider"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
                 <div id="sc-days" class="grid grid-cols-7 gap-1 md:gap-2 flex-1 content-start"></div>
              </div>
-             <div class="w-full lg:w-80 p-5 md:p-6 bg-white lg:border-l border-slate-200 flex flex-col flex-shrink-0">
-                <h4 class="font-bold text-slate-800 mb-3 text-lg flex items-center gap-2"><i class="fa-solid fa-gear text-indigo-500"></i> Shift Settings</h4>
-                <div class="space-y-4 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-sm">
-                    <div><label class="block text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Shift Pattern</label><select id="sc-setup-pattern" onchange="onPatternChange()" class="w-full border border-slate-300 rounded-lg p-2.5 bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-medium transition-all"><option value="ACB">3 Shifts (A - C - B)</option><option value="BC">2 Shifts (Only B & C)</option></select></div>
-                    <div><label class="block text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Current/Base Shift</label><select id="sc-setup-shift" onchange="saveShiftSettings()" class="w-full border border-slate-300 rounded-lg p-2.5 bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-medium transition-all"></select></div>
-                    <div><label class="block text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Start Date</label><input type="date" id="sc-setup-date" onchange="saveShiftSettings()" class="w-full border border-slate-300 rounded-lg p-2.5 bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-medium transition-all"></div>
+             <div class="w-full lg:w-80 p-5 md:p-6 bg-white/50 lg:border-l border-slate-200 flex flex-col flex-shrink-0">
+                <h4 class="font-extrabold text-slate-800 mb-3 text-lg flex items-center gap-2"><i class="fa-solid fa-gear text-indigo-500"></i> Shift Settings</h4>
+                <div class="space-y-4 mb-6 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                    <div><label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wide">Shift Pattern</label><select id="sc-setup-pattern" onchange="onPatternChange()" class="w-full border border-slate-300 rounded-xl p-2.5 bg-slate-50 outline-none focus:ring-2 focus:ring-indigo-500 font-semibold transition-all"><option value="ACB">3 Shifts (A - C - B)</option><option value="BC">2 Shifts (Only B & C)</option></select></div>
+                    <div><label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wide">Current/Base Shift</label><select id="sc-setup-shift" onchange="saveShiftSettings()" class="w-full border border-slate-300 rounded-xl p-2.5 bg-slate-50 outline-none focus:ring-2 focus:ring-indigo-500 font-semibold transition-all"></select></div>
+                    <div><label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wide">Start Date</label><input type="date" id="sc-setup-date" onchange="saveShiftSettings()" class="w-full border border-slate-300 rounded-xl p-2.5 bg-slate-50 outline-none focus:ring-2 focus:ring-indigo-500 font-semibold transition-all"></div>
                 </div>
-                <h4 class="font-bold text-slate-800 mb-3 text-lg flex items-center gap-2"><i class="fa-solid fa-gift text-rose-500"></i> Holidays 2026</h4>
+                <h4 class="font-extrabold text-slate-800 mb-3 text-lg flex items-center gap-2"><i class="fa-solid fa-gift text-rose-500"></i> Holidays 2026</h4>
                 <div id="sc-holiday-list" class="space-y-2 flex-1 pr-2"></div>
              </div>
         </div>
@@ -478,6 +486,7 @@
     function formatISODate(d) { return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0'); }
 
     let globalData = [], filteredData = [], currentPage = 1, currentMonthStr = "";
+    let blacklist = []; // Stores IDs and Names to hide entirely
     const rowsPerPage = 15; 
     let trendChartInstance = null;
     let trendChartData = null;
@@ -510,11 +519,28 @@
         initViewMode(); fetchNotifications(); loadMarquee();
         if (IS_MAINTENANCE_MODE) { document.getElementById('splash-screen').style.display = 'none'; document.getElementById('main-content').classList.add('hidden'); return; }
 
+        // Fetch Blacklist First
+        try {
+            const blRes = await fetch('blacklist.json?t=' + new Date().getTime());
+            if (blRes.ok) blacklist = await blRes.json();
+        } catch(e) { console.warn("Blacklist not found or could not be loaded."); }
+
         try {
             const res = await fetch('data.json?t=' + new Date().getTime());
             if (!res.ok) throw new Error("Could not load data.json");
             const rawData = await res.json();
-            globalData = rawData.globalData; currentMonthStr = rawData.currentMonthStr; filteredData = [...globalData];
+            
+            // Clean globalData to completely remove blacklisted individuals from everything
+            if (blacklist && blacklist.length > 0) {
+                globalData = rawData.globalData.filter(emp => 
+                    !blacklist.some(b => emp.code.toLowerCase().includes(b.toLowerCase()) || emp.name.toLowerCase().includes(b.toLowerCase()))
+                );
+            } else {
+                globalData = rawData.globalData;
+            }
+
+            currentMonthStr = rawData.currentMonthStr; 
+            filteredData = [...globalData];
             initializeAppUI();
         } catch (error) { document.querySelector('#splash-screen p').innerHTML = `<span class="text-red-500 font-bold">Error: ${error.message}. Checking GitHub Action Sync...</span>`; }
         
@@ -525,7 +551,6 @@
             currentPage = 1; applyFilters();
         });
         
-        // Setup dropdown listeners including TL and Supervisor
         ['statusFilter', 'contractorFilter', 'tlFilter', 'supFilter'].forEach(id => {
             document.getElementById(id).addEventListener('change', () => { currentPage = 1; applyFilters(); });
         });
@@ -535,7 +560,7 @@
         setupScrollObserver();
     });
 
-    // LEVENSHTEIN DISTANCE FUNCTION
+    // LEVENSHTEIN DISTANCE & PHONETICS
     function levenshteinDistance(a, b) {
         if(a.length === 0) return b.length;
         if(b.length === 0) return a.length;
@@ -553,23 +578,11 @@
         }
         return matrix[b.length][a.length];
     }
-
-    // PHONETIC NORMALIZER FOR SMART INDIAN NAME MATCHING
     function normalizePhonetics(str) {
         if (!str) return '';
-        return str.toLowerCase()
-            .replace(/sh/g, 's')
-            .replace(/[vw]/g, 'b')  // treats V, W, and B as same
-            .replace(/ee/g, 'i')    // treats EE and I as same (Sandeep = Sandip)
-            .replace(/oo/g, 'u')    // treats OO and U as same (Pooja = Puja)
-            .replace(/ph/g, 'f')
-            .replace(/z/g, 'j');
+        return str.toLowerCase().replace(/sh/g, 's').replace(/[vw]/g, 'b').replace(/ee/g, 'i').replace(/oo/g, 'u').replace(/ph/g, 'f').replace(/z/g, 'j');
     }
-
-    // FORMAT TEXT FOR "DID YOU MEAN"
-    function toTitleCase(str) { 
-        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}); 
-    }
+    function toTitleCase(str) { return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}); }
 
     let ptrStartY = 0, ptrRefreshing = false;
     function setupPullToRefresh() {
@@ -591,10 +604,16 @@
         const ind = document.getElementById('ptr-indicator');
         ind.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Refreshing...';
         try {
+            const blRes = await fetch('blacklist.json?t=' + new Date().getTime());
+            if (blRes.ok) blacklist = await blRes.json();
+            
             const res = await fetch('data.json?t=' + new Date().getTime());
             if(res.ok) {
                 const rawData = await res.json();
-                globalData = rawData.globalData; currentMonthStr = rawData.currentMonthStr; 
+                if (blacklist && blacklist.length > 0) {
+                    globalData = rawData.globalData.filter(emp => !blacklist.some(b => emp.code.toLowerCase().includes(b.toLowerCase()) || emp.name.toLowerCase().includes(b.toLowerCase())));
+                } else { globalData = rawData.globalData; }
+                currentMonthStr = rawData.currentMonthStr; 
                 populateFilters(); applyFilters(); updateDashboardMetrics();
             }
         } catch(e) {}
@@ -607,32 +626,20 @@
     function setupKeyboardShortcuts() {
         document.addEventListener('keydown', (e) => {
             const isInputFocus = document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'SELECT';
-            
-            if (e.key === '/') {
-                if(!isInputFocus) { e.preventDefault(); document.getElementById('searchInput').focus(); }
-            } else if (e.key === 'Escape') {
-                closeNotifModal(); closeAdminModal(); closeVisitorModal(); closePdfModal(); closeEmployeeModal(); closeShiftModal(); closeNoticeModal();
-                if(isInputFocus) document.activeElement.blur();
-            } else if (e.key === 'Home' && !isInputFocus) {
-                e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else if ((e.key === 't' || e.key === 'T') && !isInputFocus) {
-                e.preventDefault(); openShiftModal();
-            } else if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !isInputFocus) {
-                const cards = document.querySelectorAll('.selectable-card');
-                if(cards.length === 0) return;
+            if (e.key === '/') { if(!isInputFocus) { e.preventDefault(); document.getElementById('searchInput').focus(); } } 
+            else if (e.key === 'Escape') { closeNotifModal(); closeAdminModal(); closeVisitorModal(); closePdfModal(); closeEmployeeModal(); closeShiftModal(); closeNoticeModal(); if(isInputFocus) document.activeElement.blur(); } 
+            else if (e.key === 'Home' && !isInputFocus) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); } 
+            else if ((e.key === 't' || e.key === 'T') && !isInputFocus) { e.preventDefault(); openShiftModal(); } 
+            else if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !isInputFocus) {
+                const cards = document.querySelectorAll('.selectable-card'); if(cards.length === 0) return;
                 e.preventDefault();
-                if(e.key === 'ArrowDown') { if(selectedIndex < cards.length - 1) selectedIndex++; }
-                else { if(selectedIndex > 0) selectedIndex--; }
-                
+                if(e.key === 'ArrowDown') { if(selectedIndex < cards.length - 1) selectedIndex++; } else { if(selectedIndex > 0) selectedIndex--; }
                 cards.forEach((el, i) => {
-                    if(i === selectedIndex) {
-                        el.classList.add('ring-2', 'ring-teal-500', 'scale-[1.02]');
-                        el.scrollIntoView({ block: "center", behavior: "smooth" });
-                    } else { el.classList.remove('ring-2', 'ring-teal-500', 'scale-[1.02]'); }
+                    if(i === selectedIndex) { el.classList.add('ring-2', 'ring-teal-500', 'scale-[1.02]'); el.scrollIntoView({ block: "center", behavior: "smooth" }); } 
+                    else { el.classList.remove('ring-2', 'ring-teal-500', 'scale-[1.02]'); }
                 });
             } else if (e.key === 'Enter' && !isInputFocus && selectedIndex >= 0) {
-                const cards = document.querySelectorAll('.selectable-card');
-                if(cards[selectedIndex]) cards[selectedIndex].click();
+                const cards = document.querySelectorAll('.selectable-card'); if(cards[selectedIndex]) cards[selectedIndex].click();
             }
         });
     }
@@ -640,43 +647,22 @@
     function setupScrollObserver() {
         window.addEventListener('scroll', () => {
             const fab = document.getElementById('backToTopFab');
-            if (window.scrollY > 300) {
-                fab.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
-                fab.classList.add('opacity-100');
-            } else {
-                fab.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
-                fab.classList.remove('opacity-100');
-            }
+            if (window.scrollY > 300) { fab.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4'); fab.classList.add('opacity-100'); } 
+            else { fab.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4'); fab.classList.remove('opacity-100'); }
         });
     }
 
-    window.openNoticeModal = function() {
-        document.getElementById('notice-modal').classList.remove('opacity-0', 'pointer-events-none');
-        document.getElementById('notice-content').classList.remove('scale-95');
-    };
-    window.closeNoticeModal = function() {
-        document.getElementById('notice-modal').classList.add('opacity-0', 'pointer-events-none');
-        document.getElementById('notice-content').classList.add('scale-95');
-    };
+    window.openNoticeModal = function() { document.getElementById('notice-modal').classList.remove('opacity-0', 'pointer-events-none'); document.getElementById('notice-content').classList.remove('scale-95'); };
+    window.closeNoticeModal = function() { document.getElementById('notice-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('notice-content').classList.add('scale-95'); };
 
-    async function loadMarquee() {
-        try {
-            const res = await fetch('marquee.html?t=' + new Date().getTime());
-            if(!res.ok) return;
-            const text = await res.text();
-            if(text.trim() && !text.includes('<html')) {
-                document.getElementById('marquee-text').innerHTML = text;
-                document.getElementById('notice-modal-text').innerHTML = text;
-                document.getElementById('marquee-container').classList.remove('hidden');
-            }
-        } catch(e) {}
-    }
+    async function loadMarquee() { try { const res = await fetch('marquee.html?t=' + new Date().getTime()); if(!res.ok) return; const text = await res.text(); if(text.trim() && !text.includes('<html')) { document.getElementById('marquee-text').innerHTML = text; document.getElementById('notice-modal-text').innerHTML = text; document.getElementById('marquee-container').classList.remove('hidden'); } } catch(e) {} }
 
     async function fetchNotifications() { try { const res = await fetch('https://imsbg.github.io/commscope-attendance/notifications.json?t=' + new Date().getTime()); if(res.ok) systemNotifications = await res.json(); else systemNotifications = []; } catch(e) { systemNotifications = []; } renderNotifications(); }
-    function renderNotifications() { const list = document.getElementById('notif-list'); const badge = document.getElementById('notif-badge'); const markReadBtn = document.getElementById('mark-read-btn'); if(!systemNotifications || systemNotifications.length === 0) { list.innerHTML = '<div class="text-center text-slate-500 py-8 text-sm flex flex-col items-center gap-2"><i class="fa-regular fa-bell-slash text-3xl text-slate-300 mb-2"></i> No notifications right now.</div>'; badge.classList.add('hidden'); markReadBtn.classList.add('hidden'); return; } const unreadCount = systemNotifications.filter(n => !readNotifs.includes(n.id || n.title)).length; if (unreadCount > 0) { badge.textContent = unreadCount; badge.classList.remove('hidden'); markReadBtn.classList.remove('hidden'); } else { badge.classList.add('hidden'); markReadBtn.classList.add('hidden'); } list.innerHTML = ''; systemNotifications.forEach(n => { let nId = n.id || n.title; let isRead = readNotifs.includes(nId); let btnHtml = ''; if(n.link) { btnHtml = `<a href="${n.link}" target="_blank" class="mt-3 inline-block bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-200 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm">${n.buttonText || 'View Details'}</a>`; } list.innerHTML += `<div class="p-4 rounded-xl shadow-sm border transition-colors ${isRead ? 'bg-white border-slate-100 opacity-70' : 'bg-blue-50/50 border-blue-100'}"><div class="flex justify-between items-start mb-1"><h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">${!isRead ? '<span class="h-2 w-2 bg-blue-500 rounded-full inline-block"></span>' : ''} ${n.title}</h4></div><p class="text-slate-600 text-xs leading-relaxed ml-${!isRead ? '4' : '0'}">${n.message}</p>${btnHtml}</div>`; }); }
+    function renderNotifications() { const list = document.getElementById('notif-list'); const badge = document.getElementById('notif-badge'); const markReadBtn = document.getElementById('mark-read-btn'); if(!systemNotifications || systemNotifications.length === 0) { list.innerHTML = '<div class="text-center text-slate-500 py-8 text-sm flex flex-col items-center gap-2"><i class="fa-regular fa-bell-slash text-3xl text-slate-300 mb-2"></i> No notifications right now.</div>'; badge.classList.add('hidden'); markReadBtn.classList.add('hidden'); return; } const unreadCount = systemNotifications.filter(n => !readNotifs.includes(n.id || n.title)).length; if (unreadCount > 0) { badge.textContent = unreadCount; badge.classList.remove('hidden'); markReadBtn.classList.remove('hidden'); } else { badge.classList.add('hidden'); markReadBtn.classList.add('hidden'); } list.innerHTML = ''; systemNotifications.forEach(n => { let nId = n.id || n.title; let isRead = readNotifs.includes(nId); let btnHtml = ''; if(n.link) { btnHtml = `<a href="${n.link}" target="_blank" class="mt-3 inline-block bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm">${n.buttonText || 'View Details'}</a>`; } list.innerHTML += `<div class="p-4 rounded-xl shadow-sm border transition-colors ${isRead ? 'bg-white border-slate-100 opacity-70' : 'bg-blue-50/50 border-blue-100'}"><div class="flex justify-between items-start mb-1"><h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">${!isRead ? '<span class="h-2 w-2 bg-blue-500 rounded-full inline-block"></span>' : ''} ${n.title}</h4></div><p class="text-slate-600 text-xs leading-relaxed ml-${!isRead ? '4' : '0'}">${n.message}</p>${btnHtml}</div>`; }); }
     window.markAllAsRead = function() { if(!systemNotifications) return; systemNotifications.forEach(n => { let nId = n.id || n.title; if(!readNotifs.includes(nId)) readNotifs.push(nId); }); localStorage.setItem('readNotifs', JSON.stringify(readNotifs)); renderNotifications(); }
     function openNotifModal() { document.getElementById('notif-modal').classList.remove('opacity-0', 'pointer-events-none'); document.getElementById('notif-content').classList.remove('scale-95'); }
     function closeNotifModal() { document.getElementById('notif-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('notif-content').classList.add('scale-95'); }
+    
     function handleScopeClick(radioBtn) { if (currentSearchScope === radioBtn.value && radioBtn.value !== 'emp') { document.querySelector('input[name="searchScope"][value="emp"]').checked = true; currentSearchScope = 'emp'; } else { currentSearchScope = radioBtn.value; } currentPage = 1; applyFilters(); }
     function clearSearch() { document.getElementById('searchInput').value = ''; document.getElementById('clear-search-btn').classList.add('hidden'); document.getElementById('search-suggestion').classList.add('hidden'); currentPage = 1; applyFilters(); }
     function highlightMatch(text, query, isActive) { if (!text) return 'N/A'; if (!query || !isActive) return text; const escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'); const regex = new RegExp(`(${escapedQuery})`, 'gi'); if(regex.test(text)) { return text.replace(regex, `<span class="bg-yellow-300 text-yellow-900 font-extrabold px-1 rounded shadow-sm">$1</span>`); } return text; }
@@ -685,9 +671,9 @@
     function closeAdminModal() { document.getElementById('admin-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('admin-content').classList.add('scale-95'); }
     async function getAdminCredentials(password) { try { const safePwd = password.replace(/[.#$\[\]]/g, ''); const res = await fetch(`https://sg-fun-default-rtdb.firebaseio.com/adminTokens/${safePwd}.json`); const tokenData = await res.json(); return typeof tokenData === 'string' ? tokenData : (tokenData ? tokenData.gh_token : null); } catch(e) { return null; } }
     async function loginAdmin() { const pwdInput = document.getElementById('admin-token'); const pwd = pwdInput.value.trim(); const loginBtn = document.getElementById('login-btn'); const rememberChk = document.getElementById('remember-pwd').checked; if(!pwd) return alert('Enter Admin Password first.'); const originalBtnHtml = loginBtn.innerHTML; loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...'; loginBtn.classList.add('opacity-80', 'pointer-events-none'); const token = await getAdminCredentials(pwd); if(!token) { loginBtn.innerHTML = originalBtnHtml; loginBtn.classList.remove('opacity-80', 'pointer-events-none'); return alert('Invalid Admin Password!'); } currentAdminToken = token; if(rememberChk) { localStorage.setItem('gh_admin_pwd', pwd); } else { localStorage.removeItem('gh_admin_pwd'); } document.getElementById('admin-auth-section').classList.add('hidden'); document.getElementById('admin-actions-section').classList.remove('hidden'); document.getElementById('admin-actions-section').classList.add('flex'); loginBtn.innerHTML = originalBtnHtml; loginBtn.classList.remove('opacity-80', 'pointer-events-none'); fetchGitHubLogs(token); }
-    function logoutAdmin() { currentAdminToken = null; localStorage.removeItem('gh_admin_pwd'); document.getElementById('admin-token').value = ''; document.getElementById('remember-pwd').checked = false; document.getElementById('admin-actions-section').classList.add('hidden'); document.getElementById('admin-actions-section').classList.remove('flex'); document.getElementById('admin-auth-section').classList.remove('hidden'); document.getElementById('sync-logs').innerHTML = '<div class="text-center text-slate-400 text-xs py-4 bg-slate-50 rounded-xl border border-dashed border-slate-200">Authenticate to load server logs...</div>'; }
-    async function fetchGitHubLogs(token) { const logContainer = document.getElementById('sync-logs'); logContainer.innerHTML = '<div class="text-center text-slate-500 text-xs py-6 flex flex-col items-center gap-2"><i class="fa-solid fa-spinner fa-spin text-xl text-indigo-500"></i> Fetching server logs...</div>'; try { const res = await fetch('https://api.github.com/repos/imsbg/commscope-attendance/actions/runs?per_page=5', { headers: { 'Authorization': `token ${token}` } }); if(!res.ok) throw new Error('Invalid Token or Repository access denied.'); const data = await res.json(); logContainer.innerHTML = ''; if(data.workflow_runs.length === 0) { logContainer.innerHTML = '<div class="text-center text-slate-400 text-xs py-4">No actions found.</div>'; return; } data.workflow_runs.forEach(run => { let statusColor = run.status === 'completed' ? (run.conclusion === 'success' ? 'text-emerald-500' : 'text-rose-500') : 'text-amber-500'; let icon = run.status === 'completed' ? (run.conclusion === 'success' ? 'fa-circle-check' : 'fa-circle-xmark') : 'fa-circle-notch fa-spin'; let time = new Date(run.created_at).toLocaleString(); logContainer.innerHTML += `<div class="bg-white border border-slate-200 p-3.5 rounded-xl flex justify-between items-center shadow-sm"><div class="flex items-center gap-3.5"><i class="fa-solid ${icon} ${statusColor} text-xl drop-shadow-sm"></i><div><p class="text-xs font-bold text-slate-800">${run.name}</p><p class="text-[10px] font-medium text-slate-500 mt-0.5">${time}</p></div></div><span class="text-[9px] font-bold uppercase tracking-wider ${statusColor} bg-slate-50 px-2.5 py-1 rounded-md border border-slate-100">${run.status === 'completed' ? run.conclusion : run.status}</span></div>`; }); } catch(e) { logContainer.innerHTML = `<div class="text-center text-rose-500 text-xs py-4 font-bold bg-rose-50 rounded-xl border border-rose-100"><i class="fa-solid fa-triangle-exclamation mr-1"></i> ${e.message}</div>`; } }
-    async function triggerSync() { if(!currentAdminToken) return alert('Not authenticated!'); const btn = document.getElementById('sync-btn'); const originalBtnHtml = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending Request...'; btn.classList.add('opacity-80', 'pointer-events-none'); try { const res = await fetch('https://api.github.com/repos/imsbg/commscope-attendance/actions/workflows/update.yml/dispatches', { method: 'POST', headers: { 'Authorization': `token ${currentAdminToken}`, 'Accept': 'application/vnd.github.v3+json' }, body: JSON.stringify({ ref: 'main' }) }); if(res.ok || res.status === 204) { btn.innerHTML = '<i class="fa-solid fa-check"></i> Triggered Successfully!'; btn.classList.replace('bg-indigo-600', 'bg-emerald-600'); btn.classList.remove('hover:bg-indigo-700'); fetchGitHubLogs(currentAdminToken); setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-rotate"></i> Force Update Data'; btn.classList.replace('bg-emerald-600', 'bg-indigo-600'); btn.classList.add('hover:bg-indigo-700'); btn.classList.remove('opacity-80', 'pointer-events-none'); }, 3000); } else { const errData = await res.json().catch(()=>({})); throw new Error(errData.message || 'Failed to trigger. Check token or workflow filename.'); } } catch(e) { alert("Error: " + e.message + "\n\nMake sure your workflow file is named 'update.yml'."); btn.innerHTML = '<i class="fa-solid fa-rotate"></i> Force Update Data'; btn.classList.remove('opacity-80', 'pointer-events-none'); } }
+    function logoutAdmin() { currentAdminToken = null; localStorage.removeItem('gh_admin_pwd'); document.getElementById('admin-token').value = ''; document.getElementById('remember-pwd').checked = false; document.getElementById('admin-actions-section').classList.add('hidden'); document.getElementById('admin-actions-section').classList.remove('flex'); document.getElementById('admin-auth-section').classList.remove('hidden'); document.getElementById('sync-logs').innerHTML = '<div class="text-center text-slate-400 text-xs py-4 bg-slate-50/50 rounded-xl border border-dashed border-slate-200">Authenticate to load logs...</div>'; }
+    async function fetchGitHubLogs(token) { const logContainer = document.getElementById('sync-logs'); logContainer.innerHTML = '<div class="text-center text-slate-500 text-xs py-6 flex flex-col items-center gap-2"><i class="fa-solid fa-spinner fa-spin text-xl text-indigo-500"></i> Fetching server logs...</div>'; try { const res = await fetch('https://api.github.com/repos/imsbg/commscope-attendance/actions/runs?per_page=5', { headers: { 'Authorization': `token ${token}` } }); if(!res.ok) throw new Error('Invalid Token or Repository access denied.'); const data = await res.json(); logContainer.innerHTML = ''; if(data.workflow_runs.length === 0) { logContainer.innerHTML = '<div class="text-center text-slate-400 text-xs py-4">No actions found.</div>'; return; } data.workflow_runs.forEach(run => { let statusColor = run.status === 'completed' ? (run.conclusion === 'success' ? 'text-emerald-500' : 'text-rose-500') : 'text-amber-500'; let icon = run.status === 'completed' ? (run.conclusion === 'success' ? 'fa-circle-check' : 'fa-circle-xmark') : 'fa-circle-notch fa-spin'; let time = new Date(run.created_at).toLocaleString(); logContainer.innerHTML += `<div class="bg-white/80 border border-slate-200 p-3.5 rounded-xl flex justify-between items-center shadow-sm"><div class="flex items-center gap-3.5"><i class="fa-solid ${icon} ${statusColor} text-xl drop-shadow-sm"></i><div><p class="text-xs font-bold text-slate-800">${run.name}</p><p class="text-[10px] font-medium text-slate-500 mt-0.5">${time}</p></div></div><span class="text-[9px] font-bold uppercase tracking-wider ${statusColor} bg-slate-50 px-2.5 py-1 rounded-md border border-slate-100">${run.status === 'completed' ? run.conclusion : run.status}</span></div>`; }); } catch(e) { logContainer.innerHTML = `<div class="text-center text-rose-500 text-xs py-4 font-bold bg-rose-50 rounded-xl border border-rose-100"><i class="fa-solid fa-triangle-exclamation mr-1"></i> ${e.message}</div>`; } }
+    async function triggerSync() { if(!currentAdminToken) return alert('Not authenticated!'); const btn = document.getElementById('sync-btn'); const originalBtnHtml = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending Request...'; btn.classList.add('opacity-80', 'pointer-events-none'); try { const res = await fetch('https://api.github.com/repos/imsbg/commscope-attendance/actions/workflows/update.yml/dispatches', { method: 'POST', headers: { 'Authorization': `token ${currentAdminToken}`, 'Accept': 'application/vnd.github.v3+json' }, body: JSON.stringify({ ref: 'main' }) }); if(res.ok || res.status === 204) { btn.innerHTML = '<i class="fa-solid fa-check"></i> Triggered Successfully!'; btn.classList.remove('bg-gradient-to-r', 'from-indigo-600', 'to-purple-600'); btn.classList.add('bg-emerald-600'); fetchGitHubLogs(currentAdminToken); setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-rotate"></i> Force Update Data'; btn.classList.remove('bg-emerald-600'); btn.classList.add('bg-gradient-to-r', 'from-indigo-600', 'to-purple-600'); btn.classList.remove('opacity-80', 'pointer-events-none'); }, 3000); } else { const errData = await res.json().catch(()=>({})); throw new Error(errData.message || 'Failed to trigger.'); } } catch(e) { alert("Error: " + e.message); btn.innerHTML = '<i class="fa-solid fa-rotate"></i> Force Update Data'; btn.classList.remove('opacity-80', 'pointer-events-none'); } }
     
     function initViewMode() { const savedMode = localStorage.getItem('attendanceViewMode'); applyViewMode(savedMode ? savedMode : 'minimal'); }
     function toggleViewMode() { const isMinimal = document.body.classList.contains('minimal-mode'); applyViewMode(isMinimal ? 'standard' : 'minimal'); }
@@ -702,16 +688,11 @@
     function openVisitorModal() { document.getElementById('visitor-modal').classList.remove('opacity-0', 'pointer-events-none'); document.getElementById('visitor-modal-content').classList.remove('scale-95'); renderVisitorCalendar(); }
     function closeVisitorModal() { document.getElementById('visitor-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('visitor-modal-content').classList.add('scale-95'); }
     
-    function renderVisitorCalendar() { const grid = document.getElementById('visitor-calendar-grid'); if (!window.globalVisitorData || !window.globalVisitorData.daily) { grid.innerHTML = '<div class="col-span-7 text-center text-slate-500 py-8 font-medium">Loading historical data...</div>'; return; } const today = new Date(); const utc = today.getTime() + (today.getTimezoneOffset() * 60000); const ist = new Date(utc + (3600000 * 5.5)); const y = ist.getFullYear(); const m = ist.getMonth(); const firstDay = new Date(y, m, 1).getDay(); const daysInMonth = new Date(y, m + 1, 0).getDate(); let html = '<div class="col-span-7 grid grid-cols-7 gap-1.5 md:gap-3 mb-2 text-center font-bold text-[10px] md:text-xs text-slate-500 uppercase tracking-wider"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>'; html += '<div class="col-span-7 grid grid-cols-7 gap-1.5 md:gap-3">'; for (let i = 0; i < firstDay; i++) { html += `<div class="border border-slate-100/50 bg-slate-50/30 rounded-xl min-h-[50px] md:min-h-[70px]"></div>`; } for (let d = 1; d <= daysInMonth; d++) { let dateStr = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; let visits = window.globalVisitorData.daily[dateStr] || 0; let isToday = (d === ist.getDate()); let bgClass = visits > 0 ? (isToday ? 'bg-indigo-50 border-indigo-300' : 'bg-slate-50 border-slate-200') : 'bg-white border-slate-100 opacity-50'; let textClass = visits > 0 ? (isToday ? 'text-indigo-800' : 'text-slate-700') : 'text-slate-400'; html += `<div class="${bgClass} border rounded-xl p-2 md:p-3 text-center shadow-sm flex flex-col items-center justify-center min-h-[50px] md:min-h-[70px] transition-transform hover:scale-105 ${isToday ? 'ring-2 ring-indigo-500 ring-offset-1' : ''}"> <span class="text-xs md:text-sm font-bold ${textClass}">${d}</span> ${visits > 0 ? `<span class="text-[9px] md:text-[11px] font-bold ${isToday ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-600'} px-1.5 md:px-2 py-0.5 rounded-full mt-1.5 flex items-center gap-1">${visits.toLocaleString()} <i class="fa-solid fa-eye text-[8px]"></i></span>` : ''} </div>`; } 
+    function renderVisitorCalendar() { const grid = document.getElementById('visitor-calendar-grid'); if (!window.globalVisitorData || !window.globalVisitorData.daily) { grid.innerHTML = '<div class="col-span-7 text-center text-slate-500 py-8 font-medium">Loading historical data...</div>'; return; } const today = new Date(); const utc = today.getTime() + (today.getTimezoneOffset() * 60000); const ist = new Date(utc + (3600000 * 5.5)); const y = ist.getFullYear(); const m = ist.getMonth(); const firstDay = new Date(y, m, 1).getDay(); const daysInMonth = new Date(y, m + 1, 0).getDate(); let html = '<div class="col-span-7 grid grid-cols-7 gap-1.5 md:gap-3 mb-2 text-center font-bold text-[10px] md:text-xs text-slate-500 uppercase tracking-wider"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>'; html += '<div class="col-span-7 grid grid-cols-7 gap-1.5 md:gap-3">'; for (let i = 0; i < firstDay; i++) { html += `<div class="border border-slate-100/50 bg-slate-50/30 rounded-xl min-h-[50px] md:min-h-[70px]"></div>`; } for (let d = 1; d <= daysInMonth; d++) { let dateStr = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; let visits = window.globalVisitorData.daily[dateStr] || 0; let isToday = (d === ist.getDate()); let bgClass = visits > 0 ? (isToday ? 'bg-indigo-50 border-indigo-300' : 'bg-white border-slate-200') : 'bg-white/50 border-slate-100 opacity-50'; let textClass = visits > 0 ? (isToday ? 'text-indigo-800' : 'text-slate-700') : 'text-slate-400'; html += `<div class="${bgClass} border rounded-xl p-2 md:p-3 text-center shadow-sm flex flex-col items-center justify-center min-h-[50px] md:min-h-[70px] transition-transform hover:scale-105 ${isToday ? 'ring-2 ring-indigo-500 ring-offset-1' : ''}"> <span class="text-xs md:text-sm font-extrabold ${textClass}">${d}</span> ${visits > 0 ? `<span class="text-[9px] md:text-[11px] font-bold ${isToday ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600'} px-1.5 md:px-2 py-0.5 rounded-full mt-1.5 flex items-center gap-1 border border-slate-200/50">${visits.toLocaleString()} <i class="fa-solid fa-eye text-[8px]"></i></span>` : ''} </div>`; } 
     const totalRendered = firstDay + daysInMonth; const remainder = (7 - (totalRendered % 7)) % 7; for(let i=0; i<remainder; i++) { html += `<div class="border border-slate-100/50 bg-slate-50/30 rounded-xl min-h-[50px] md:min-h-[70px]"></div>`; } html += '</div>'; grid.innerHTML = html; }
 
     function getDisplayStatus(val) { return (!val || val.trim() === '-') ? '-' : (val.trim() === '--' ? 'L' : val.trim()); }
-    function getStatusClass(val) { 
-        return (!val || val.trim() === '-') ? 'pending' : 
-               (val.trim() === '--' || val.trim().toUpperCase() === 'L') ? 'l' : 
-               val.trim().toLowerCase().replace(/[^a-z0-9]/g, ''); 
-    }
-
+    function getStatusClass(val) { return (!val || val.trim() === '-') ? 'pending' : (val.trim() === '--' || val.trim().toUpperCase() === 'L') ? 'l' : val.trim().toLowerCase().replace(/[^a-z0-9]/g, ''); }
     function shareEmployeeURL(employeeName) { const url = window.location.origin + window.location.pathname + '?Employee=' + encodeURIComponent(employeeName); if (navigator.share) { navigator.share({ title: 'CommScope Attendance', text: `Check attendance record for ${employeeName}:`, url: url }).catch(console.log); } else { navigator.clipboard.writeText(url).then(() => alert('Employee link copied to clipboard!')); } }
     function animateValue(id, start, end, duration) { const obj = document.getElementById(id); if(!obj) return; let startTimestamp = null; const step = (timestamp) => { if (!startTimestamp) startTimestamp = timestamp; const progress = Math.min((timestamp - startTimestamp) / duration, 1); obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString(); if (progress < 1) window.requestAnimationFrame(step); }; window.requestAnimationFrame(step); }
 
@@ -759,7 +740,7 @@
     }
 
     function renderTable() {
-        selectedIndex = -1; // Reset selection on render
+        selectedIndex = -1; 
         const isMinimal = document.body.classList.contains('minimal-mode');
         const searchVal = document.getElementById('searchInput').value.trim();
         const standardWrapper = document.getElementById('standard-view-wrapper');
@@ -769,7 +750,7 @@
         if (isMinimal) {
             standardWrapper.classList.add('hidden'); minimalCards.classList.remove('hidden');
             if (searchVal === '' && !searchVal.startsWith('/')) {
-                minimalCards.innerHTML = `<div class="text-center py-16 fade-in-up"><i class="fa-solid fa-id-card text-6xl text-slate-200 mb-4 drop-shadow-sm"></i><h3 class="text-xl font-bold text-slate-700">Search to View Attendance</h3><p class="text-sm text-slate-500 mt-1">Enter your Name, TL, or Employee ID in the glowing search box above to instantly fetch your records.</p></div>`;
+                minimalCards.innerHTML = `<div class="text-center py-16 fade-in-up bg-white/60 backdrop-blur-md rounded-3xl border border-white shadow-sm"><i class="fa-solid fa-id-card text-6xl text-slate-300 mb-4 drop-shadow-sm"></i><h3 class="text-xl font-bold text-slate-700">Search to View Attendance</h3><p class="text-sm text-slate-500 mt-1 font-medium">Enter your Name, TL, or Employee ID above to instantly fetch your records.</p></div>`;
                 pagination.innerHTML = ''; return;
             } else if (searchVal !== '/admin') { renderMinimalCards(); renderPagination(); }
         } else {
@@ -781,12 +762,18 @@
     function renderMinimalCards() {
         const pageData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
         const minimalContainer = document.getElementById('minimalCardsContainer'); minimalContainer.innerHTML = '';
+        const searchVal = document.getElementById('searchInput').value.trim();
+        const isBlacklisted = searchVal && blacklist.some(b => searchVal.toLowerCase().includes(b.toLowerCase()));
+
         if(pageData.length === 0) { 
-            minimalContainer.innerHTML = `<div class="text-center py-10 fade-in-up flex flex-col items-center"><i class="fa-solid fa-folder-open text-5xl text-slate-300 mb-3 drop-shadow-sm"></i><p class="text-slate-500 font-medium mb-4">No records found for your search.</p><button onclick="clearSearch()" class="px-5 py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg font-bold transition shadow-sm border border-indigo-100 flex items-center gap-2"><i class="fa-solid fa-rotate-left"></i> Clear Filters</button></div>`; 
+            if(isBlacklisted) {
+                minimalContainer.innerHTML = `<div class="text-center py-12 fade-in-up flex flex-col items-center bg-white/80 backdrop-blur-md rounded-3xl border border-white shadow-sm"><i class="fa-solid fa-user-shield text-5xl text-rose-400 mb-4 drop-shadow-sm"></i><h3 class="text-xl font-bold text-slate-800">Access Restricted</h3><p class="text-slate-500 font-medium mb-5">Sorry, this employee's data is not available.</p><button onclick="clearSearch()" class="px-5 py-2.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-xl font-bold transition shadow-sm border border-indigo-100 flex items-center gap-2"><i class="fa-solid fa-rotate-left"></i> Clear Filters</button></div>`;
+            } else {
+                minimalContainer.innerHTML = `<div class="text-center py-12 fade-in-up flex flex-col items-center bg-white/80 backdrop-blur-md rounded-3xl border border-white shadow-sm"><i class="fa-solid fa-folder-open text-5xl text-slate-300 mb-4 drop-shadow-sm"></i><p class="text-slate-500 font-medium mb-5">No records found for your search.</p><button onclick="clearSearch()" class="px-5 py-2.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-xl font-bold transition shadow-sm border border-indigo-100 flex items-center gap-2"><i class="fa-solid fa-rotate-left"></i> Clear Filters</button></div>`; 
+            }
             return; 
         }
 
-        const searchVal = document.getElementById('searchInput').value.trim();
         const scope = currentSearchScope; const hlAll = scope === 'all';
 
         pageData.forEach((row, i) => {
@@ -805,13 +792,13 @@
             });
 
             let attRate = validDays > 0 ? Math.round((p / validDays) * 100) : 0;
-            const isLeft = (row.status !== 'Active'); const statusBg = isLeft ? 'bg-rose-100 text-rose-800' : 'bg-slate-100 text-slate-700';
+            const isLeft = (row.status !== 'Active'); const statusBg = isLeft ? 'bg-rose-100 text-rose-800 border border-rose-200' : 'bg-slate-100 text-slate-700 border border-slate-200';
 
             minimalContainer.innerHTML += `
-                <div onclick="openEmployeeModal(${(currentPage - 1) * rowsPerPage + i})" style="animation: fadeInUp 0.4s ease-out ${i * 0.04}s forwards; opacity: 0;" class="selectable-card bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-md cursor-pointer transition transform hover:-translate-y-1 w-full outline-none">
-                    <div class="flex justify-between items-start mb-4 border-b border-slate-100 pb-4"><div><h3 class="font-bold text-slate-800 text-lg leading-tight">${nameDisplay}</h3><p class="text-xs text-slate-500 font-mono mt-1"><i class="fa-solid fa-id-badge text-slate-300 mr-1.5"></i>${codeDisplay}</p></div><span class="text-[10px] font-bold px-2.5 py-1 rounded-full ${statusBg} uppercase tracking-wider">${row.status}</span></div>
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 sm:gap-0">
-                        <div class="flex sm:flex-col gap-4 sm:gap-3 w-full sm:w-auto"><div class="flex-1 sm:flex-none"><p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-0.5">Team Leader</p><p class="text-sm font-bold text-slate-700">${tlDisplay}</p></div><div class="flex-1 sm:flex-none"><p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-0.5">Shift Supervisor</p><p class="text-sm font-bold text-slate-700">${supDisplay}</p></div></div>
+                <div onclick="openEmployeeModal(${(currentPage - 1) * rowsPerPage + i})" style="animation: fadeInUp 0.4s ease-out ${i * 0.04}s forwards; opacity: 0;" class="selectable-card glass-panel rounded-3xl p-5 md:p-6 cursor-pointer transition transform hover:-translate-y-1 w-full outline-none">
+                    <div class="flex justify-between items-start mb-4 border-b border-slate-200/50 pb-4"><div><h3 class="font-extrabold text-slate-800 text-xl leading-tight">${nameDisplay}</h3><p class="text-xs text-slate-500 font-mono mt-1 font-semibold"><i class="fa-solid fa-id-badge text-indigo-400 mr-1.5"></i>${codeDisplay}</p></div><span class="text-[10px] font-bold px-3 py-1 rounded-full ${statusBg} uppercase tracking-wider">${row.status}</span></div>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-5 sm:gap-0">
+                        <div class="flex sm:flex-col gap-4 sm:gap-3 w-full sm:w-auto"><div class="flex-1 sm:flex-none"><p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Team Leader</p><p class="text-sm font-bold text-slate-700">${tlDisplay}</p></div><div class="flex-1 sm:flex-none"><p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Shift Supervisor</p><p class="text-sm font-bold text-slate-700">${supDisplay}</p></div></div>
                         <div class="flex flex-col items-start sm:items-end gap-3 w-full sm:w-auto">
                             <div class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-lg font-bold text-xs sm:text-sm border border-indigo-100 shadow-sm flex items-center gap-1.5 ml-auto sm:ml-0"><i class="fa-solid fa-chart-pie opacity-70"></i> ${attRate}% Rate</div>
                             <div class="flex gap-1.5 sm:gap-2 w-full sm:w-auto justify-between sm:justify-start">
@@ -830,14 +817,16 @@
     function renderStandardRows() {
         const pageData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
         const searchVal = document.getElementById('searchInput').value.trim(); const scope = currentSearchScope; const hlAll = scope === 'all';
+        const isBlacklisted = searchVal && blacklist.some(b => searchVal.toLowerCase().includes(b.toLowerCase()));
+
         const fragment = document.createDocumentFragment();
         pageData.forEach((row, i) => {
             const tlDisplay = highlightMatch(row.tl, searchVal, hlAll || scope === 'tl');
             const supDisplay = highlightMatch(row.sanctioner, searchVal, hlAll || scope === 'sup');
             const nameDisplay = highlightMatch(row.name, searchVal, hlAll || scope === 'emp');
             const codeDisplay = highlightMatch(row.code, searchVal, hlAll || scope === 'emp');
-            const tr = document.createElement('tr'); tr.className = "selectable-card hover:bg-teal-50/50 transition-colors cursor-pointer outline-none"; tr.style.animation = `fadeInUp 0.4s ease-out ${i * 0.03}s forwards`; tr.style.opacity = "0"; tr.onclick = () => openEmployeeModal((currentPage - 1) * rowsPerPage + i);
-            let html = `<td class="p-4 font-semibold whitespace-nowrap"><span class="hover:text-teal-600 transition">${nameDisplay}</span><span class="block text-xs text-slate-500 font-normal mt-0.5"><i class="fa-solid fa-id-badge text-slate-300 mr-1"></i>${codeDisplay}</span></td><td class="p-4 text-slate-600">${row.status}</td><td class="p-4 text-slate-600 whitespace-nowrap">${row.contractor}<div class="text-[10px] text-slate-400 mt-1 font-medium">TL: ${tlDisplay} | Shift Sup: ${supDisplay}</div></td>`;
+            const tr = document.createElement('tr'); tr.className = "selectable-card hover:bg-white/60 transition-colors cursor-pointer outline-none border-b border-slate-200/50"; tr.style.animation = `fadeInUp 0.4s ease-out ${i * 0.03}s forwards`; tr.style.opacity = "0"; tr.onclick = () => openEmployeeModal((currentPage - 1) * rowsPerPage + i);
+            let html = `<td class="p-4 font-semibold whitespace-nowrap"><span class="hover:text-indigo-600 transition font-extrabold text-slate-800">${nameDisplay}</span><span class="block text-xs text-slate-500 font-medium mt-0.5"><i class="fa-solid fa-id-badge text-indigo-300 mr-1"></i>${codeDisplay}</span></td><td class="p-4 text-slate-600 font-medium">${row.status}</td><td class="p-4 text-slate-600 whitespace-nowrap font-medium">${row.contractor}<div class="text-[10px] text-slate-400 mt-1 font-medium">TL: ${tlDisplay} | Sup: ${supDisplay}</div></td>`;
             row.dates.slice(0, 31).forEach(d => html += `<td class="p-2 text-center"><span class="status-badge status-${getStatusClass(d)}">${getDisplayStatus(d)}</span></td>`);
             tr.innerHTML = html; fragment.appendChild(tr);
         });
@@ -845,8 +834,12 @@
 
         const mobileContainer = document.getElementById('mobileCardsContainer'); mobileContainer.innerHTML = '';
         if(pageData.length === 0) {
-             mobileContainer.innerHTML = `<div class="text-center py-10 fade-in-up flex flex-col items-center col-span-full"><p class="text-slate-500 font-medium mb-4">No records found.</p><button onclick="clearSearch()" class="px-4 py-2 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg font-bold transition shadow-sm border border-slate-200 flex items-center gap-2"><i class="fa-solid fa-rotate-left"></i> Clear Filters</button></div>`;
-             return;
+            if(isBlacklisted) {
+                mobileContainer.innerHTML = `<div class="text-center py-10 fade-in-up flex flex-col items-center col-span-full"><h3 class="text-lg font-bold text-slate-800 mb-2">Access Restricted</h3><p class="text-slate-500 font-medium mb-4">Sorry, this employee's data is not available.</p><button onclick="clearSearch()" class="px-4 py-2 bg-white/80 backdrop-blur-md text-slate-700 hover:bg-white rounded-xl font-bold transition shadow-sm border border-slate-200 flex items-center gap-2"><i class="fa-solid fa-rotate-left"></i> Clear Filters</button></div>`;
+            } else {
+                mobileContainer.innerHTML = `<div class="text-center py-10 fade-in-up flex flex-col items-center col-span-full"><p class="text-slate-500 font-medium mb-4">No records found.</p><button onclick="clearSearch()" class="px-4 py-2 bg-white/80 backdrop-blur-md text-slate-700 hover:bg-white rounded-xl font-bold transition shadow-sm border border-slate-200 flex items-center gap-2"><i class="fa-solid fa-rotate-left"></i> Clear Filters</button></div>`;
+            }
+            return;
         }
 
         pageData.forEach((row, i) => {
@@ -854,13 +847,13 @@
             const supDisplay = highlightMatch(row.sanctioner, searchVal, hlAll || scope === 'sup');
             const nameDisplay = highlightMatch(row.name, searchVal, hlAll || scope === 'emp');
             const codeDisplay = highlightMatch(row.code, searchVal, hlAll || scope === 'emp');
-            const isLeft = (row.status !== 'Active'); const bgClass = isLeft ? 'bg-rose-50/50 border-rose-200' : 'bg-white border-slate-200'; const statusBadgeClass = isLeft ? 'bg-rose-200 text-rose-800' : 'bg-emerald-100 text-emerald-800';
-            mobileContainer.innerHTML += `<div onclick="openEmployeeModal(${(currentPage - 1) * rowsPerPage + i})" style="animation: fadeInUp 0.4s ease-out ${i * 0.05}s forwards; opacity: 0;" class="selectable-card ${bgClass} border rounded-xl p-4 shadow-sm cursor-pointer transition transform hover:-translate-y-1 outline-none"><div class="flex justify-between items-start mb-2"><div><h3 class="font-bold text-slate-800 text-lg">${nameDisplay}</h3><p class="text-xs text-slate-500 font-mono mt-0.5">${codeDisplay}</p></div><span class="text-xs font-bold px-2 py-1 rounded-full ${statusBadgeClass}">${row.status}</span></div><div class="mt-2 text-[10px] text-slate-500 font-medium flex gap-3"><span><i class="fa-solid fa-user-tie text-slate-300 mr-1"></i> ${tlDisplay}</span><span><i class="fa-solid fa-file-signature text-slate-300 mr-1"></i> ${supDisplay}</span></div><div class="mt-3 inline-flex items-center bg-slate-100/80 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 border border-slate-200/50"><i class="fa-solid fa-briefcase text-slate-400 mr-1.5"></i> ${row.contractor}</div></div>`;
+            const isLeft = (row.status !== 'Active'); const bgClass = isLeft ? 'bg-rose-50/50 border-rose-200' : 'bg-white/80 backdrop-blur-sm border-white'; const statusBadgeClass = isLeft ? 'bg-rose-200 text-rose-800' : 'bg-emerald-100 text-emerald-800';
+            mobileContainer.innerHTML += `<div onclick="openEmployeeModal(${(currentPage - 1) * rowsPerPage + i})" style="animation: fadeInUp 0.4s ease-out ${i * 0.05}s forwards; opacity: 0;" class="selectable-card ${bgClass} border rounded-2xl p-4 shadow-sm cursor-pointer transition transform hover:-translate-y-1 outline-none"><div class="flex justify-between items-start mb-2"><div><h3 class="font-extrabold text-slate-800 text-lg">${nameDisplay}</h3><p class="text-xs text-slate-500 font-mono font-semibold mt-0.5">${codeDisplay}</p></div><span class="text-xs font-bold px-2.5 py-1 rounded-full ${statusBadgeClass}">${row.status}</span></div><div class="mt-2 text-[10px] text-slate-500 font-medium flex gap-3"><span><i class="fa-solid fa-user-tie text-indigo-300 mr-1"></i> ${tlDisplay}</span><span><i class="fa-solid fa-file-signature text-indigo-300 mr-1"></i> ${supDisplay}</span></div><div class="mt-3 inline-flex items-center bg-slate-100/80 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 border border-slate-200/50"><i class="fa-solid fa-briefcase text-slate-400 mr-1.5"></i> ${row.contractor}</div></div>`;
         });
     }
     
     function changePage(dir) { currentPage += dir; renderTable(); document.getElementById('table-section-header').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-    function renderPagination() { const isMinimal = document.body.classList.contains('minimal-mode'); const searchVal = document.getElementById('searchInput').value.trim(); const container = document.getElementById('pagination-controls'); if(isMinimal && searchVal === '') { container.innerHTML = ''; return; } const totalPages = Math.ceil(filteredData.length / rowsPerPage); if (filteredData.length === 0) { container.innerHTML = ''; return; } const endRecord = Math.min(currentPage * rowsPerPage, filteredData.length); container.innerHTML = `<span class="text-slate-600 font-medium">Showing ${((currentPage-1)*rowsPerPage)+1}-${endRecord} of ${filteredData.length}</span><div class="flex gap-2"><button onclick="changePage(-1)" ${currentPage === 1 ? 'disabled' : ''} class="px-4 py-2 border border-slate-300 rounded-lg bg-white hover:bg-slate-50 disabled:opacity-50 transition shadow-sm font-medium text-slate-700 outline-none focus:ring-2 focus:ring-teal-500">Previous</button><button onclick="changePage(1)" ${currentPage === totalPages || totalPages === 1 ? 'disabled' : ''} class="px-4 py-2 border border-slate-300 rounded-lg bg-white hover:bg-slate-50 disabled:opacity-50 transition shadow-sm font-medium text-slate-700 outline-none focus:ring-2 focus:ring-teal-500">Next</button></div>`; }
+    function renderPagination() { const isMinimal = document.body.classList.contains('minimal-mode'); const searchVal = document.getElementById('searchInput').value.trim(); const container = document.getElementById('pagination-controls'); if(isMinimal && searchVal === '') { container.innerHTML = ''; return; } const totalPages = Math.ceil(filteredData.length / rowsPerPage); if (filteredData.length === 0) { container.innerHTML = ''; return; } const endRecord = Math.min(currentPage * rowsPerPage, filteredData.length); container.innerHTML = `<span class="text-slate-600 font-semibold bg-white/60 px-3 py-1.5 rounded-lg border border-white">Showing ${((currentPage-1)*rowsPerPage)+1}-${endRecord} of ${filteredData.length}</span><div class="flex gap-2"><button onclick="changePage(-1)" ${currentPage === 1 ? 'disabled' : ''} class="px-4 py-2 border border-slate-200 rounded-xl bg-white/80 hover:bg-white disabled:opacity-50 transition shadow-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-teal-500">Previous</button><button onclick="changePage(1)" ${currentPage === totalPages || totalPages === 1 ? 'disabled' : ''} class="px-4 py-2 border border-slate-200 rounded-xl bg-white/80 hover:bg-white disabled:opacity-50 transition shadow-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-teal-500">Next</button></div>`; }
     
     function applyFilters() {
         const search = document.getElementById('searchInput').value.toLowerCase().trim(); 
@@ -879,14 +872,11 @@
 
         filteredData = globalData.filter(row => {
             const s = search; 
-            
-            // Generate phonetic normalizations for instant deep matching
             const normName = normalizePhonetics(row.name);
             const normCode = normalizePhonetics(row.code);
             const normTl = normalizePhonetics(row.tl);
             const normSup = normalizePhonetics(row.sanctioner);
 
-            // Direct inclusion matches (Standard or Phonetic)
             const matchName = row.name.toLowerCase().includes(s) || normName.includes(normSearch);
             const matchCode = row.code.toLowerCase().includes(s) || normCode.includes(normSearch);
             const matchTl = (row.tl || '').toLowerCase().includes(s) || normTl.includes(normSearch);
@@ -902,7 +892,6 @@
                 else if (scope === 'sup') matchesSearch = matchSup; 
             }
 
-            // Fuzzy Suggestion Algorithm (Run only if it wasn't a direct match)
             if (s !== '' && !matchesSearch) {
                 let targets = [];
                 if (scope === 'all' || scope === 'emp') { targets.push(row.name); targets.push(row.code); }
@@ -910,31 +899,18 @@
                 if (scope === 'all' || scope === 'sup') targets.push(row.sanctioner || '');
                 
                 const qWords = normSearch.split(/\s+/);
-                
                 targets.forEach(rawT => {
                     if(!rawT) return;
                     const t = normalizePhonetics(rawT);
-                    
-                    // Full string match distance
                     let currentDist = levenshteinDistance(normSearch, t);
-                    let threshold = Math.max(2, Math.floor(t.length * 0.3)); // 30% allowance
-
-                    // Single word optimization (if user types 1 word, compare against every word in target)
+                    let threshold = Math.max(2, Math.floor(t.length * 0.3)); 
                     if (qWords.length === 1) {
                         t.split(/\s+/).forEach(w => {
                             let wordDist = levenshteinDistance(normSearch, w);
-                            if (wordDist < currentDist) {
-                                currentDist = wordDist;
-                                threshold = Math.max(2, Math.floor(w.length * 0.3));
-                            }
+                            if (wordDist < currentDist) { currentDist = wordDist; threshold = Math.max(2, Math.floor(w.length * 0.3)); }
                         });
                     }
-
-                    // Save the best fuzzy match
-                    if(currentDist <= threshold && currentDist < closestDist) {
-                        closestDist = currentDist;
-                        closestMatchText = rawT; // the actual original string (e.g. Shilton Fernandes)
-                    }
+                    if(currentDist <= threshold && currentDist < closestDist) { closestDist = currentDist; closestMatchText = rawT; }
                 });
             }
 
@@ -947,7 +923,13 @@
         });
 
         // Did You Mean UI Logic
-        if (filteredData.length === 0 && closestMatchText && search !== '') {
+        // Check if the closest match is blacklisted
+        let showSuggestion = true;
+        if(closestMatchText && blacklist.some(b => closestMatchText.toLowerCase().includes(b.toLowerCase()))) {
+            showSuggestion = false;
+        }
+
+        if (filteredData.length === 0 && closestMatchText && search !== '' && showSuggestion) {
             const prettySuggestion = toTitleCase(closestMatchText);
             suggestionBox.innerHTML = `Did you mean: <button onclick="document.getElementById('searchInput').value='${prettySuggestion}'; applyFilters();" class="font-bold text-indigo-700 hover:text-indigo-900 underline cursor-pointer outline-none rounded">${prettySuggestion}</button> ?`;
             suggestionBox.classList.remove('hidden');
@@ -960,12 +942,10 @@
         renderTable();
     }
 
-    // Modal Expand/Collapse Function for perfectly fitting mobile screen
     window.toggleCalendarFullscreen = function() {
         const calPanel = document.getElementById('modal-calendar-panel');
         const btn = document.getElementById('cal-fullscreen-btn');
         const header = document.getElementById('mobile-modal-header');
-        
         if (calPanel.classList.contains('fixed')) {
             calPanel.classList.remove('fixed', 'inset-0', 'z-[100]', 'bg-slate-50', 'pt-14', 'px-4', 'pb-4');
             btn.innerHTML = '<i class="fa-solid fa-expand"></i> Maximize';
@@ -1000,65 +980,58 @@
         let attendancePercentage = validDays > 0 ? Math.round((p / validDays) * 100) : 0;
         const statusColor = employee.status === 'Active' ? 'text-emerald-600' : 'text-rose-600';
 
-        // --- Mobile Specific Header Injection ---
         document.getElementById('mobile-modal-header').innerHTML = `
-            <h2 class="text-xl md:text-2xl font-bold text-slate-900 leading-tight">${employee.name}</h2>
-            <p class="text-slate-500 mt-1 font-medium text-xs md:text-sm">${employee.code} &bull; ${employee.contractor} &bull; <span class="${statusColor} font-bold">${employee.status}</span></p>
+            <h2 class="text-xl md:text-2xl font-extrabold text-slate-900 leading-tight">${employee.name}</h2>
+            <p class="text-slate-500 mt-1 font-semibold text-xs md:text-sm">${employee.code} &bull; ${employee.contractor} &bull; <span class="${statusColor} font-bold">${employee.status}</span></p>
         `;
 
-        // --- Legend Reusable HTML ---
         const legendHTML = `
             <div class="grid grid-cols-2 gap-x-2 gap-y-2 text-[11px] md:text-xs">
-                <div class="flex items-center gap-2"><span class="legend-badge status-p">P</span><span>Present</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-fd">FD</span><span>Wrong Shift</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-a">A</span><span>Absent</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-hd">HD</span><span>Half Day</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-wo">WO</span><span>Week Off</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-pl">PL</span><span>Privilege Leave</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-wwo">WWO</span><span>Worked WO</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-slwp">SLWP</span><span>Sick Leave</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-mp">MP</span><span>Miss Punch</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-l">L</span><span>Left</span></div>
+                <div class="flex items-center gap-2"><span class="legend-badge status-p">P</span><span class="font-medium text-slate-700">Present</span></div>
+                <div class="flex items-center gap-2"><span class="legend-badge status-fd">FD</span><span class="font-medium text-slate-700">Wrong Shift</span></div>
+                <div class="flex items-center gap-2"><span class="legend-badge status-a">A</span><span class="font-medium text-slate-700">Absent</span></div>
+                <div class="flex items-center gap-2"><span class="legend-badge status-hd">HD</span><span class="font-medium text-slate-700">Half Day</span></div>
+                <div class="flex items-center gap-2"><span class="legend-badge status-wo">WO</span><span class="font-medium text-slate-700">Week Off</span></div>
+                <div class="flex items-center gap-2"><span class="legend-badge status-pl">PL</span><span class="font-medium text-slate-700">Privilege Leave</span></div>
+                <div class="flex items-center gap-2"><span class="legend-badge status-wwo">WWO</span><span class="font-medium text-slate-700">Worked WO</span></div>
+                <div class="flex items-center gap-2"><span class="legend-badge status-slwp">SLWP</span><span class="font-medium text-slate-700">Sick Leave</span></div>
+                <div class="flex items-center gap-2"><span class="legend-badge status-mp">MP</span><span class="font-medium text-slate-700">Miss Punch</span></div>
+                <div class="flex items-center gap-2"><span class="legend-badge status-l">L</span><span class="font-medium text-slate-700">Left</span></div>
             </div>
         `;
 
-        // --- Main Info Sidebar (Visible normally on Desktop, stacked below on Mobile) ---
         document.getElementById('modal-info-panel').innerHTML = `
-            <div class="mb-3 hidden lg:block"> <!-- Hid on mobile since it's injected above -->
-                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 leading-tight">${employee.name}</h2>
-                <p class="text-slate-500 mt-1 font-medium">${employee.code} &bull; ${employee.contractor} &bull; <span class="${statusColor} font-bold">${employee.status}</span></p>
+            <div class="mb-3 hidden lg:block">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight">${employee.name}</h2>
+                <p class="text-slate-500 mt-1 font-semibold">${employee.code} &bull; ${employee.contractor} &bull; <span class="${statusColor} font-bold">${employee.status}</span></p>
             </div>
             
-            <div class="mt-2 lg:mt-0 p-3 md:p-4 bg-slate-50 rounded-xl text-xs md:text-sm text-slate-700 space-y-1.5 md:space-y-2 border border-slate-200 shadow-sm">
-                <p class="flex items-center gap-2"><i class="fa-solid fa-user-tie text-teal-600 w-4"></i> <strong>Team Leader:</strong> <span class="ml-auto text-right font-medium">${employee.tl || 'N/A'}</span></p>
-                <p class="flex items-center gap-2 border-t border-slate-200 pt-1.5 md:pt-2"><i class="fa-solid fa-file-signature text-teal-600 w-4"></i> <strong>Shift Sup:</strong> <span class="ml-auto text-right font-medium">${employee.sanctioner || 'N/A'}</span></p>
+            <div class="mt-2 lg:mt-0 p-3 md:p-4 bg-white/60 rounded-xl text-xs md:text-sm text-slate-700 space-y-1.5 md:space-y-2 border border-slate-200 shadow-sm">
+                <p class="flex items-center gap-2"><i class="fa-solid fa-user-tie text-indigo-500 w-4"></i> <strong>Team Leader:</strong> <span class="ml-auto text-right font-medium">${employee.tl || 'N/A'}</span></p>
+                <p class="flex items-center gap-2 border-t border-slate-200 pt-1.5 md:pt-2"><i class="fa-solid fa-file-signature text-indigo-500 w-4"></i> <strong>Shift Sup:</strong> <span class="ml-auto text-right font-medium">${employee.sanctioner || 'N/A'}</span></p>
             </div>
             
             <div class="mt-3 grid grid-cols-4 gap-1.5 md:gap-2 text-sm h-14 md:h-16">
-                <div class="bg-emerald-50 text-emerald-800 p-1.5 rounded-lg border border-emerald-100 flex flex-col items-center justify-between h-full"><span class="font-bold text-lg md:text-xl leading-none mt-1">${p}</span><span class="text-[8px] md:text-[9px] font-bold uppercase tracking-wide text-center leading-tight opacity-80 mb-1">Present</span></div>
-                <div class="bg-rose-50 text-rose-800 p-1.5 rounded-lg border border-rose-100 flex flex-col items-center justify-between h-full"><span class="font-bold text-lg md:text-xl leading-none mt-1">${a}</span><span class="text-[8px] md:text-[9px] font-bold uppercase tracking-wide text-center leading-tight opacity-80 mb-1">Absent</span></div>
-                <div class="bg-blue-50 text-blue-800 p-1.5 rounded-lg border border-blue-200 flex flex-col items-center justify-between h-full"><span class="font-bold text-lg md:text-xl leading-none mt-1">${fd}</span><span class="text-[8px] md:text-[9px] font-bold uppercase tracking-wide text-center leading-tight opacity-80 mb-1">Wrong Shift</span></div>
-                <div class="bg-orange-50 text-orange-800 p-1.5 rounded-lg border border-orange-100 flex flex-col items-center justify-between h-full"><span class="font-bold text-lg md:text-xl leading-none mt-1">${mp}</span><span class="text-[8px] md:text-[9px] font-bold uppercase tracking-wide text-center leading-tight opacity-80 mb-1">Miss Punch</span></div>
+                <div class="bg-emerald-50 text-emerald-800 p-1.5 rounded-xl border border-emerald-100 flex flex-col items-center justify-between h-full"><span class="font-bold text-lg md:text-xl leading-none mt-1">${p}</span><span class="text-[8px] md:text-[9px] font-bold uppercase tracking-wide text-center leading-tight opacity-80 mb-1">Present</span></div>
+                <div class="bg-rose-50 text-rose-800 p-1.5 rounded-xl border border-rose-100 flex flex-col items-center justify-between h-full"><span class="font-bold text-lg md:text-xl leading-none mt-1">${a}</span><span class="text-[8px] md:text-[9px] font-bold uppercase tracking-wide text-center leading-tight opacity-80 mb-1">Absent</span></div>
+                <div class="bg-blue-50 text-blue-800 p-1.5 rounded-xl border border-blue-200 flex flex-col items-center justify-between h-full"><span class="font-bold text-lg md:text-xl leading-none mt-1">${fd}</span><span class="text-[8px] md:text-[9px] font-bold uppercase tracking-wide text-center leading-tight opacity-80 mb-1">Wrong Shift</span></div>
+                <div class="bg-orange-50 text-orange-800 p-1.5 rounded-xl border border-orange-100 flex flex-col items-center justify-between h-full"><span class="font-bold text-lg md:text-xl leading-none mt-1">${mp}</span><span class="text-[8px] md:text-[9px] font-bold uppercase tracking-wide text-center leading-tight opacity-80 mb-1">Miss Punch</span></div>
             </div>
             
-            <div class="mt-3 bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-900 p-2 md:p-3 rounded-lg flex justify-between items-center border border-blue-100 shadow-sm"><span class="font-bold text-xs md:text-sm uppercase tracking-wide"><i class="fa-solid fa-chart-pie mr-1 text-blue-500"></i> Attendance Rate</span><span class="font-bold text-xl md:text-2xl">${attendancePercentage}%</span></div>
+            <div class="mt-3 bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-900 p-2 md:p-3 rounded-xl flex justify-between items-center border border-indigo-100 shadow-sm"><span class="font-bold text-xs md:text-sm uppercase tracking-wide"><i class="fa-solid fa-chart-pie mr-1 text-indigo-500"></i> Attendance Rate</span><span class="font-extrabold text-xl md:text-2xl">${attendancePercentage}%</span></div>
             
-            <button onclick="shareEmployeeURL('${employee.name.replace(/'/g, "\\'")}')" class="w-full mt-3 md:mt-4 bg-teal-100 hover:bg-teal-200 text-teal-800 py-2 md:py-2.5 rounded-xl font-bold text-xs md:text-sm transition flex items-center justify-center gap-2 shadow-sm outline-none focus:ring-2 focus:ring-teal-500"><i class="fa-solid fa-share-nodes"></i> Share Attendance</button>
+            <button onclick="shareEmployeeURL('${employee.name.replace(/'/g, "\\'")}')" class="w-full mt-3 md:mt-4 bg-teal-50 hover:bg-teal-100 text-teal-700 py-2 md:py-3 rounded-xl font-bold text-xs md:text-sm transition flex items-center justify-center gap-2 shadow-sm border border-teal-200 outline-none focus:ring-2 focus:ring-teal-500"><i class="fa-solid fa-share-nodes"></i> Share Attendance</button>
             
-            <!-- Dynamic Footer Legend -->
             <div class="mt-auto pt-3 md:pt-4 border-t border-slate-200">
-                <!-- Mobile Dropdown Legend -->
                 <details class="lg:hidden group mb-1 outline-none">
-                    <summary class="font-semibold text-slate-800 cursor-pointer select-none flex justify-between items-center outline-none bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-sm">
+                    <summary class="font-semibold text-slate-800 cursor-pointer select-none flex justify-between items-center outline-none bg-slate-50/50 p-2.5 rounded-xl border border-slate-200 text-sm">
                         <span>View Legend</span>
                         <i class="fa-solid fa-chevron-down transition-transform group-open:rotate-180 text-slate-500"></i>
                     </summary>
                     <div class="mt-2 p-1.5">${legendHTML}</div>
                 </details>
-                
-                <!-- Desktop Fixed Legend -->
                 <div class="hidden lg:block">
-                    <div class="font-semibold text-slate-800 cursor-default select-none mb-3">Legend</div>
+                    <div class="font-extrabold text-slate-800 cursor-default select-none mb-3">Legend</div>
                     ${legendHTML}
                 </div>
             </div>
@@ -1066,16 +1039,15 @@
 
         document.getElementById('modal-calendar-title').textContent = `Attendance for ${displayMonthStr}`;
         
-        let daysHTML = Array(firstDay).fill('<div class="border border-slate-100/50 bg-slate-50/50 rounded-lg h-full w-full"></div>').join('');
+        let daysHTML = Array(firstDay).fill('<div class="border border-slate-100/50 bg-slate-50/30 rounded-xl h-full w-full"></div>').join('');
         for (let i = 0; i < totalDays; i++) {
             const rawStatus = employee.dates[i] || '-';
-            // Important fix: native fit achieved via 'min-h-[35px] md:min-h-[50px]' combined with container 'auto-rows-fr' & 'min-h-0'
-            daysHTML += `<div class="status-${getStatusClass(rawStatus)} flex flex-col justify-center items-center rounded-lg font-bold shadow-sm border border-slate-100 transition hover:scale-105 h-full w-full min-h-[35px] md:min-h-[50px] p-0.5"><span class="text-[11px] md:text-lg leading-none">${i+1}</span><span class="text-[8px] md:text-sm opacity-80 mt-0.5 leading-none w-full text-center truncate">${getDisplayStatus(rawStatus)}</span></div>`;
+            daysHTML += `<div class="status-${getStatusClass(rawStatus)} flex flex-col justify-center items-center rounded-xl font-bold shadow-sm border border-slate-100/50 transition hover:scale-105 h-full w-full min-h-[35px] md:min-h-[50px] p-0.5"><span class="text-[11px] md:text-lg leading-none">${i+1}</span><span class="text-[8px] md:text-sm opacity-80 mt-0.5 leading-none w-full text-center truncate">${getDisplayStatus(rawStatus)}</span></div>`;
         }
         
         const totalRenderedCells = firstDay + totalDays;
         const extraCells = (7 - (totalRenderedCells % 7)) % 7;
-        daysHTML += Array(extraCells).fill('<div class="border border-slate-100/50 bg-slate-50/50 rounded-lg h-full w-full"></div>').join('');
+        daysHTML += Array(extraCells).fill('<div class="border border-slate-100/50 bg-slate-50/30 rounded-xl h-full w-full"></div>').join('');
 
         document.getElementById('modal-calendar').innerHTML = daysHTML; 
         document.getElementById('employee-modal').classList.remove('opacity-0', 'pointer-events-none'); 
@@ -1087,12 +1059,8 @@
         document.getElementById('employee-modal').classList.add('opacity-0', 'pointer-events-none'); 
         document.getElementById('modal-content').classList.add('scale-95'); 
         history.pushState({}, '', window.location.pathname); 
-        
-        // Reset full screen panel if left open
         const calPanel = document.getElementById('modal-calendar-panel');
-        if (calPanel.classList.contains('fixed')) {
-            window.toggleCalendarFullscreen();
-        }
+        if (calPanel.classList.contains('fixed')) { window.toggleCalendarFullscreen(); }
     }
     
     function getMonday(d) { const date = new Date(d); date.setHours(0,0,0,0); const day = date.getDay(); const diff = date.getDate() - day + (day === 0 ? -6 : 1); return new Date(date.setDate(diff)); }
@@ -1105,18 +1073,18 @@
         const y = calCurrentDate.getFullYear(), m = calCurrentDate.getMonth(); const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; document.getElementById('sc-month-title').innerText = `${monthNames[m]} ${y}`; const grid = document.getElementById('sc-days'); grid.innerHTML = ''; const firstDay = new Date(y, m, 1).getDay(), daysInMonth = new Date(y, m + 1, 0).getDate();
         const logicalToday = getLogicalToday();
         
-        for (let i = 0; i < firstDay; i++) { grid.innerHTML += `<div class="border border-slate-100/50 bg-slate-50/30 rounded-lg min-h-[48px]"></div>`; }
+        for (let i = 0; i < firstDay; i++) { grid.innerHTML += `<div class="border border-slate-100/50 bg-slate-50/30 rounded-xl min-h-[48px]"></div>`; }
         for (let d = 1; d <= daysInMonth; d++) {
             const cDate = new Date(y, m, d), isoDate = formatISODate(cDate), sCode = getShiftForDate(cDate), isHol = holidays2026[isoDate];
             let cls = `sc-cell sc-shift-${sCode}`; let isToday = (d === logicalToday.getDate() && m === logicalToday.getMonth() && y === logicalToday.getFullYear());
             if (isToday) cls += ' ring-2 ring-indigo-500 ring-offset-2 scale-105 shadow-md z-10'; if (isHol) cls += ' sc-holiday';
-            grid.innerHTML += `<div class="${cls} text-xs md:text-sm shadow-sm transition hover:scale-105"><div class="font-bold text-slate-700 ${isHol ? 'text-amber-900' : ''} ${isToday && !isHol ? 'text-indigo-900' : ''}">${d}</div><div class="text-[9px] md:text-xs font-bold mt-1 px-1.5 py-0.5 rounded-full bg-white/60 tracking-wider">${sCode}</div></div>`;
+            grid.innerHTML += `<div class="${cls} text-xs md:text-sm shadow-sm transition hover:scale-105 rounded-xl"><div class="font-extrabold text-slate-700 ${isHol ? 'text-amber-900' : ''} ${isToday && !isHol ? 'text-indigo-900' : ''}">${d}</div><div class="text-[9px] md:text-xs font-bold mt-1 px-2 py-0.5 rounded-full bg-white/80 border border-white tracking-wider">${sCode}</div></div>`;
         }
         const totalRendered = firstDay + daysInMonth; const remainder = (7 - (totalRendered % 7)) % 7;
-        for(let i=0; i<remainder; i++) { grid.innerHTML += `<div class="border border-slate-100/50 bg-slate-50/30 rounded-lg min-h-[48px]"></div>`; }
+        for(let i=0; i<remainder; i++) { grid.innerHTML += `<div class="border border-slate-100/50 bg-slate-50/30 rounded-xl min-h-[48px]"></div>`; }
         
-        let holHtml = ''; Object.keys(holidays2026).sort().forEach(dateStr => { let hd = new Date(dateStr); if(hd.getFullYear() === y && hd.getMonth() === m) { holHtml += `<div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm flex justify-between items-center"><span class="font-bold text-amber-700">${hd.getDate()} ${monthNames[m]}</span> <span class="text-amber-900 font-medium text-right">${holidays2026[dateStr]}</span></div>`; } });
-        if(!holHtml) holHtml = `<div class="text-sm text-slate-400 text-center italic mt-4 bg-slate-50 p-4 rounded-xl border border-slate-200">No public holidays this month</div>`; document.getElementById('sc-holiday-list').innerHTML = holHtml;
+        let holHtml = ''; Object.keys(holidays2026).sort().forEach(dateStr => { let hd = new Date(dateStr); if(hd.getFullYear() === y && hd.getMonth() === m) { holHtml += `<div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm flex justify-between items-center"><span class="font-bold text-amber-700">${hd.getDate()} ${monthNames[m]}</span> <span class="text-amber-900 font-semibold text-right">${holidays2026[dateStr]}</span></div>`; } });
+        if(!holHtml) holHtml = `<div class="text-sm text-slate-400 text-center font-medium mt-4 bg-white p-4 rounded-xl border border-slate-200">No public holidays this month</div>`; document.getElementById('sc-holiday-list').innerHTML = holHtml;
     }
 
     function changeShiftMonth(dir) { calCurrentDate.setMonth(calCurrentDate.getMonth() + dir); renderShiftCalendar(); }
@@ -1145,8 +1113,7 @@
       projectId: "sg-fun",
       storageBucket: "sg-fun.firebasestorage.app",
       messagingSenderId: "70359168339",
-      appId: "1:70359168339:web:94d5ecf8b08ffe880c9da6",
-      measurementId: "G-1KDQVYMJDH"
+      appId: "1:70359168339:web:94d5ecf8b08ffe880c9da6"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -1173,19 +1140,17 @@
 
         update(ref(db), updates).then(() => {
             get(ref(db, 'visitors')).then((snapshot) => {
-                let realTotal = 0, realToday = 0, realYday = 0, realUniqueToday = 0;
+                let realTotal = 0, realToday = 0, realYday = 0;
                 if(snapshot.exists()) { 
                     const data = snapshot.val(); 
                     window.globalVisitorData = data; 
                     realTotal = data.total || 0; 
                     realToday = data.daily[todayStr] || 0; 
                     realYday = data.daily[yesterdayStr] || 0; 
-                    realUniqueToday = (data.unique && data.unique[todayStr]) ? data.unique[todayStr] : 0;
                 }
                 document.getElementById('vis-total').innerText = realTotal.toLocaleString(); 
                 document.getElementById('vis-today').innerText = realToday.toLocaleString(); 
                 document.getElementById('vis-yday').innerText = realYday.toLocaleString();
-                document.getElementById('vis-unique-today').innerText = realUniqueToday.toLocaleString();
             }).catch(console.error);
         }).catch(console.error);
         
