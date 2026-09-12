@@ -124,7 +124,7 @@
 </head>
 <body class="antialiased minimal-mode">
 
-    <!-- SITE LOGIN SCREEN -->
+    <!-- SITE LOGIN SCREEN (No Form Tag, No Browser Save Prompt) -->
     <div id="site-login-screen" class="fixed inset-0 bg-[#f4f7fe] flex justify-center items-center">
         <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 w-96 max-w-[90%] text-center transform transition-all duration-300">
             <div class="bg-indigo-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-600 text-2xl">
@@ -132,12 +132,23 @@
             </div>
             <h2 class="text-2xl font-bold text-slate-800 mb-2">Portal Access</h2>
             <p class="text-sm text-slate-500 mb-6 font-medium">Please enter the password to continue.</p>
-            <form onsubmit="event.preventDefault(); window.verifySitePassword();">
-                <input type="password" id="site-pwd-input" placeholder="Enter Password" class="w-full px-4 py-3 text-center border border-slate-200 rounded-xl mb-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-slate-50 text-slate-700 font-medium tracking-widest">
-                <button type="submit" id="site-login-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-md flex justify-center items-center gap-2">
+            
+            <!-- Wrapper instead of form to block browsers from asking to save passwords -->
+            <div id="login-wrapper">
+                <input type="password" 
+                       id="site-pwd-input" 
+                       autocomplete="new-password" 
+                       readonly 
+                       onfocus="this.removeAttribute('readonly');" 
+                       onkeypress="if(event.key === 'Enter') window.verifySitePassword();" 
+                       placeholder="Enter Password" 
+                       class="w-full px-4 py-3 text-center border border-slate-200 rounded-xl mb-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-slate-50 text-slate-700 font-medium tracking-widest">
+                
+                <button type="button" onclick="window.verifySitePassword();" id="site-login-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-md flex justify-center items-center gap-2">
                     Enter Portal
                 </button>
-            </form>
+            </div>
+            
             <p id="site-login-error" class="text-rose-500 text-xs font-bold mt-4 hidden bg-rose-50 p-2 rounded-lg border border-rose-100"><i class="fa-solid fa-circle-exclamation"></i> Incorrect password.</p>
         </div>
     </div>
@@ -528,7 +539,7 @@
         }
     }, 1000);
 
-    // This gets called AFTER correct password validation or if token exists
+    // This gets called AFTER correct password validation
     window.startApp = async function() {
         document.getElementById('footer-year').textContent = new Date().getFullYear();
         initViewMode(); fetchNotifications(); loadMarquee();
@@ -1133,11 +1144,18 @@
     const db = getDatabase(app);
     const sitePwdRef = ref(db, 'site_password');
 
-    // Site Password Logic
+    // Site Password Logic (Strictly no local storage saving, required field)
     window.verifySitePassword = async function() {
-        const input = document.getElementById('site-pwd-input').value;
+        const input = document.getElementById('site-pwd-input').value.trim();
         const btn = document.getElementById('site-login-btn');
         const err = document.getElementById('site-login-error');
+
+        // Check if field is empty
+        if (!input) {
+            err.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Password is required.';
+            err.classList.remove('hidden');
+            return;
+        }
 
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Checking...';
         btn.disabled = true;
@@ -1148,8 +1166,7 @@
             const actualPwd = snapshot.val();
 
             if (actualPwd && input === actualPwd) {
-                // Success
-                localStorage.setItem('site_auth_token', btoa(input)); 
+                // Success - Intentionally NOT saving to localStorage so it prompts every time.
                 document.getElementById('site-login-screen').style.opacity = '0';
                 setTimeout(() => {
                     document.getElementById('site-login-screen').classList.add('hidden');
@@ -1157,6 +1174,7 @@
                 }, 300);
             } else {
                 // Fail
+                err.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Incorrect password.';
                 err.classList.remove('hidden');
                 btn.innerHTML = 'Enter Portal';
                 btn.disabled = false;
@@ -1169,26 +1187,11 @@
         }
     };
 
-    async function checkInitialAuth() {
-        const saved = localStorage.getItem('site_auth_token');
-        if (saved) {
-            try {
-                const snapshot = await get(sitePwdRef);
-                const actualPwd = snapshot.val();
-                if (actualPwd && atob(saved) === actualPwd) {
-                    document.getElementById('site-login-screen').classList.add('hidden');
-                    window.startApp();
-                    return;
-                }
-            } catch(e) {}
-        }
-        // If not authenticated, ensure login screen is shown and hide splash
+    // Make login screen visible immediately on load (forces login every visit)
+    document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('splash-screen').style.display = 'none';
         document.getElementById('site-login-screen').classList.remove('hidden');
-    }
-
-    // Initialize Auth Check
-    document.addEventListener('DOMContentLoaded', checkInitialAuth);
+    });
 
     const randomDelay = Math.random() * 2000; 
     setTimeout(() => {
