@@ -8,7 +8,7 @@
     <title>CommScope Contractor Attendance Portal - Sandeep Biswal G</title>
     <link rel="canonical" href="https://imsbg.github.io/commscope-attendance/" />
     <link rel="icon" type="image/png" href="https://ugc.production.linktr.ee/3185d4c0-2ed6-4e02-b0e3-d464551e7f43_canva-design.png?io=true&size=avatar-v3_0">
-    <meta name="description" content="Check your CommScope contractor attendance online. Track daily logs and attendance records for ADECCO, ANANYA, Dibya, ESJAY, Om Sai Krupa, and YASHASWI.">
+    <meta name="description" content="Check your CommScope contractor attendance online Unofficial. Track daily logs and attendance records for ADECCO, ANANYA, Dibya, ESJAY, Om Sai Krupa, and YASHASWI.">
     <meta name="keywords" content="CommScope contractor attendance, CommScope attendance portal, CommScope worker login, ADECCO CommScope attendance, ANANYA contractor attendance, Dibya Industrial Service attendance, ESJAY CommScope attendance, MATHEW contractor attendance, Om Sai Krupa Enterprise attendance, SHAM contractor attendance, VASUDEVA CommScope attendance, YASHASWI contractor attendance, contractor attendance tracking, vendor employee attendance login, Sandeep Biswal, Sandeep Biswal G" />
     <meta name="author" content="Sandeep Biswal G">
     <meta property="og:title" content="CommScope Contractor Attendance Portal - Sandeep Biswal G">
@@ -31,7 +31,6 @@
         :root { --primary: #4f46e5; --card-bg: #ffffff; }
         html { scroll-behavior: smooth; height: 100%; overscroll-behavior-y: contain; }
         
-        /* Optimized Background - Removed laggy gradients and blurs */
         body { 
             font-family: 'Google Sans', 'Noto Sans Oriya', sans-serif; 
             color: #1e293b; 
@@ -40,10 +39,9 @@
             display: flex; 
             flex-direction: column; 
             overscroll-behavior-y: none;
-            background-color: #f4f7fe; /* Clean, light blue-grey similar to reference */
+            background-color: #f4f7fe; 
         }
 
-        /* Clean Flat UI Card replacing heavy glassmorphism */
         .glass-panel {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -53,6 +51,12 @@
         #splash-screen { background: #ffffff; z-index: 9000; transition: opacity 0.3s ease-out; }
         #site-login-screen { z-index: 9999; }
         
+        /* This is the magic CSS that turns normal text into password dots to trick Chrome */
+        .secure-password-mask {
+            -webkit-text-security: disc;
+            text-security: disc;
+        }
+
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
@@ -124,7 +128,7 @@
 </head>
 <body class="antialiased minimal-mode">
 
-    <!-- SITE LOGIN SCREEN (No Form Tag, No Browser Save Prompt) -->
+    <!-- SITE LOGIN SCREEN (100% Anti-Browser-Save & Paste-Disabled) -->
     <div id="site-login-screen" class="fixed inset-0 bg-[#f4f7fe] flex justify-center items-center">
         <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 w-96 max-w-[90%] text-center transform transition-all duration-300">
             <div class="bg-indigo-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-600 text-2xl">
@@ -133,16 +137,23 @@
             <h2 class="text-2xl font-bold text-slate-800 mb-2">Portal Access</h2>
             <p class="text-sm text-slate-500 mb-6 font-medium">Please enter the password to continue.</p>
             
-            <!-- Wrapper instead of form to block browsers from asking to save passwords -->
             <div id="login-wrapper">
-                <input type="password" 
+                <!-- 
+                  type="text" with secure-password-mask class tricks Chrome into not offering to save it.
+                  onpaste, oncopy, oncut, ondrop completely disable copy/pasting.
+                -->
+                <input type="text" 
                        id="site-pwd-input" 
-                       autocomplete="new-password" 
-                       readonly 
-                       onfocus="this.removeAttribute('readonly');" 
+                       autocomplete="off" 
+                       spellcheck="false"
+                       autocorrect="off"
+                       onpaste="event.preventDefault(); return false;" 
+                       oncopy="event.preventDefault(); return false;" 
+                       oncut="event.preventDefault(); return false;" 
+                       ondrop="event.preventDefault(); return false;"
                        onkeypress="if(event.key === 'Enter') window.verifySitePassword();" 
                        placeholder="Enter Password" 
-                       class="w-full px-4 py-3 text-center border border-slate-200 rounded-xl mb-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-slate-50 text-slate-700 font-medium tracking-widest">
+                       class="secure-password-mask w-full px-4 py-3 text-center border border-slate-200 rounded-xl mb-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-slate-50 text-slate-700 font-medium tracking-widest">
                 
                 <button type="button" onclick="window.verifySitePassword();" id="site-login-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-md flex justify-center items-center gap-2">
                     Enter Portal
@@ -1144,7 +1155,7 @@
     const db = getDatabase(app);
     const sitePwdRef = ref(db, 'site_password');
 
-    // Site Password Logic (Strictly no local storage saving, required field)
+    // Site Password Logic (Strictly no local storage saving, required field, blocked paste)
     window.verifySitePassword = async function() {
         const input = document.getElementById('site-pwd-input').value.trim();
         const btn = document.getElementById('site-login-btn');
