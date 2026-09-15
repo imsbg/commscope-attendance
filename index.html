@@ -51,11 +51,7 @@
         #splash-screen { background: #ffffff; z-index: 9000; transition: opacity 0.3s ease-out; }
         #site-login-screen { z-index: 9999; }
         
-        /* This is the magic CSS that turns normal text into password dots to trick Chrome */
-        .secure-password-mask {
-            -webkit-text-security: disc;
-            text-security: disc;
-        }
+        .secure-password-mask { -webkit-text-security: disc; text-security: disc; }
 
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
@@ -73,7 +69,6 @@
         .status-slwp { background-color: #f3e8ff; color: #6b21a8; } 
         .status-l { background-color: #fce7f3; color: #be185d; } 
         .status-pending { background-color: #f8fafc; color: #94a3b8; } 
-        
         .status-pl { background-color: #dbeafe; color: #1e40af; } 
         .status-wwo { background-color: #fef08a; color: #854d0e; } 
         .status-cf { background-color: #e0e7ff; color: #3730a3; } 
@@ -96,91 +91,30 @@
 
         /* Minimal Mode Global Rules */
         body.minimal-mode .hide-always-minimal { display: none !important; }
+        .hide-for-user { display: none !important; }
 
         #filter-wrapper { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; transition: all 0.3s ease; }
         
         body.minimal-mode #table-section-header { background: transparent; border: none; box-shadow: none; padding: 1rem 0; }
         body.minimal-mode #table-header-title-container { justify-content: center; margin-bottom: 2rem; position: relative; }
         body.minimal-mode #viewToggleBtn { position: absolute; right: 0; }
-        
         body.minimal-mode #filter-wrapper { max-width: 750px; margin: 0 auto 2.5rem auto; align-items: center; }
         
-        body.minimal-mode #search-container {
-            width: 100%; background: #ffffff; padding: 4px; border-radius: 9999px; border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.08); transition: all 0.2s ease;
-        }
-        body.minimal-mode #search-container:focus-within { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(79, 70, 229, 0.15); border-color: #4f46e5; }
+        body.minimal-mode #search-container { width: 100%; background: #ffffff; padding: 4px; border-radius: 9999px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.08); transition: all 0.2s ease; }
         body.minimal-mode #search-inner { background: #ffffff; border-radius: 9999px; display: flex; align-items: center; width: 100%; position: relative; }
         body.minimal-mode #searchInput { width: 100%; font-size: 1.1rem; padding: 1.1rem 3rem 1.1rem 3.5rem; border-radius: 9999px; border: none; background: transparent; color: #1e293b; }
         body.minimal-mode #searchInput:focus { outline: none; box-shadow: none; }
         body.minimal-mode #search-icon { position: absolute; left: 1.25rem; font-size: 1.25rem; color: #4f46e5; }
         body.minimal-mode #clear-search-btn { right: 1.25rem; }
-        
         body.minimal-mode #dropdown-container { display: none !important; }
 
-        @media (max-width: 768px) {
-            body.minimal-mode #search-container { position: sticky; top: 10px; z-index: 45; }
-            #search-container { position: sticky; top: 10px; z-index: 45; }
-        }
-
-        #ptr-indicator { position: fixed; top: 0; left: 0; right: 0; height: 60px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #4f46e5; background: #ffffff; border-bottom: 1px solid #e2e8f0; transform: translateY(-100%); transition: transform 0.2s ease; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        /* Chat System Custom Styles */
+        .chat-bubble { padding: 8px 12px; border-radius: 12px; font-size: 13px; max-width: 85%; word-wrap: break-word; }
+        .chat-me { background: #4f46e5; color: white; border-bottom-right-radius: 2px; align-self: flex-end; }
+        .chat-other { background: #e2e8f0; color: #1e293b; border-bottom-left-radius: 2px; align-self: flex-start; }
     </style>
 </head>
 <body class="antialiased minimal-mode">
-
-    <!-- SITE LOGIN SCREEN (100% Anti-Browser-Save & Paste-Disabled) -->
-    <div id="site-login-screen" class="fixed inset-0 bg-[#f4f7fe] flex justify-center items-center">
-        <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 w-96 max-w-[90%] text-center transform transition-all duration-300">
-            <div class="bg-indigo-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-600 text-2xl">
-                <i class="fa-solid fa-lock"></i>
-            </div>
-            <h2 class="text-2xl font-bold text-slate-800 mb-2">Portal Access</h2>
-            <p class="text-sm text-slate-500 mb-6 font-medium">Please enter the password to continue.</p>
-            
-            <div id="login-wrapper">
-                <!-- 
-                  type="text" with secure-password-mask class tricks Chrome into not offering to save it.
-                  onpaste, oncopy, oncut, ondrop completely disable copy/pasting.
-                -->
-                <input type="text" 
-                       id="site-pwd-input" 
-                       autocomplete="off" 
-                       spellcheck="false"
-                       autocorrect="off"
-                       onpaste="event.preventDefault(); return false;" 
-                       oncopy="event.preventDefault(); return false;" 
-                       oncut="event.preventDefault(); return false;" 
-                       ondrop="event.preventDefault(); return false;"
-                       onkeypress="if(event.key === 'Enter') window.verifySitePassword();" 
-                       placeholder="Enter Password" 
-                       class="secure-password-mask w-full px-4 py-3 text-center border border-slate-200 rounded-xl mb-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-slate-50 text-slate-700 font-medium tracking-widest">
-                
-                <button type="button" onclick="window.verifySitePassword();" id="site-login-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-md flex justify-center items-center gap-2">
-                    Enter Portal
-                </button>
-            </div>
-            
-            <p id="site-login-error" class="text-rose-500 text-xs font-bold mt-4 hidden bg-rose-50 p-2 rounded-lg border border-rose-100"><i class="fa-solid fa-circle-exclamation"></i> Incorrect password.</p>
-        </div>
-    </div>
-
-    <!-- Pull to Refresh UI -->
-    <div id="ptr-indicator"><i class="fa-solid fa-arrow-down mr-2"></i> Pull to refresh</div>
-
-    <!-- Dynamic Marquee Container -->
-    <div id="marquee-container" class="hidden bg-indigo-600 text-white text-xs md:text-sm shadow-md relative z-40 cursor-pointer hover:bg-indigo-700 transition-colors" onclick="openNoticeModal()" title="Click to view full notice">
-        <div class="max-w-screen-2xl mx-auto flex items-center px-3 md:px-4 py-2.5 w-full">
-            <div class="font-bold mr-2 md:mr-3 uppercase tracking-wider text-indigo-200 flex-shrink-0 flex items-center gap-1.5 md:gap-2">
-                <i class="fa-solid fa-bullhorn"></i> Notice
-            </div>
-            <div class="flex-1 min-w-0 overflow-hidden flex items-center">
-                <marquee id="marquee-text" scrollamount="5" class="font-medium tracking-wide w-full pointer-events-none"></marquee>
-            </div>
-            <button onclick="event.stopPropagation(); document.getElementById('marquee-container').style.display='none'" class="ml-3 flex-shrink-0 text-indigo-300 hover:text-white transition-colors h-6 w-6 flex items-center justify-center rounded-full hover:bg-indigo-500 z-10" title="Dismiss">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-        </div>
-    </div>
 
     <!-- SPLASH SCREEN -->
     <div id="splash-screen" class="fixed inset-0 flex justify-center items-center bg-[#f4f7fe]">
@@ -196,6 +130,68 @@
         </div>
     </div>
 
+    <!-- SITE LOGIN SCREEN -->
+    <div id="site-login-screen" class="fixed inset-0 bg-[#f4f7fe] flex justify-center items-center hidden">
+        <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 w-96 max-w-[90%] text-center transform transition-all duration-300 relative z-10">
+            <div class="bg-indigo-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-600 text-2xl">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">Portal Access</h2>
+            <p class="text-sm text-slate-500 mb-6 font-medium">Please enter your credentials to continue.</p>
+            
+            <div id="login-wrapper">
+                <input type="text" id="login-id-input" autocomplete="off" spellcheck="false" placeholder="Employee ID (e.g., AD-12345)" class="w-full px-4 py-3 text-center border border-slate-200 rounded-xl mb-3 focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-slate-50 text-slate-700 font-medium uppercase tracking-widest">
+                <input type="text" id="login-pwd-input" autocomplete="off" spellcheck="false" placeholder="Password" class="secure-password-mask w-full px-4 py-3 text-center border border-slate-200 rounded-xl mb-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-slate-50 text-slate-700 font-medium tracking-widest" onkeypress="if(event.key === 'Enter') window.verifyUserLogin();">
+                
+                <button type="button" onclick="window.verifyUserLogin();" id="site-login-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-md flex justify-center items-center gap-2">
+                    Enter Portal
+                </button>
+            </div>
+            
+            <p id="site-login-error" class="text-rose-500 text-xs font-bold mt-4 hidden bg-rose-50 p-2 rounded-lg border border-rose-100"><i class="fa-solid fa-circle-exclamation"></i> Error.</p>
+            
+            <div class="mt-5 pt-4 border-t border-slate-100 text-center">
+                <p class="text-[11px] text-slate-400 font-medium italic">Disclaimer: This is a funny portal.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Buttons -->
+    <button onclick="toggleChat()" class="fixed bottom-6 right-6 bg-indigo-600 text-white h-14 w-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 z-[10000] transform hover:scale-110 outline-none focus:ring-2 focus:ring-indigo-300" title="Let's Chat">
+        <i class="fa-solid fa-messages text-xl"></i>
+    </button>
+    <button id="backToTopFab" onclick="window.scrollTo({top:0, behavior:'smooth'})" class="fixed bottom-24 right-6 bg-slate-700 text-white h-12 w-12 rounded-full shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 z-40 transform translate-y-4 hover:scale-110 outline-none focus:ring-2 focus:ring-slate-400" title="Back to Top">
+        <i class="fa-solid fa-arrow-up text-lg"></i>
+    </button>
+
+    <!-- Public Chat Modal -->
+    <div id="chat-container" class="hidden fixed bottom-24 right-6 w-80 sm:w-96 bg-white shadow-2xl rounded-2xl border border-slate-200 z-[10001] flex-col h-[450px] transform transition-transform duration-300 origin-bottom-right overflow-hidden">
+        <div class="bg-indigo-600 text-white p-4 flex justify-between items-center shadow-sm z-10">
+            <h3 class="font-bold flex items-center gap-2"><i class="fa-solid fa-comments"></i> Let's Chat (Time Pass)</h3>
+            <button onclick="toggleChat()" class="hover:text-rose-300 transition text-lg"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <!-- Setup Name View -->
+        <div id="chat-setup-view" class="flex-1 flex flex-col items-center justify-center p-6 bg-slate-50">
+            <div class="bg-indigo-100 text-indigo-600 w-16 h-16 rounded-full flex items-center justify-center text-3xl mb-4"><i class="fa-solid fa-user-ninja"></i></div>
+            <h4 class="font-bold text-slate-800 mb-2">Choose a Nickname</h4>
+            <p class="text-xs text-slate-500 text-center mb-6">You don't need to login to chat! Just pick a display name.</p>
+            <input type="text" id="chat-name-input" placeholder="E.g., DarkKnight" maxlength="15" class="w-full border border-slate-200 p-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500 mb-4 text-center font-bold text-slate-700">
+            <button onclick="joinChat()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl shadow-md hover:bg-indigo-700 transition">Join Global Chat</button>
+        </div>
+
+        <!-- Chat Interface View -->
+        <div id="chat-interface-view" class="hidden flex-1 flex flex-col h-full bg-slate-50 overflow-hidden">
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-3 text-sm flex flex-col custom-scrollbar">
+                <!-- Messages load here -->
+            </div>
+            <div class="p-3 bg-white border-t border-slate-200 flex gap-2 items-center relative z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                <input type="text" id="chat-input" placeholder="Type a message..." class="flex-1 border border-slate-300 bg-slate-50 focus:bg-white rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-indigo-500 text-sm" onkeypress="if(event.key==='Enter') sendChat()">
+                <button onclick="sendChat()" class="bg-indigo-600 text-white w-11 h-11 rounded-xl flex items-center justify-center hover:bg-indigo-700 transition shadow-sm flex-shrink-0"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Content -->
     <main id="main-content" class="hidden p-4 md:p-6 lg:p-8 w-full max-w-screen-2xl mx-auto flex-1 flex flex-col">
         
@@ -203,27 +199,12 @@
             <!-- Header -->
             <header class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 transition-all duration-300 mb-2">
                 <div>
-                    <!-- Live Users Badge -->
-                    <div class="inline-flex items-center gap-2 bg-white border border-emerald-200 text-emerald-700 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 shadow-sm select-none pointer-events-none">
-                        <span class="relative flex h-2.5 w-2.5">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-                        </span>
-                        <span id="live-users-count">...</span> Live
-                    </div>
-
                     <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-800">CommScope Contractor Attendance Portal</h1>
                     <p id="current-month-header" class="text-slate-500 mt-2 font-medium hide-always-minimal">Loading Data...</p>
+                    <p id="welcome-user-text" class="text-indigo-600 font-bold mt-1 hidden"></p>
                 </div>
                 <div class="flex flex-wrap items-center gap-2 md:gap-3 w-full xl:w-auto">
-                    
-                    <button onclick="openNotifModal()" class="relative bg-white text-slate-700 border border-slate-200 w-10 h-10 md:w-auto md:px-4 md:py-2 rounded-xl shadow-sm hover:bg-slate-50 transition flex items-center justify-center gap-2 text-sm font-medium flex-none" title="Notifications">
-                        <i class="fa-solid fa-bell text-indigo-500"></i>
-                        <span id="notif-badge" class="absolute -top-1.5 -right-1.5 bg-rose-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full hidden border-2 border-white shadow-sm">0</span>
-                        <span class="hidden md:inline">Alerts</span>
-                    </button>
-
-                    <button onclick="toggleGraphs()" class="hide-always-minimal bg-white text-slate-700 border border-slate-200 px-3 md:px-4 py-2 rounded-xl shadow-sm hover:bg-slate-50 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 xl:flex-none">
+                    <button onclick="toggleGraphs()" class="admin-only hide-always-minimal bg-white text-slate-700 border border-slate-200 px-3 md:px-4 py-2 rounded-xl shadow-sm hover:bg-slate-50 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 xl:flex-none">
                         <i class="fa-solid fa-chart-line text-blue-500"></i> <span id="toggle-graphs-text">Show Graphs</span>
                     </button>
                     <button onclick="openShiftModal()" class="bg-indigo-600 text-white px-3 md:px-4 py-2 rounded-xl shadow-sm hover:bg-indigo-700 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 xl:flex-none" title="Shift Calendar (Shortcut: T)">
@@ -232,11 +213,17 @@
                     <button onclick="openPdfModal()" class="bg-teal-600 text-white px-3 md:px-4 py-2 rounded-xl shadow-sm hover:bg-teal-700 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 md:w-auto cursor-pointer">
                         <i class="fa-solid fa-folder-open"></i> Original PDF
                     </button>
+                    <button onclick="logoutUser()" class="bg-rose-100 text-rose-700 px-3 md:px-4 py-2 rounded-xl shadow-sm hover:bg-rose-200 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 md:w-auto cursor-pointer">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </button>
+                    <button onclick="openAdminModal()" class="admin-only hidden bg-slate-800 text-white px-3 md:px-4 py-2 rounded-xl shadow-sm hover:bg-slate-700 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 md:w-auto cursor-pointer">
+                        <i class="fa-solid fa-user-shield"></i> Admin Settings
+                    </button>
                 </div>
             </header>
 
-            <!-- Metric Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 transition-all duration-300 hide-always-minimal">
+            <!-- Metric Cards (Admin Only) -->
+            <div class="admin-only hidden grid grid-cols-1 md:grid-cols-3 gap-6 transition-all duration-300 hide-always-minimal">
                <div class="bg-indigo-600 text-white p-6 rounded-2xl shadow-sm transform transition hover:-translate-y-1 relative overflow-hidden">
                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full"></div>
                    <p class="text-sm font-medium text-indigo-200">Total Employees</p>
@@ -252,15 +239,13 @@
                </div>
             </div>
             
-            <!-- Graphs Section -->
-            <section id="graphs-section" class="hidden grid grid-cols-1 lg:grid-cols-5 gap-6 transition-all duration-300 opacity-0 mb-6 hide-always-minimal">
+            <!-- Graphs Section (Admin Only) -->
+            <section id="graphs-section" class="admin-only hidden grid-cols-1 lg:grid-cols-5 gap-6 transition-all duration-300 opacity-0 mb-6 hide-always-minimal">
                 <div class="lg:col-span-3 glass-panel p-6 rounded-2xl">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
                         <h2 class="text-xl font-bold text-slate-800">Daily Attendance Trends</h2>
-                        <select id="chartTypeSelector" onchange="changeChartType(this.value)" class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer transition shadow-sm">
-                            <option value="line">Line Graph</option>
-                            <option value="bar">Bar Graph</option>
-                            <option value="radar">Radar Chart</option>
+                        <select id="chartTypeSelector" onchange="changeChartType(this.value)" class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 outline-none shadow-sm">
+                            <option value="line">Line Graph</option><option value="bar">Bar Graph</option><option value="radar">Radar Chart</option>
                         </select>
                     </div>
                     <div class="h-80"><canvas id="dayWiseChart"></canvas></div>
@@ -274,7 +259,7 @@
             <!-- Main Search & Results Section -->
             <div id="table-section-header" class="glass-panel p-4 md:p-6 rounded-2xl relative transition-all duration-300 w-full">
                 
-                <div id="table-header-title-container" class="flex justify-between items-center w-full mb-4 relative transition-all duration-300">
+                <div id="table-header-title-container" class="flex justify-between items-center w-full mb-4 relative transition-all duration-300 admin-only hidden">
                     <h2 class="text-lg md:text-xl font-bold text-slate-800 flex items-center gap-2 whitespace-nowrap hide-always-minimal">
                         Records <span id="contractor-count" class="hidden bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-md font-bold transition-all border border-indigo-200"></span>
                     </h2>
@@ -283,45 +268,24 @@
                     </button>
                 </div>
                 
-                <div id="filter-wrapper">
+                <div id="filter-wrapper" class="admin-only hidden">
                     <div id="search-container" class="relative w-full rounded-full bg-white group">
                         <div id="search-inner" class="relative">
                             <i class="fa-solid fa-magnifying-glass text-slate-400 pointer-events-none absolute left-4 top-1/2 transform -translate-y-1/2" id="search-icon"></i>
-                            <input type="text" id="searchInput" placeholder="Search Employee, TL, ID... (Press '/' to focus)" class="pl-12 pr-10 py-3 border border-slate-200 rounded-full w-full outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-transparent group-hover:border-indigo-300 font-medium">
-                            <button id="clear-search-btn" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-rose-500 hidden transition-colors z-10 w-7 h-7 flex items-center justify-center rounded-full hover:bg-slate-100" onclick="clearSearch()" title="Clear Search">
-                                <i class="fa-solid fa-xmark text-lg"></i>
-                            </button>
+                            <input type="text" id="searchInput" placeholder="Search Employee, TL, ID..." class="pl-12 pr-10 py-3 border border-slate-200 rounded-full w-full outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-transparent font-medium">
                         </div>
                     </div>
                     
-                    <!-- Did you mean / Fuzzy suggestion -->
-                    <div id="search-suggestion" class="hidden w-full text-center text-sm text-indigo-700 bg-indigo-50 border border-indigo-100 py-2 rounded-xl font-medium shadow-sm transition-all duration-300 mt-2"></div>
-                    
-                    <div id="search-toggles" class="flex flex-wrap justify-center gap-2 w-full transition-all duration-300 mt-2">
-                        <label class="cursor-pointer hover:scale-105 transition-transform">
-                            <input type="radio" name="searchScope" value="all" class="peer hidden" onclick="handleScopeClick(this)">
-                            <div class="text-[11px] sm:text-xs font-bold text-slate-600 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-sm peer-checked:bg-slate-700 peer-checked:text-white peer-checked:border-slate-700 transition-all">🔍 All</div>
-                        </label>
-                        <label class="cursor-pointer hover:scale-105 transition-transform">
-                            <input type="radio" name="searchScope" value="emp" class="peer hidden" checked onclick="handleScopeClick(this)">
-                            <div class="text-[11px] sm:text-xs font-bold text-slate-600 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-sm peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-all">👤 Employee</div>
-                        </label>
-                        <label class="cursor-pointer hover:scale-105 transition-transform">
-                            <input type="radio" name="searchScope" value="tl" class="peer hidden" onclick="handleScopeClick(this)">
-                            <div class="text-[11px] sm:text-xs font-bold text-slate-600 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-sm peer-checked:bg-teal-600 peer-checked:text-white peer-checked:border-teal-600 transition-all">👔 Team Leader</div>
-                        </label>
-                        <label class="cursor-pointer hover:scale-105 transition-transform">
-                            <input type="radio" name="searchScope" value="sup" class="peer hidden" onclick="handleScopeClick(this)">
-                            <div class="text-[11px] sm:text-xs font-bold text-slate-600 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-sm peer-checked:bg-rose-600 peer-checked:text-white peer-checked:border-rose-600 transition-all">📋 Shift Sup.</div>
-                        </label>
+                    <div id="search-toggles" class="flex flex-wrap justify-center gap-2 w-full mt-2">
+                        <label class="cursor-pointer hover:scale-105 transition-transform"><input type="radio" name="searchScope" value="all" class="peer hidden" onclick="handleScopeClick(this)"><div class="text-[11px] sm:text-xs font-bold text-slate-600 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-sm peer-checked:bg-slate-700 peer-checked:text-white peer-checked:border-slate-700 transition-all">🔍 All</div></label>
+                        <label class="cursor-pointer hover:scale-105 transition-transform"><input type="radio" name="searchScope" value="emp" class="peer hidden" checked onclick="handleScopeClick(this)"><div class="text-[11px] sm:text-xs font-bold text-slate-600 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-sm peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-all">👤 Employee</div></label>
                     </div>
 
-                    <!-- STANDARD VIEW ONLY FILTERS -->
                     <div id="dropdown-container" class="grid grid-cols-1 md:grid-cols-4 gap-3 w-full mt-3">
-                        <select id="statusFilter" class="px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 shadow-sm outline-none focus:ring-2 focus:ring-indigo-500 transition-all text-sm font-medium text-slate-700"></select>
-                        <select id="contractorFilter" class="px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 shadow-sm outline-none focus:ring-2 focus:ring-indigo-500 transition-all text-sm font-medium text-slate-700"></select>
-                        <select id="tlFilter" class="px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 shadow-sm outline-none focus:ring-2 focus:ring-indigo-500 transition-all text-sm font-medium text-slate-700"></select>
-                        <select id="supFilter" class="px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 shadow-sm outline-none focus:ring-2 focus:ring-indigo-500 transition-all text-sm font-medium text-slate-700"></select>
+                        <select id="statusFilter" class="px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 shadow-sm outline-none text-sm font-medium text-slate-700"></select>
+                        <select id="contractorFilter" class="px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 shadow-sm outline-none text-sm font-medium text-slate-700"></select>
+                        <select id="tlFilter" class="px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 shadow-sm outline-none text-sm font-medium text-slate-700"></select>
+                        <select id="supFilter" class="px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 shadow-sm outline-none text-sm font-medium text-slate-700"></select>
                     </div>
                 </div>
                 
@@ -333,26 +297,11 @@
                 </div>
                 
                 <div id="minimalCardsContainer" class="flex flex-col gap-4 mt-5 max-w-4xl mx-auto hidden"></div>
-                <div id="pagination-controls" class="pt-6 flex flex-col md:flex-row justify-between items-center text-sm gap-4 font-medium"></div>
+                <div id="pagination-controls" class="pt-6 flex flex-col md:flex-row justify-between items-center text-sm gap-4 font-medium admin-only hidden"></div>
             </div>
         </div>
         
        <footer class="text-center text-xs text-slate-500 pt-10 pb-12 relative flex flex-col items-center mt-auto w-full">
-            <div class="flex flex-wrap justify-center gap-3 md:gap-6 mb-8 cursor-pointer" onclick="openVisitorModal()" title="Click to view daily visitors">
-                <div class="bg-white border border-slate-200 px-5 md:px-8 py-3 md:py-4 rounded-xl text-center shadow-sm hover:-translate-y-1 transition duration-300">
-                    <p class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Yesterday</p>
-                    <p class="text-xl md:text-2xl font-bold text-slate-700" id="vis-yday">--</p>
-                </div>
-                <div class="bg-white border border-slate-200 px-5 md:px-8 py-3 md:py-4 rounded-xl text-center shadow-sm hover:-translate-y-1 transition duration-300">
-                    <p class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Today</p>
-                    <p class="text-xl md:text-2xl font-bold text-indigo-600" id="vis-today">--</p>
-                </div>
-                <div class="bg-indigo-600 px-5 md:px-8 py-3 md:py-4 rounded-xl shadow-md text-center text-white relative overflow-hidden group hover:-translate-y-1 transition duration-300">
-                    <p class="text-[10px] md:text-xs font-bold text-indigo-200 uppercase tracking-wider mb-1">Total Views</p>
-                    <p class="text-xl md:text-2xl font-bold" id="vis-total">--</p>
-                </div>
-            </div>
-
             <a href="https://www.instagram.com/sandeepbiswalg" target="_blank" class="mb-8 flex items-center justify-center gap-4 bg-white border border-slate-200 px-6 py-4 rounded-xl shadow-sm hover:shadow-md transition-all group w-full max-w-sm mx-auto cursor-pointer">
                 <div class="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-xl bg-slate-100 text-slate-800 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors duration-300">
                     <i class="fa-brands fa-instagram text-2xl"></i>
@@ -369,96 +318,37 @@
         </footer>
     </main>
 
-    <!-- Floating Action Button -->
-    <button id="backToTopFab" onclick="window.scrollTo({top:0, behavior:'smooth'})" class="fixed bottom-6 right-6 bg-indigo-600 text-white h-12 w-12 rounded-full shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 z-40 transform translate-y-4 hover:scale-110 outline-none focus:ring-2 focus:ring-indigo-300" title="Back to Top (Shortcut: Home)">
-        <i class="fa-solid fa-arrow-up text-lg"></i>
-    </button>
-    
-    <!-- Notifications Modal -->
-    <div id="notif-modal" onclick="if(event.target === this) closeNotifModal()" class="fixed inset-0 bg-slate-900/40 z-[150] p-4 flex justify-center items-start pt-20 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div id="notif-content" class="bg-white border border-slate-100 rounded-2xl w-full max-w-md shadow-xl transform scale-95 transition-transform duration-300 flex flex-col max-h-[80vh] overflow-hidden">
-            <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50 rounded-t-2xl relative z-10">
-                <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2"><i class="fa-solid fa-bell text-amber-500"></i> Notifications</h3>
-                <div class="flex items-center gap-3">
-                    <button onclick="markAllAsRead()" id="mark-read-btn" class="text-xs text-indigo-600 hover:text-indigo-800 font-semibold underline hidden transition-colors">Mark all read</button>
-                    <button onclick="closeNotifModal()" class="text-slate-400 hover:text-rose-500 text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 transition"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-            </div>
-            <div class="p-4 overflow-y-auto custom-scrollbar space-y-3 relative bg-slate-50/50" id="notif-list">
-                <div class="text-center text-slate-400 py-6 text-sm">Loading...</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Admin Console Modal -->
+    <!-- Admin User Access Modal -->
     <div id="admin-modal" onclick="if(event.target === this) closeAdminModal()" class="fixed inset-0 bg-slate-900/40 z-[200] p-4 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300">
         <div id="admin-content" class="bg-white border border-slate-100 rounded-2xl w-full max-w-md shadow-xl transform scale-95 transition-transform duration-300 flex flex-col max-h-[90vh]">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50 rounded-t-2xl">
-                <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2"><i class="fa-solid fa-server text-indigo-600"></i> Admin Console</h3>
+                <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2"><i class="fa-solid fa-user-shield text-indigo-600"></i> Admin Panel</h3>
                 <button onclick="closeAdminModal()" class="text-slate-400 hover:text-rose-500 text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-6 overflow-y-auto custom-scrollbar">
-                <div class="mb-5 bg-amber-50 border border-amber-200 text-amber-800 p-3 rounded-xl text-xs font-medium">
-                    <i class="fa-solid fa-circle-info"></i> Enter ମାଲିକ Password.
-                </div>
-                <div id="admin-auth-section" class="mb-6">
-                    <input type="password" id="admin-token" placeholder="Enter Admin Password" class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-indigo-500 font-mono text-sm shadow-sm transition mb-3 bg-slate-50">
-                    <label class="flex items-center gap-2 text-sm text-slate-600 mb-4 cursor-pointer select-none w-max">
-                        <input type="checkbox" id="remember-pwd" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer transition">
-                        <span class="font-medium text-xs">Remember Password</span>
-                    </label>
-                    <button onclick="loginAdmin()" id="login-btn" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl transition shadow-md flex justify-center items-center gap-2">
-                        <i class="fa-solid fa-right-to-bracket"></i> Login
-                    </button>
-                </div>
-                <div id="admin-actions-section" class="hidden flex-col gap-2 mb-6">
-                    <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl text-sm font-bold flex justify-between items-center mb-2 shadow-sm">
-                        <span><i class="fa-solid fa-circle-check text-emerald-600 mr-1.5"></i> Access Granted</span>
-                        <button onclick="logoutAdmin()" class="text-xs text-rose-500 hover:text-rose-700 underline font-semibold transition">Logout</button>
-                    </div>
-                    <button onclick="triggerSync()" id="sync-btn" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl transition shadow-md flex justify-center items-center gap-2 hover:bg-indigo-700">
-                        <i class="fa-solid fa-rotate"></i> Force Update Data
-                    </button>
-                </div>
-                <div class="mt-8 border-t border-slate-100 pt-6">
-                    <h4 class="font-bold text-slate-700 mb-3 text-sm flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-slate-400"></i> Recent Sync Logs</h4>
-                    <div id="sync-logs" class="space-y-2.5">
-                        <div class="text-center text-slate-400 text-xs py-4 bg-slate-50 rounded-xl border border-dashed border-slate-200 font-medium">Authenticate to load logs...</div>
-                    </div>
+                <div class="mb-2">
+                   <h4 class="font-bold text-slate-700 mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-users-gear text-slate-400"></i> Set User Password</h4>
+                   <p class="text-xs text-slate-500 mb-4">Find an Employee ID from the database and set their login password.</p>
+                   <div class="flex gap-2 mb-4">
+                       <input type="text" id="admin-search-id" placeholder="Employee ID (e.g. AD-12345)" class="flex-1 border border-slate-200 bg-slate-50 p-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500 uppercase">
+                       <button onclick="window.fetchUserForAdmin()" class="bg-indigo-600 text-white font-bold px-4 py-2 rounded-xl hover:bg-indigo-700 transition shadow-sm"><i class="fa-solid fa-magnifying-glass"></i> Find</button>
+                   </div>
+                   
+                   <div id="admin-user-details" class="hidden flex-col gap-3 bg-slate-50 border border-slate-200 p-4 rounded-xl">
+                       <div>
+                           <p class="text-xs text-slate-400 font-bold uppercase">Found Employee</p>
+                           <p class="font-bold text-lg text-slate-800" id="admin-found-name">Name</p>
+                       </div>
+                       <div>
+                           <label class="text-xs text-slate-500 font-bold mb-1 block">Login Password</label>
+                           <input type="text" id="admin-set-pwd" placeholder="Set a new password" class="w-full border border-slate-200 p-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                       </div>
+                       <button onclick="window.saveUserAccess()" id="admin-save-btn" class="mt-2 w-full bg-emerald-600 text-white font-bold py-3 rounded-xl transition shadow-md flex justify-center items-center gap-2 hover:bg-emerald-700">
+                           <i class="fa-solid fa-floppy-disk"></i> Save Access
+                       </button>
+                   </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Notice Modal -->
-    <div id="notice-modal" onclick="if(event.target === this) closeNoticeModal()" class="fixed inset-0 bg-slate-900/40 z-[250] p-4 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300">
-        <div id="notice-content" class="bg-white border border-slate-100 rounded-2xl w-full max-w-lg shadow-xl transform scale-95 transition-transform duration-300 flex flex-col overflow-hidden relative cursor-default">
-            <div class="p-5 border-b border-slate-100 flex justify-between items-start bg-slate-50">
-                <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2"><i class="fa-solid fa-bullhorn text-indigo-600"></i> Notice Board</h3>
-                <button onclick="closeNoticeModal()" class="text-slate-400 hover:text-rose-500 text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 transition"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="p-6 overflow-y-auto max-h-[70vh] custom-scrollbar text-slate-700 text-sm md:text-base leading-relaxed font-medium" id="notice-modal-text"></div>
-            <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end">
-                <button onclick="closeNoticeModal()" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold transition shadow-sm text-sm">Acknowledge</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- PDF Alert Modal -->
-    <div id="pdf-alert-modal" onclick="if(event.target === this) closePdfModal()" class="fixed inset-0 bg-slate-900/40 z-[100] p-4 flex justify-center items-center transition-opacity duration-300 opacity-0 pointer-events-none">
-        <div class="bg-white border border-slate-100 rounded-2xl p-6 md:p-8 max-w-md w-full shadow-xl transform scale-95 transition-transform duration-300 cursor-default" id="pdf-alert-content">
-            <div class="flex items-center gap-3 mb-4"><div class="bg-amber-100 text-amber-600 p-3 rounded-full h-12 w-12 flex items-center justify-center shadow-inner"><i class="fa-solid fa-triangle-exclamation text-xl"></i></div><h3 class="text-xl font-bold text-slate-800">Notice</h3></div>
-            <p class="text-slate-600 mb-6 text-sm leading-relaxed font-medium">If you think this data is incorrect, please view the original PDF in the Drive folder. Occasionally, the script may fail to load the latest data due to system overloads.</p>
-            <div class="flex justify-end gap-3"><button onclick="closePdfModal()" class="px-5 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition text-sm font-bold shadow-sm">Close</button><a href="https://drive.google.com/drive/folders/1H5tR99F-DsbT9wQnlLqXST0aLsa0B1sO?usp=drive_link" target="_blank" onclick="closePdfModal()" class="px-5 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-bold shadow-sm">Open Folder</a></div>
-        </div>
-    </div>
-    
-    <!-- Visitor Modal -->
-    <div id="visitor-modal" onclick="if(event.target === this) closeVisitorModal()" class="fixed inset-0 bg-slate-900/40 z-50 p-2 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div id="visitor-modal-content" class="bg-white border border-slate-100 rounded-2xl w-full max-w-2xl mx-auto h-auto max-h-[90vh] flex flex-col scale-95 transition-transform duration-300 shadow-xl relative mt-10 md:mt-20 cursor-default">
-             <button onclick="closeVisitorModal()" class="absolute top-4 right-4 text-slate-600 bg-slate-100 shadow-sm hover:bg-slate-200 rounded-full h-8 w-8 md:h-10 md:w-10 text-xl z-20 transition flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
-             <div class="p-5 md:p-6 border-b border-slate-100"><h3 class="text-lg md:text-xl font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-chart-simple text-indigo-600"></i> Daily Visitor Logs</h3></div>
-             <div class="p-4 md:p-6 flex-1 overflow-y-auto custom-scrollbar bg-slate-50/50 rounded-b-2xl"><div id="visitor-calendar-grid" class="grid grid-cols-7 gap-1.5 md:gap-3"></div></div>
         </div>
     </div>
 
@@ -490,7 +380,6 @@
                     <button onclick="changeShiftMonth(-1)" class="w-10 h-10 rounded-full bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 flex items-center justify-center font-bold transition shadow-sm">&lt;</button>
                     <div class="flex flex-col items-center">
                         <h3 id="sc-month-title" class="text-lg md:text-xl font-bold text-slate-800">Month Year</h3>
-                        <div id="sc-live-clock" class="text-[10px] md:text-xs font-bold text-indigo-600 mt-1 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100 tracking-wider">--:--:-- --</div>
                     </div>
                     <button onclick="changeShiftMonth(1)" class="w-10 h-10 rounded-full bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 flex items-center justify-center font-bold transition shadow-sm">&gt;</button>
                 </div>
@@ -504,240 +393,96 @@
                     <div><label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase tracking-wide">Current/Base Shift</label><select id="sc-setup-shift" onchange="saveShiftSettings()" class="w-full border border-slate-200 rounded-lg p-2.5 bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-sm transition-all"></select></div>
                     <div><label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase tracking-wide">Start Date</label><input type="date" id="sc-setup-date" onchange="saveShiftSettings()" class="w-full border border-slate-200 rounded-lg p-2.5 bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-sm transition-all"></div>
                 </div>
-                <h4 class="font-bold text-slate-800 mb-3 text-base flex items-center gap-2"><i class="fa-solid fa-gift text-rose-500"></i> Holidays 2026</h4>
-                <div id="sc-holiday-list" class="space-y-2 flex-1 pr-2"></div>
              </div>
         </div>
     </div>
 
 <script>
-    const IS_MAINTENANCE_MODE = false; 
-
-    // Logical Today for shifts & date defaulting
-    function getLogicalToday() {
-        const now = new Date();
-        if (now.getHours() < 8) { now.setDate(now.getDate() - 1); }
-        return now;
-    }
+    function getLogicalToday() { const now = new Date(); if (now.getHours() < 8) { now.setDate(now.getDate() - 1); } return now; }
     function formatISODate(d) { return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0'); }
 
-    let globalData = [], filteredData = [], currentPage = 1, currentMonthStr = "";
-    let blacklist = []; // Stores IDs and Names to hide entirely
+    let rawGlobalData = [], globalData = [], filteredData = [], currentPage = 1, currentMonthStr = "";
     const rowsPerPage = 15; 
-    let trendChartInstance = null;
-    let trendChartData = null;
+    let trendChartInstance = null; let trendChartData = null;
     const absenceList = ['A', 'ABSENT', 'FD', 'Wrong Shift', 'HD', 'HALF DAY', 'SLWP', 'SICK LEAVE', 'MP', 'MISS PUNCH'];
-    window.globalVisitorData = {}; 
-    let systemNotifications = [];
-    let readNotifs = JSON.parse(localStorage.getItem('readNotifs')) || [];
-
     let currentSearchScope = 'emp'; 
-    let currentAdminToken = null;
-    let selectedIndex = -1;
 
-    const DEFAULT_SETTINGS = { pattern: 'ACB', baseDate: formatISODate(getLogicalToday()), baseShift: 'A' }; 
-    let shiftSettings = JSON.parse(localStorage.getItem('shiftSettings')) || DEFAULT_SETTINGS;
-    if(!shiftSettings.pattern) shiftSettings.pattern = 'ACB';
-    let calCurrentDate = new Date(); if(calCurrentDate.getFullYear() !== 2026) calCurrentDate.setFullYear(2026);
-    const SEQUENCES = { 'ACB': ['A', 'C', 'B'], 'BC': ['B', 'C'] };
-    const holidays2026 = { "2026-01-01": "New Year Day", "2026-01-26": "Republic Day", "2026-04-03": "Good Friday", "2026-04-14": "Ambedkar Jayanti", "2026-05-01": "May Day", "2026-08-15": "Independence Day", "2026-09-14": "Ganesh Chaturthi (Day 1)", "2026-09-15": "Ganesh Chaturthi (Day 2)", "2026-10-02": "Gandhi Jayanti", "2026-10-20": "Dussehra", "2026-12-19": "Goa Liberation Day", "2026-12-25": "Christmas Day" };
-
-    setInterval(() => {
-        const clockEl = document.getElementById('sc-live-clock');
-        if (clockEl) {
-            const now = new Date();
-            clockEl.innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
-        }
-    }, 1000);
-
-    // This gets called AFTER correct password validation
-    window.startApp = async function() {
-        document.getElementById('footer-year').textContent = new Date().getFullYear();
-        initViewMode(); fetchNotifications(); loadMarquee();
-        if (IS_MAINTENANCE_MODE) { document.getElementById('splash-screen').style.display = 'none'; document.getElementById('main-content').classList.add('hidden'); return; }
-
-        // Fetch Blacklist First
-        try {
-            const blRes = await fetch('blacklist.json?t=' + new Date().getTime());
-            if (blRes.ok) blacklist = await blRes.json();
-        } catch(e) { console.warn("Blacklist not found or could not be loaded."); }
-
+    let loggedInUser = null; 
+    
+    // UI Helpers
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+    
+    // Preload Data JSON
+    async function preloadData() {
         try {
             const res = await fetch('data.json?t=' + new Date().getTime());
-            if (!res.ok) throw new Error("Could not load data.json");
+            if (!res.ok) throw new Error("Network Error");
             const rawData = await res.json();
-            
-            // Clean globalData to completely remove blacklisted individuals from everything
-            if (blacklist && blacklist.length > 0) {
-                globalData = rawData.globalData.filter(emp => 
-                    !blacklist.some(b => emp.code.toLowerCase().includes(b.toLowerCase()) || emp.name.toLowerCase().includes(b.toLowerCase()))
-                );
-            } else {
-                globalData = rawData.globalData;
-            }
-
+            rawGlobalData = rawData.globalData;
             currentMonthStr = rawData.currentMonthStr; 
+            
+            document.getElementById('splash-screen').style.display = 'none';
+            document.getElementById('site-login-screen').classList.remove('hidden');
+        } catch (error) {
+            document.getElementById('splash-screen').innerHTML = `<div class="p-8 bg-white text-rose-500 font-bold rounded-2xl shadow-sm"><i class="fa-solid fa-triangle-exclamation"></i> Error loading core files. Please refresh.</div>`;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => { preloadData(); });
+    
+    window.startApp = function() {
+        document.getElementById('site-login-screen').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('site-login-screen').classList.add('hidden');
+            document.getElementById('main-content').classList.remove('hidden');
+            
+            // Apply User/Admin Views
+            if(loggedInUser.role === 'user') {
+                globalData = rawGlobalData.filter(emp => emp.code.toUpperCase() === loggedInUser.id.toUpperCase());
+                document.querySelectorAll('.admin-only').forEach(el => el.classList.add('hide-for-user'));
+                document.getElementById('welcome-user-text').innerHTML = `Welcome, ${loggedInUser.name}`;
+                document.getElementById('welcome-user-text').classList.remove('hidden');
+                document.body.classList.add('minimal-mode');
+            } else {
+                globalData = [...rawGlobalData];
+                document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden', 'hide-for-user'));
+                document.body.classList.remove('minimal-mode'); // Admins get standard view by default
+                document.getElementById('welcome-user-text').classList.add('hidden');
+            }
+            
             filteredData = [...globalData];
             initializeAppUI();
-        } catch (error) { document.querySelector('#splash-screen p').innerHTML = `<span class="text-red-500 font-bold">Error: ${error.message}. Checking GitHub Action Sync...</span>`; }
-        
-        document.getElementById('searchInput').addEventListener('keyup', (e) => {
-            const val = e.target.value.trim(); const clearBtn = document.getElementById('clear-search-btn');
-            if (val.length > 0 && val !== '/admin') clearBtn.classList.remove('hidden'); else clearBtn.classList.add('hidden');
-            if(val === '/admin') { e.target.value = ''; clearBtn.classList.add('hidden'); openAdminModal(); return; }
-            currentPage = 1; applyFilters();
-        });
-        
-        ['statusFilter', 'contractorFilter', 'tlFilter', 'supFilter'].forEach(id => {
-            document.getElementById(id).addEventListener('change', () => { currentPage = 1; applyFilters(); });
-        });
-
-        setupKeyboardShortcuts();
-        setupPullToRefresh();
-        setupScrollObserver();
+        }, 300);
     };
 
-    // LEVENSHTEIN DISTANCE & PHONETICS
-    function levenshteinDistance(a, b) {
-        if(a.length === 0) return b.length;
-        if(b.length === 0) return a.length;
-        const matrix = [];
-        for (let i = 0; i <= b.length; i++) matrix[i] = [i];
-        for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
-        for (let i = 1; i <= b.length; i++) {
-            for (let j = 1; j <= a.length; j++) {
-                if (b.charAt(i-1) === a.charAt(j-1)) {
-                    matrix[i][j] = matrix[i-1][j-1];
-                } else {
-                    matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, Math.min(matrix[i][j-1] + 1, matrix[i-1][j] + 1));
-                }
-            }
-        }
-        return matrix[b.length][a.length];
-    }
-    function normalizePhonetics(str) {
-        if (!str) return '';
-        return str.toLowerCase().replace(/sh/g, 's').replace(/[vw]/g, 'b').replace(/ee/g, 'i').replace(/oo/g, 'u').replace(/ph/g, 'f').replace(/z/g, 'j');
-    }
-    function toTitleCase(str) { return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}); }
-
-    let ptrStartY = 0, ptrRefreshing = false;
-    function setupPullToRefresh() {
-        document.addEventListener('touchstart', e => { if(window.scrollY === 0) ptrStartY = e.touches[0].clientY; }, {passive: true});
-        document.addEventListener('touchmove', e => {
-            if(ptrRefreshing || window.scrollY > 0 || ptrStartY === 0) return;
-            let delta = e.touches[0].clientY - ptrStartY;
-            if(delta > 50) {
-                document.getElementById('ptr-indicator').style.transform = `translateY(${Math.min(delta/2.5, 45)}px)`;
-                if(delta > 140 && !ptrRefreshing) { ptrRefreshing = true; doRefreshData(); }
-            }
-        }, {passive: true});
-        document.addEventListener('touchend', () => {
-            if(!ptrRefreshing) document.getElementById('ptr-indicator').style.transform = `translateY(-100%)`;
-            ptrStartY = 0;
-        });
-    }
-    async function doRefreshData() {
-        const ind = document.getElementById('ptr-indicator');
-        ind.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Refreshing...';
-        try {
-            const blRes = await fetch('blacklist.json?t=' + new Date().getTime());
-            if (blRes.ok) blacklist = await blRes.json();
-            
-            const res = await fetch('data.json?t=' + new Date().getTime());
-            if(res.ok) {
-                const rawData = await res.json();
-                if (blacklist && blacklist.length > 0) {
-                    globalData = rawData.globalData.filter(emp => !blacklist.some(b => emp.code.toLowerCase().includes(b.toLowerCase()) || emp.name.toLowerCase().includes(b.toLowerCase())));
-                } else { globalData = rawData.globalData; }
-                currentMonthStr = rawData.currentMonthStr; 
-                populateFilters(); applyFilters(); updateDashboardMetrics();
-            }
-        } catch(e) {}
-        setTimeout(() => {
-            ind.innerHTML = '<i class="fa-solid fa-check mr-2 text-emerald-600"></i> Updated!';
-            setTimeout(() => { ind.style.transform = `translateY(-100%)`; setTimeout(() => ind.innerHTML = '<i class="fa-solid fa-arrow-down mr-2"></i> Pull to refresh', 300); ptrRefreshing = false; }, 800);
-        }, 500);
+    function logoutUser() {
+        loggedInUser = null;
+        document.getElementById('login-id-input').value = '';
+        document.getElementById('login-pwd-input').value = '';
+        document.getElementById('main-content').classList.add('hidden');
+        document.getElementById('site-login-screen').classList.remove('hidden');
+        document.getElementById('site-login-screen').style.opacity = '1';
     }
 
-    function setupKeyboardShortcuts() {
-        document.addEventListener('keydown', (e) => {
-            const isInputFocus = document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'SELECT';
-            if (e.key === '/') { if(!isInputFocus) { e.preventDefault(); document.getElementById('searchInput').focus(); } } 
-            else if (e.key === 'Escape') { closeNotifModal(); closeAdminModal(); closeVisitorModal(); closePdfModal(); closeEmployeeModal(); closeShiftModal(); closeNoticeModal(); if(isInputFocus) document.activeElement.blur(); } 
-            else if (e.key === 'Home' && !isInputFocus) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); } 
-            else if ((e.key === 't' || e.key === 'T') && !isInputFocus) { e.preventDefault(); openShiftModal(); } 
-            else if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !isInputFocus) {
-                const cards = document.querySelectorAll('.selectable-card'); if(cards.length === 0) return;
-                e.preventDefault();
-                if(e.key === 'ArrowDown') { if(selectedIndex < cards.length - 1) selectedIndex++; } else { if(selectedIndex > 0) selectedIndex--; }
-                cards.forEach((el, i) => {
-                    if(i === selectedIndex) { el.classList.add('ring-2', 'ring-indigo-500', 'scale-[1.02]'); el.scrollIntoView({ block: "center", behavior: "smooth" }); } 
-                    else { el.classList.remove('ring-2', 'ring-indigo-500', 'scale-[1.02]'); }
-                });
-            } else if (e.key === 'Enter' && !isInputFocus && selectedIndex >= 0) {
-                const cards = document.querySelectorAll('.selectable-card'); if(cards[selectedIndex]) cards[selectedIndex].click();
-            }
-        });
-    }
+    // Scroll Fab Observer
+    window.addEventListener('scroll', () => {
+        const fab = document.getElementById('backToTopFab');
+        if (window.scrollY > 300) { fab.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4'); fab.classList.add('opacity-100'); } 
+        else { fab.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4'); fab.classList.remove('opacity-100'); }
+    });
 
-    function setupScrollObserver() {
-        window.addEventListener('scroll', () => {
-            const fab = document.getElementById('backToTopFab');
-            if (window.scrollY > 300) { fab.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4'); fab.classList.add('opacity-100'); } 
-            else { fab.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4'); fab.classList.remove('opacity-100'); }
-        });
-    }
-
-    window.openNoticeModal = function() { document.getElementById('notice-modal').classList.remove('opacity-0', 'pointer-events-none'); document.getElementById('notice-content').classList.remove('scale-95'); };
-    window.closeNoticeModal = function() { document.getElementById('notice-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('notice-content').classList.add('scale-95'); };
-
-    async function loadMarquee() { try { const res = await fetch('marquee.html?t=' + new Date().getTime()); if(!res.ok) return; const text = await res.text(); if(text.trim() && !text.includes('<html')) { document.getElementById('marquee-text').innerHTML = text; document.getElementById('notice-modal-text').innerHTML = text; document.getElementById('marquee-container').classList.remove('hidden'); } } catch(e) {} }
-
-    async function fetchNotifications() { try { const res = await fetch('https://imsbg.github.io/commscope-attendance/notifications.json?t=' + new Date().getTime()); if(res.ok) systemNotifications = await res.json(); else systemNotifications = []; } catch(e) { systemNotifications = []; } renderNotifications(); }
-    function renderNotifications() { const list = document.getElementById('notif-list'); const badge = document.getElementById('notif-badge'); const markReadBtn = document.getElementById('mark-read-btn'); if(!systemNotifications || systemNotifications.length === 0) { list.innerHTML = '<div class="text-center text-slate-500 py-8 text-sm flex flex-col items-center gap-2"><i class="fa-regular fa-bell-slash text-3xl text-slate-300 mb-2"></i> No notifications right now.</div>'; badge.classList.add('hidden'); markReadBtn.classList.add('hidden'); return; } const unreadCount = systemNotifications.filter(n => !readNotifs.includes(n.id || n.title)).length; if (unreadCount > 0) { badge.textContent = unreadCount; badge.classList.remove('hidden'); markReadBtn.classList.remove('hidden'); } else { badge.classList.add('hidden'); markReadBtn.classList.add('hidden'); } list.innerHTML = ''; systemNotifications.forEach(n => { let nId = n.id || n.title; let isRead = readNotifs.includes(nId); let btnHtml = ''; if(n.link) { btnHtml = `<a href="${n.link}" target="_blank" class="mt-3 inline-block bg-white text-indigo-600 border border-slate-200 hover:bg-slate-50 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm">${n.buttonText || 'View Details'}</a>`; } list.innerHTML += `<div class="p-4 rounded-xl shadow-sm border transition-colors ${isRead ? 'bg-white border-slate-200 opacity-70' : 'bg-blue-50/80 border-blue-200'}"><div class="flex justify-between items-start mb-1"><h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">${!isRead ? '<span class="h-2 w-2 bg-blue-500 rounded-full inline-block"></span>' : ''} ${n.title}</h4></div><p class="text-slate-600 text-xs leading-relaxed ml-${!isRead ? '4' : '0'}">${n.message}</p>${btnHtml}</div>`; }); }
-    window.markAllAsRead = function() { if(!systemNotifications) return; systemNotifications.forEach(n => { let nId = n.id || n.title; if(!readNotifs.includes(nId)) readNotifs.push(nId); }); localStorage.setItem('readNotifs', JSON.stringify(readNotifs)); renderNotifications(); }
-    function openNotifModal() { document.getElementById('notif-modal').classList.remove('opacity-0', 'pointer-events-none'); document.getElementById('notif-content').classList.remove('scale-95'); }
-    function closeNotifModal() { document.getElementById('notif-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('notif-content').classList.add('scale-95'); }
-    
-    function handleScopeClick(radioBtn) { if (currentSearchScope === radioBtn.value && radioBtn.value !== 'emp') { document.querySelector('input[name="searchScope"][value="emp"]').checked = true; currentSearchScope = 'emp'; } else { currentSearchScope = radioBtn.value; } currentPage = 1; applyFilters(); }
-    function clearSearch() { document.getElementById('searchInput').value = ''; document.getElementById('clear-search-btn').classList.add('hidden'); document.getElementById('search-suggestion').classList.add('hidden'); currentPage = 1; applyFilters(); }
+    // Filtering, Highlighting, rendering logic
+    function handleScopeClick(radioBtn) { currentSearchScope = radioBtn.value; currentPage = 1; applyFilters(); }
     function highlightMatch(text, query, isActive) { if (!text) return 'N/A'; if (!query || !isActive) return text; const escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'); const regex = new RegExp(`(${escapedQuery})`, 'gi'); if(regex.test(text)) { return text.replace(regex, `<span class="bg-yellow-200 text-yellow-900 font-bold px-1 rounded">$1</span>`); } return text; }
-
-    function openAdminModal() { document.getElementById('admin-modal').classList.remove('opacity-0', 'pointer-events-none'); document.getElementById('admin-content').classList.remove('scale-95'); const savedPwd = localStorage.getItem('gh_admin_pwd'); if(savedPwd) { document.getElementById('admin-token').value = savedPwd; document.getElementById('remember-pwd').checked = true; loginAdmin(); } }
-    function closeAdminModal() { document.getElementById('admin-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('admin-content').classList.add('scale-95'); }
-    async function getAdminCredentials(password) { try { const safePwd = password.replace(/[.#$\[\]]/g, ''); const res = await fetch(`https://sg-fun-default-rtdb.firebaseio.com/adminTokens/${safePwd}.json`); const tokenData = await res.json(); return typeof tokenData === 'string' ? tokenData : (tokenData ? tokenData.gh_token : null); } catch(e) { return null; } }
-    async function loginAdmin() { const pwdInput = document.getElementById('admin-token'); const pwd = pwdInput.value.trim(); const loginBtn = document.getElementById('login-btn'); const rememberChk = document.getElementById('remember-pwd').checked; if(!pwd) return alert('Enter Admin Password first.'); const originalBtnHtml = loginBtn.innerHTML; loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...'; loginBtn.classList.add('opacity-80', 'pointer-events-none'); const token = await getAdminCredentials(pwd); if(!token) { loginBtn.innerHTML = originalBtnHtml; loginBtn.classList.remove('opacity-80', 'pointer-events-none'); return alert('Invalid Admin Password!'); } currentAdminToken = token; if(rememberChk) { localStorage.setItem('gh_admin_pwd', pwd); } else { localStorage.removeItem('gh_admin_pwd'); } document.getElementById('admin-auth-section').classList.add('hidden'); document.getElementById('admin-actions-section').classList.remove('hidden'); document.getElementById('admin-actions-section').classList.add('flex'); loginBtn.innerHTML = originalBtnHtml; loginBtn.classList.remove('opacity-80', 'pointer-events-none'); fetchGitHubLogs(token); }
-    function logoutAdmin() { currentAdminToken = null; localStorage.removeItem('gh_admin_pwd'); document.getElementById('admin-token').value = ''; document.getElementById('remember-pwd').checked = false; document.getElementById('admin-actions-section').classList.add('hidden'); document.getElementById('admin-actions-section').classList.remove('flex'); document.getElementById('admin-auth-section').classList.remove('hidden'); document.getElementById('sync-logs').innerHTML = '<div class="text-center text-slate-400 text-xs py-4 bg-slate-50 rounded-xl border border-dashed border-slate-200">Authenticate to load logs...</div>'; }
-    async function fetchGitHubLogs(token) { const logContainer = document.getElementById('sync-logs'); logContainer.innerHTML = '<div class="text-center text-slate-500 text-xs py-6 flex flex-col items-center gap-2"><i class="fa-solid fa-spinner fa-spin text-xl text-indigo-500"></i> Fetching server logs...</div>'; try { const res = await fetch('https://api.github.com/repos/imsbg/commscope-attendance/actions/runs?per_page=5', { headers: { 'Authorization': `token ${token}` } }); if(!res.ok) throw new Error('Invalid Token or Repository access denied.'); const data = await res.json(); logContainer.innerHTML = ''; if(data.workflow_runs.length === 0) { logContainer.innerHTML = '<div class="text-center text-slate-400 text-xs py-4">No actions found.</div>'; return; } data.workflow_runs.forEach(run => { let statusColor = run.status === 'completed' ? (run.conclusion === 'success' ? 'text-emerald-500' : 'text-rose-500') : 'text-amber-500'; let icon = run.status === 'completed' ? (run.conclusion === 'success' ? 'fa-circle-check' : 'fa-circle-xmark') : 'fa-circle-notch fa-spin'; let time = new Date(run.created_at).toLocaleString(); logContainer.innerHTML += `<div class="bg-white border border-slate-100 p-3.5 rounded-xl flex justify-between items-center shadow-sm"><div class="flex items-center gap-3.5"><i class="fa-solid ${icon} ${statusColor} text-xl"></i><div><p class="text-xs font-bold text-slate-800">${run.name}</p><p class="text-[10px] font-medium text-slate-500 mt-0.5">${time}</p></div></div><span class="text-[9px] font-bold uppercase tracking-wider ${statusColor} bg-slate-50 px-2.5 py-1 rounded-md border border-slate-100">${run.status === 'completed' ? run.conclusion : run.status}</span></div>`; }); } catch(e) { logContainer.innerHTML = `<div class="text-center text-rose-500 text-xs py-4 font-bold bg-rose-50 rounded-xl border border-rose-100"><i class="fa-solid fa-triangle-exclamation mr-1"></i> ${e.message}</div>`; } }
-    async function triggerSync() { if(!currentAdminToken) return alert('Not authenticated!'); const btn = document.getElementById('sync-btn'); const originalBtnHtml = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending Request...'; btn.classList.add('opacity-80', 'pointer-events-none'); try { const res = await fetch('https://api.github.com/repos/imsbg/commscope-attendance/actions/workflows/update.yml/dispatches', { method: 'POST', headers: { 'Authorization': `token ${currentAdminToken}`, 'Accept': 'application/vnd.github.v3+json' }, body: JSON.stringify({ ref: 'main' }) }); if(res.ok || res.status === 204) { btn.innerHTML = '<i class="fa-solid fa-check"></i> Triggered Successfully!'; btn.classList.remove('bg-indigo-600'); btn.classList.add('bg-emerald-600'); fetchGitHubLogs(currentAdminToken); setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-rotate"></i> Force Update Data'; btn.classList.remove('bg-emerald-600'); btn.classList.add('bg-indigo-600'); btn.classList.remove('opacity-80', 'pointer-events-none'); }, 3000); } else { const errData = await res.json().catch(()=>({})); throw new Error(errData.message || 'Failed to trigger.'); } } catch(e) { alert("Error: " + e.message); btn.innerHTML = '<i class="fa-solid fa-rotate"></i> Force Update Data'; btn.classList.remove('opacity-80', 'pointer-events-none'); } }
-    
-    function initViewMode() { const savedMode = localStorage.getItem('attendanceViewMode'); applyViewMode(savedMode ? savedMode : 'minimal'); }
-    function toggleViewMode() { const isMinimal = document.body.classList.contains('minimal-mode'); applyViewMode(isMinimal ? 'standard' : 'minimal'); }
-    function applyViewMode(mode) { const btn = document.getElementById('viewToggleBtn'); if (mode === 'minimal') { document.body.classList.add('minimal-mode'); btn.innerHTML = '<i class="fa-solid fa-desktop"></i> <span class="hidden sm:inline">Standard View</span>'; localStorage.setItem('attendanceViewMode', 'minimal'); } else { document.body.classList.remove('minimal-mode'); btn.innerHTML = '<i class="fa-solid fa-bolt"></i> <span class="hidden sm:inline">Minimal View</span>'; localStorage.setItem('attendanceViewMode', 'standard'); } if (globalData.length > 0) renderTable(); }
-    
-    function initOrUpdateTrendChart(type) { if(trendChartInstance) trendChartInstance.destroy(); const ctx = document.getElementById('dayWiseChart').getContext('2d'); const options = { responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, plugins: { legend: { position: 'top', labels: { usePointStyle: true, boxWidth: 8 } } } }; let gradP = ctx.createLinearGradient(0, 0, 0, 400); gradP.addColorStop(0, 'rgba(16, 185, 129, 0.2)'); gradP.addColorStop(1, 'rgba(16, 185, 129, 0.01)'); let gradA = ctx.createLinearGradient(0, 0, 0, 400); gradA.addColorStop(0, 'rgba(244, 63, 94, 0.2)'); gradA.addColorStop(1, 'rgba(244, 63, 94, 0.01)'); if (type === 'line' || type === 'radar') { trendChartData.datasets[0].backgroundColor = gradP; trendChartData.datasets[1].backgroundColor = gradA; trendChartData.datasets.forEach(ds => { ds.tension = 0.4; ds.fill = true; }); } else { trendChartData.datasets[0].backgroundColor = 'rgba(16, 185, 129, 0.8)'; trendChartData.datasets[1].backgroundColor = 'rgba(244, 63, 94, 0.8)'; trendChartData.datasets.forEach(ds => ds.fill = false); } if (type !== 'radar') options.scales = { x: { grid: { display: false } }, y: { beginAtZero: true } }; trendChartInstance = new Chart(ctx, { type: type, data: trendChartData, options: options }); }
-    function changeChartType(type) { initOrUpdateTrendChart(type); }
-    function toggleGraphs() { const section = document.getElementById('graphs-section'); const text = document.getElementById('toggle-graphs-text'); if (section.classList.contains('hidden')) { section.classList.remove('hidden'); setTimeout(() => section.classList.remove('opacity-0'), 10); text.textContent = 'Hide Graphs'; } else { section.classList.add('opacity-0'); setTimeout(() => section.classList.add('hidden'), 300); text.textContent = 'Show Graphs'; } }
-
-    function openPdfModal() { document.getElementById('pdf-alert-modal').classList.remove('opacity-0', 'pointer-events-none'); document.getElementById('pdf-alert-content').classList.remove('scale-95'); }
-    function closePdfModal() { document.getElementById('pdf-alert-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('pdf-alert-content').classList.add('scale-95'); }
-    function openVisitorModal() { document.getElementById('visitor-modal').classList.remove('opacity-0', 'pointer-events-none'); document.getElementById('visitor-modal-content').classList.remove('scale-95'); renderVisitorCalendar(); }
-    function closeVisitorModal() { document.getElementById('visitor-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('visitor-modal-content').classList.add('scale-95'); }
-    
-    function renderVisitorCalendar() { const grid = document.getElementById('visitor-calendar-grid'); if (!window.globalVisitorData || !window.globalVisitorData.daily) { grid.innerHTML = '<div class="col-span-7 text-center text-slate-500 py-8 font-medium">Loading historical data...</div>'; return; } const today = new Date(); const utc = today.getTime() + (today.getTimezoneOffset() * 60000); const ist = new Date(utc + (3600000 * 5.5)); const y = ist.getFullYear(); const m = ist.getMonth(); const firstDay = new Date(y, m, 1).getDay(); const daysInMonth = new Date(y, m + 1, 0).getDate(); let html = '<div class="col-span-7 grid grid-cols-7 gap-1.5 md:gap-3 mb-2 text-center font-bold text-[10px] md:text-xs text-slate-500 uppercase tracking-wider"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>'; html += '<div class="col-span-7 grid grid-cols-7 gap-1.5 md:gap-3">'; for (let i = 0; i < firstDay; i++) { html += `<div class="border border-slate-100 bg-slate-50/50 rounded-xl min-h-[50px] md:min-h-[70px]"></div>`; } for (let d = 1; d <= daysInMonth; d++) { let dateStr = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; let visits = window.globalVisitorData.daily[dateStr] || 0; let isToday = (d === ist.getDate()); let bgClass = visits > 0 ? (isToday ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-slate-200') : 'bg-slate-50/50 border-slate-100 opacity-70'; let textClass = visits > 0 ? (isToday ? 'text-indigo-800' : 'text-slate-700') : 'text-slate-400'; html += `<div class="${bgClass} border rounded-xl p-2 md:p-3 text-center flex flex-col items-center justify-center min-h-[50px] md:min-h-[70px] transition-transform hover:scale-105 ${isToday ? 'ring-2 ring-indigo-500 ring-offset-1' : ''}"> <span class="text-xs md:text-sm font-extrabold ${textClass}">${d}</span> ${visits > 0 ? `<span class="text-[9px] md:text-[11px] font-bold ${isToday ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600 border border-slate-200'} px-1.5 md:px-2 py-0.5 rounded-full mt-1.5 flex items-center gap-1">${visits.toLocaleString()} <i class="fa-solid fa-eye text-[8px]"></i></span>` : ''} </div>`; } 
-    const totalRendered = firstDay + daysInMonth; const remainder = (7 - (totalRendered % 7)) % 7; for(let i=0; i<remainder; i++) { html += `<div class="border border-slate-100 bg-slate-50/50 rounded-xl min-h-[50px] md:min-h-[70px]"></div>`; } html += '</div>'; grid.innerHTML = html; }
 
     function getDisplayStatus(val) { return (!val || val.trim() === '-') ? '-' : (val.trim() === '--' ? 'L' : val.trim()); }
     function getStatusClass(val) { return (!val || val.trim() === '-') ? 'pending' : (val.trim() === '--' || val.trim().toUpperCase() === 'L') ? 'l' : val.trim().toLowerCase().replace(/[^a-z0-9]/g, ''); }
-    function shareEmployeeURL(employeeName) { const url = window.location.origin + window.location.pathname + '?Employee=' + encodeURIComponent(employeeName); if (navigator.share) { navigator.share({ title: 'CommScope Attendance', text: `Check attendance record for ${employeeName}:`, url: url }).catch(console.log); } else { navigator.clipboard.writeText(url).then(() => alert('Employee link copied to clipboard!')); } }
-    function animateValue(id, start, end, duration) { const obj = document.getElementById(id); if(!obj) return; let startTimestamp = null; const step = (timestamp) => { if (!startTimestamp) startTimestamp = timestamp; const progress = Math.min((timestamp - startTimestamp) / duration, 1); obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString(); if (progress < 1) window.requestAnimationFrame(step); }; window.requestAnimationFrame(step); }
 
     function populateFilters() { 
+        if(loggedInUser && loggedInUser.role === 'user') return; // no filters for normal users
         const contractors = [...new Set(globalData.map(d => d.contractor).filter(Boolean))].sort(); 
         const tls = [...new Set(globalData.map(d => d.tl).filter(Boolean).filter(t => t !== 'N/A'))].sort();
         const sups = [...new Set(globalData.map(d => d.sanctioner).filter(Boolean).filter(s => s !== 'N/A'))].sort();
-
         document.getElementById('statusFilter').innerHTML = `<option value="">All Statuses</option><option value="Active">Active</option><option value="Left">Left</option>`; 
         document.getElementById('contractorFilter').innerHTML = `<option value="">All Contractors</option>${contractors.map(c => `<option value="${c}">${c}</option>`).join('')}`; 
         document.getElementById('tlFilter').innerHTML = `<option value="">All Team Leaders</option>${tls.map(t => `<option value="${t}">${t}</option>`).join('')}`;
@@ -745,21 +490,14 @@
     }
 
     function initializeAppUI() {
-        populateFilters(); renderTable(); document.getElementById('splash-screen').style.opacity = '0';
-        setTimeout(() => {
-            document.getElementById('splash-screen').style.display = 'none';
-            document.getElementById('main-content').classList.remove('hidden');
-            updateDashboardMetrics();
-            const urlParams = new URLSearchParams(window.location.search);
-            const employeeName = urlParams.get('Employee');
-            if (employeeName) { const idx = filteredData.findIndex(e => e.name === decodeURIComponent(employeeName)); if (idx !== -1) openEmployeeModal(idx); }
-        }, 300); 
+        populateFilters(); 
+        renderTable(); 
+        if(loggedInUser.role === 'admin') updateDashboardMetrics();
     }
     
     function updateDashboardMetrics() {
         const total = globalData.length, active = globalData.filter(e => e.status === 'Active').length;
         let totalPresents = 0, totalAbsents = 0; const daily = Array(31).fill(null).map(() => ({ p: 0, a: 0 }));
-
         globalData.forEach(row => {
             row.dates.forEach((d, i) => {
                 const status = d ? d.trim().toUpperCase() : '';
@@ -768,50 +506,52 @@
                 }
             });
         });
-
         document.getElementById('current-month-header').textContent = `Overview for ${currentMonthStr}`;
-        animateValue('metric-total-val', 0, total, 800); animateValue('metric-present-val', 0, totalPresents, 800); animateValue('metric-absent-val', 0, totalAbsents, 800);
+        document.getElementById('metric-total-val').innerHTML = total.toLocaleString(); 
+        document.getElementById('metric-present-val').innerHTML = totalPresents.toLocaleString(); 
+        document.getElementById('metric-absent-val').innerHTML = totalAbsents.toLocaleString();
+        
         new Chart(document.getElementById('statusChart').getContext('2d'), { type: 'doughnut', data: { labels: ['Active', 'Left'], datasets: [{ data: [active, total - active], backgroundColor: ['#10b981', '#64748b'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '75%', animation: { duration: 800 } } });
         trendChartData = { labels: Array.from({length:31}, (_,i)=>i+1), datasets: [{ label: 'Present / Default', data: daily.map(d=>d.p), borderColor: '#10b981', borderWidth: 2, pointBackgroundColor: '#fff', pointBorderColor: '#10b981', pointBorderWidth: 2, pointRadius: 3 }, { label: 'Absent / Reduced', data: daily.map(d=>d.a), borderColor: '#f43f5e', borderWidth: 2, pointBackgroundColor: '#fff', pointBorderColor: '#f43f5e', pointBorderWidth: 2, pointRadius: 3 }] };
-        initOrUpdateTrendChart(document.getElementById('chartTypeSelector').value || 'line');
+        initOrUpdateTrendChart('line');
     }
 
+    function initOrUpdateTrendChart(type) { if(trendChartInstance) trendChartInstance.destroy(); const ctx = document.getElementById('dayWiseChart').getContext('2d'); trendChartInstance = new Chart(ctx, { type: type, data: trendChartData, options: { responsive: true, maintainAspectRatio: false }}); }
+    function changeChartType(type) { initOrUpdateTrendChart(type); }
+    function toggleGraphs() { const section = document.getElementById('graphs-section'); const text = document.getElementById('toggle-graphs-text'); if (section.classList.contains('hidden')) { section.classList.remove('hidden'); setTimeout(() => section.classList.remove('opacity-0'), 10); text.textContent = 'Hide Graphs'; } else { section.classList.add('opacity-0'); setTimeout(() => section.classList.add('hidden'), 300); text.textContent = 'Show Graphs'; } }
+    function toggleViewMode() { const isMinimal = document.body.classList.contains('minimal-mode'); if (isMinimal) { document.body.classList.remove('minimal-mode'); document.getElementById('viewToggleBtn').innerHTML = '<i class="fa-solid fa-desktop"></i> <span class="hidden sm:inline">Standard View</span>'; } else { document.body.classList.add('minimal-mode'); document.getElementById('viewToggleBtn').innerHTML = '<i class="fa-solid fa-bolt"></i> <span class="hidden sm:inline">Minimal View</span>'; } renderTable(); }
+
     function renderTable() {
-        selectedIndex = -1; 
         const isMinimal = document.body.classList.contains('minimal-mode');
-        const searchVal = document.getElementById('searchInput').value.trim();
         const standardWrapper = document.getElementById('standard-view-wrapper');
         const minimalCards = document.getElementById('minimalCardsContainer');
         const pagination = document.getElementById('pagination-controls');
 
         if (isMinimal) {
             standardWrapper.classList.add('hidden'); minimalCards.classList.remove('hidden');
-            if (searchVal === '' && !searchVal.startsWith('/')) {
-                minimalCards.innerHTML = `<div class="text-center py-16 fade-in-up bg-white rounded-2xl border border-slate-100 shadow-sm"><i class="fa-solid fa-id-card text-6xl text-slate-200 mb-4 drop-shadow-sm"></i><h3 class="text-xl font-bold text-slate-700">Search to View Attendance</h3><p class="text-sm text-slate-500 mt-1 font-medium">Enter your Name, TL, or Employee ID above to instantly fetch your records.</p></div>`;
-                pagination.innerHTML = ''; return;
-            } else if (searchVal !== '/admin') { renderMinimalCards(); renderPagination(); }
+            renderMinimalCards();
+            if(loggedInUser.role === 'admin') renderPagination(); else pagination.innerHTML = '';
         } else {
             minimalCards.classList.add('hidden'); standardWrapper.classList.remove('hidden');
-            renderStandardRows(); renderPagination();
+            renderStandardRows(); 
+            if(loggedInUser.role === 'admin') renderPagination();
         }
     }
 
     function renderMinimalCards() {
         const pageData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
         const minimalContainer = document.getElementById('minimalCardsContainer'); minimalContainer.innerHTML = '';
-        const searchVal = document.getElementById('searchInput').value.trim();
-        const isBlacklisted = searchVal && blacklist.some(b => searchVal.toLowerCase().includes(b.toLowerCase()));
-
-        if(pageData.length === 0) { 
-            if(isBlacklisted) {
-                minimalContainer.innerHTML = `<div class="text-center py-12 fade-in-up flex flex-col items-center bg-white rounded-2xl border border-slate-100 shadow-sm"><i class="fa-solid fa-user-shield text-5xl text-rose-400 mb-4 drop-shadow-sm"></i><h3 class="text-xl font-bold text-slate-800">Access Restricted</h3><p class="text-slate-500 font-medium mb-5">Sorry, this employee's data is not available.</p><button onclick="clearSearch()" class="px-5 py-2.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg font-bold transition border border-indigo-200 flex items-center gap-2"><i class="fa-solid fa-rotate-left"></i> Clear Filters</button></div>`;
-            } else {
-                minimalContainer.innerHTML = `<div class="text-center py-12 fade-in-up flex flex-col items-center bg-white rounded-2xl border border-slate-100 shadow-sm"><i class="fa-solid fa-folder-open text-5xl text-slate-200 mb-4 drop-shadow-sm"></i><p class="text-slate-500 font-medium mb-5">No records found for your search.</p><button onclick="clearSearch()" class="px-5 py-2.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg font-bold transition border border-indigo-200 flex items-center gap-2"><i class="fa-solid fa-rotate-left"></i> Clear Filters</button></div>`; 
-            }
-            return; 
+        
+        let searchVal = "";
+        let hlAll = false;
+        let scope = 'emp';
+        if(loggedInUser.role === 'admin') {
+            searchVal = document.getElementById('searchInput').value.trim();
+            scope = currentSearchScope;
+            hlAll = scope === 'all';
         }
 
-        const scope = currentSearchScope; const hlAll = scope === 'all';
+        if(pageData.length === 0) { minimalContainer.innerHTML = `<div class="text-center py-12 text-slate-500 font-medium">No records found.</div>`; return; }
 
         pageData.forEach((row, i) => {
             const tlDisplay = highlightMatch(row.tl, searchVal, hlAll || scope === 'tl');
@@ -829,20 +569,19 @@
             });
 
             let attRate = validDays > 0 ? Math.round((p / validDays) * 100) : 0;
-            const isLeft = (row.status !== 'Active'); const statusBg = isLeft ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-slate-50 text-slate-700 border border-slate-200';
+            const statusBg = row.status !== 'Active' ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-slate-50 text-slate-700 border-slate-200';
 
             minimalContainer.innerHTML += `
                 <div onclick="openEmployeeModal(${(currentPage - 1) * rowsPerPage + i})" style="animation: fadeInUp 0.3s ease-out ${i * 0.03}s forwards; opacity: 0;" class="selectable-card bg-white border border-slate-100 shadow-sm rounded-2xl p-5 md:p-6 cursor-pointer transition transform hover:-translate-y-1 w-full outline-none">
-                    <div class="flex justify-between items-start mb-4 border-b border-slate-100 pb-4"><div><h3 class="font-bold text-slate-800 text-xl leading-tight">${nameDisplay}</h3><p class="text-xs text-slate-500 font-mono mt-1 font-semibold"><i class="fa-solid fa-id-badge text-indigo-400 mr-1.5"></i>${codeDisplay}</p></div><span class="text-[10px] font-bold px-3 py-1 rounded-full ${statusBg} uppercase tracking-wider">${row.status}</span></div>
+                    <div class="flex justify-between items-start mb-4 border-b border-slate-100 pb-4"><div><h3 class="font-bold text-slate-800 text-xl leading-tight">${nameDisplay}</h3><p class="text-xs text-slate-500 font-mono mt-1 font-semibold"><i class="fa-solid fa-id-badge text-indigo-400 mr-1.5"></i>${codeDisplay}</p></div><span class="text-[10px] font-bold px-3 py-1 rounded-full ${statusBg} border uppercase tracking-wider">${row.status}</span></div>
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-5 sm:gap-0">
                         <div class="flex sm:flex-col gap-4 sm:gap-3 w-full sm:w-auto"><div class="flex-1 sm:flex-none"><p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Team Leader</p><p class="text-sm font-bold text-slate-700">${tlDisplay}</p></div><div class="flex-1 sm:flex-none"><p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Shift Supervisor</p><p class="text-sm font-bold text-slate-700">${supDisplay}</p></div></div>
                         <div class="flex flex-col items-start sm:items-end gap-3 w-full sm:w-auto">
                             <div class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-lg font-bold text-xs sm:text-sm border border-indigo-100 flex items-center gap-1.5 ml-auto sm:ml-0"><i class="fa-solid fa-chart-pie opacity-70"></i> ${attRate}% Rate</div>
                             <div class="flex gap-1.5 sm:gap-2 w-full sm:w-auto justify-between sm:justify-start">
-                                <div class="bg-emerald-50 text-emerald-700 h-9 w-9 rounded-lg flex items-center justify-center font-bold text-sm border border-emerald-200" title="Present (Inc. WO/HO/PL/CF/WHO)">${p}</div>
+                                <div class="bg-emerald-50 text-emerald-700 h-9 w-9 rounded-lg flex items-center justify-center font-bold text-sm border border-emerald-200" title="Present">${p}</div>
                                 <div class="bg-rose-50 text-rose-700 h-9 w-9 rounded-lg flex items-center justify-center font-bold text-sm border border-rose-200" title="Absent">${a}</div>
                                 <div class="bg-blue-50 text-blue-700 h-9 w-9 rounded-lg flex items-center justify-center font-bold text-sm border border-blue-200" title="Wrong Shift">${fd}</div>
-                                <div class="bg-yellow-50 text-yellow-700 h-9 w-9 rounded-lg flex items-center justify-center font-bold text-sm border border-yellow-200" title="Half Day">${hd}</div>
                                 <div class="bg-orange-50 text-orange-700 h-9 w-9 rounded-lg flex items-center justify-center font-bold text-sm border border-orange-200" title="Miss Punch">${mp}</div>
                             </div>
                         </div>
@@ -853,8 +592,10 @@
 
     function renderStandardRows() {
         const pageData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
-        const searchVal = document.getElementById('searchInput').value.trim(); const scope = currentSearchScope; const hlAll = scope === 'all';
-        const isBlacklisted = searchVal && blacklist.some(b => searchVal.toLowerCase().includes(b.toLowerCase()));
+        let searchVal = ""; let scope = 'emp'; let hlAll = false;
+        if(loggedInUser.role === 'admin') {
+            searchVal = document.getElementById('searchInput').value.trim(); scope = currentSearchScope; hlAll = scope === 'all';
+        }
 
         const fragment = document.createDocumentFragment();
         pageData.forEach((row, i) => {
@@ -870,14 +611,7 @@
         document.getElementById('tableBody').innerHTML = ''; document.getElementById('tableBody').appendChild(fragment);
 
         const mobileContainer = document.getElementById('mobileCardsContainer'); mobileContainer.innerHTML = '';
-        if(pageData.length === 0) {
-            if(isBlacklisted) {
-                mobileContainer.innerHTML = `<div class="text-center py-10 fade-in-up flex flex-col items-center col-span-full"><h3 class="text-lg font-bold text-slate-800 mb-2">Access Restricted</h3><p class="text-slate-500 font-medium mb-4">Sorry, this employee's data is not available.</p><button onclick="clearSearch()" class="px-4 py-2 bg-white text-slate-700 hover:bg-slate-50 rounded-lg font-bold transition shadow-sm border border-slate-200 flex items-center gap-2"><i class="fa-solid fa-rotate-left"></i> Clear Filters</button></div>`;
-            } else {
-                mobileContainer.innerHTML = `<div class="text-center py-10 fade-in-up flex flex-col items-center col-span-full"><p class="text-slate-500 font-medium mb-4">No records found.</p><button onclick="clearSearch()" class="px-4 py-2 bg-white text-slate-700 hover:bg-slate-50 rounded-lg font-bold transition shadow-sm border border-slate-200 flex items-center gap-2"><i class="fa-solid fa-rotate-left"></i> Clear Filters</button></div>`;
-            }
-            return;
-        }
+        if(pageData.length === 0) { mobileContainer.innerHTML = `<div class="text-center py-10 text-slate-500 font-medium">No records found.</div>`; return; }
 
         pageData.forEach((row, i) => {
             const tlDisplay = highlightMatch(row.tl, searchVal, hlAll || scope === 'tl');
@@ -885,127 +619,51 @@
             const nameDisplay = highlightMatch(row.name, searchVal, hlAll || scope === 'emp');
             const codeDisplay = highlightMatch(row.code, searchVal, hlAll || scope === 'emp');
             const isLeft = (row.status !== 'Active'); const bgClass = isLeft ? 'bg-rose-50/30 border-rose-100' : 'bg-white border-slate-100'; const statusBadgeClass = isLeft ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700';
-            mobileContainer.innerHTML += `<div onclick="openEmployeeModal(${(currentPage - 1) * rowsPerPage + i})" style="animation: fadeInUp 0.3s ease-out ${i * 0.03}s forwards; opacity: 0;" class="selectable-card ${bgClass} border rounded-xl p-4 shadow-sm cursor-pointer transition transform hover:-translate-y-1 outline-none"><div class="flex justify-between items-start mb-2"><div><h3 class="font-bold text-slate-800 text-lg">${nameDisplay}</h3><p class="text-xs text-slate-500 font-mono font-semibold mt-0.5">${codeDisplay}</p></div><span class="text-[10px] font-bold px-2.5 py-1 rounded-full ${statusBadgeClass}">${row.status}</span></div><div class="mt-2 text-[10px] text-slate-500 font-medium flex gap-3"><span><i class="fa-solid fa-user-tie text-indigo-300 mr-1"></i> ${tlDisplay}</span><span><i class="fa-solid fa-file-signature text-indigo-300 mr-1"></i> ${supDisplay}</span></div><div class="mt-3 inline-flex items-center bg-slate-50 px-3 py-1.5 rounded-md text-xs font-semibold text-slate-600 border border-slate-200"><i class="fa-solid fa-briefcase text-slate-400 mr-1.5"></i> ${row.contractor}</div></div>`;
+            mobileContainer.innerHTML += `<div onclick="openEmployeeModal(${(currentPage - 1) * rowsPerPage + i})" style="animation: fadeInUp 0.3s ease-out ${i * 0.03}s forwards; opacity: 0;" class="selectable-card ${bgClass} border rounded-xl p-4 shadow-sm cursor-pointer transition transform hover:-translate-y-1"><div class="flex justify-between items-start mb-2"><div><h3 class="font-bold text-slate-800 text-lg">${nameDisplay}</h3><p class="text-xs text-slate-500 font-mono font-semibold mt-0.5">${codeDisplay}</p></div><span class="text-[10px] font-bold px-2.5 py-1 rounded-full ${statusBadgeClass}">${row.status}</span></div><div class="mt-2 text-[10px] text-slate-500 font-medium flex gap-3"><span><i class="fa-solid fa-user-tie text-indigo-300 mr-1"></i> ${tlDisplay}</span><span><i class="fa-solid fa-file-signature text-indigo-300 mr-1"></i> ${supDisplay}</span></div></div>`;
         });
     }
-    
-    function changePage(dir) { currentPage += dir; renderTable(); document.getElementById('table-section-header').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-    function renderPagination() { const isMinimal = document.body.classList.contains('minimal-mode'); const searchVal = document.getElementById('searchInput').value.trim(); const container = document.getElementById('pagination-controls'); if(isMinimal && searchVal === '') { container.innerHTML = ''; return; } const totalPages = Math.ceil(filteredData.length / rowsPerPage); if (filteredData.length === 0) { container.innerHTML = ''; return; } const endRecord = Math.min(currentPage * rowsPerPage, filteredData.length); container.innerHTML = `<span class="text-slate-600 font-semibold bg-white px-3 py-1.5 rounded-lg border border-slate-200">Showing ${((currentPage-1)*rowsPerPage)+1}-${endRecord} of ${filteredData.length}</span><div class="flex gap-2"><button onclick="changePage(-1)" ${currentPage === 1 ? 'disabled' : ''} class="px-4 py-2 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 disabled:opacity-50 transition shadow-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500">Previous</button><button onclick="changePage(1)" ${currentPage === totalPages || totalPages === 1 ? 'disabled' : ''} class="px-4 py-2 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 disabled:opacity-50 transition shadow-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500">Next</button></div>`; }
+
+    function changePage(dir) { currentPage += dir; renderTable(); }
+    function renderPagination() { const container = document.getElementById('pagination-controls'); const totalPages = Math.ceil(filteredData.length / rowsPerPage); if (filteredData.length === 0) { container.innerHTML = ''; return; } const endRecord = Math.min(currentPage * rowsPerPage, filteredData.length); container.innerHTML = `<span class="text-slate-600 font-semibold bg-white px-3 py-1.5 rounded-lg border border-slate-200">Showing ${((currentPage-1)*rowsPerPage)+1}-${endRecord} of ${filteredData.length}</span><div class="flex gap-2"><button onclick="changePage(-1)" ${currentPage === 1 ? 'disabled' : ''} class="px-4 py-2 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 disabled:opacity-50 transition shadow-sm font-bold text-slate-700">Previous</button><button onclick="changePage(1)" ${currentPage === totalPages || totalPages === 1 ? 'disabled' : ''} class="px-4 py-2 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 disabled:opacity-50 transition shadow-sm font-bold text-slate-700">Next</button></div>`; }
     
     function applyFilters() {
+        if(loggedInUser.role === 'user') return; // User cannot filter
         const search = document.getElementById('searchInput').value.toLowerCase().trim(); 
         const status = document.getElementById('statusFilter').value; 
         const contractor = document.getElementById('contractorFilter').value;
         const tl = document.getElementById('tlFilter').value;
         const sup = document.getElementById('supFilter').value;
         const scope = currentSearchScope;
-        const suggestionBox = document.getElementById('search-suggestion');
-
-        if(search === '/admin') return; 
-        
-        let closestMatchText = "";
-        let closestDist = Infinity;
-        const normSearch = normalizePhonetics(search);
 
         filteredData = globalData.filter(row => {
             const s = search; 
-            const normName = normalizePhonetics(row.name);
-            const normCode = normalizePhonetics(row.code);
-            const normTl = normalizePhonetics(row.tl);
-            const normSup = normalizePhonetics(row.sanctioner);
-
-            const matchName = row.name.toLowerCase().includes(s) || normName.includes(normSearch);
-            const matchCode = row.code.toLowerCase().includes(s) || normCode.includes(normSearch);
-            const matchTl = (row.tl || '').toLowerCase().includes(s) || normTl.includes(normSearch);
-            const matchSup = (row.sanctioner || '').toLowerCase().includes(s) || normSup.includes(normSearch);
-
+            const matchName = row.name.toLowerCase().includes(s);
+            const matchCode = row.code.toLowerCase().includes(s);
+            const matchTl = (row.tl || '').toLowerCase().includes(s);
+            const matchSup = (row.sanctioner || '').toLowerCase().includes(s);
             let matchesSearch = false; 
-            if (s === '') { 
-                matchesSearch = true; 
-            } else { 
+            if (s === '') matchesSearch = true; 
+            else { 
                 if (scope === 'all') matchesSearch = matchName || matchCode || matchTl || matchSup; 
                 else if (scope === 'emp') matchesSearch = matchName || matchCode; 
                 else if (scope === 'tl') matchesSearch = matchTl; 
                 else if (scope === 'sup') matchesSearch = matchSup; 
             }
-
-            if (s !== '' && !matchesSearch) {
-                let targets = [];
-                if (scope === 'all' || scope === 'emp') { targets.push(row.name); targets.push(row.code); }
-                if (scope === 'all' || scope === 'tl') targets.push(row.tl || '');
-                if (scope === 'all' || scope === 'sup') targets.push(row.sanctioner || '');
-                
-                const qWords = normSearch.split(/\s+/);
-                targets.forEach(rawT => {
-                    if(!rawT) return;
-                    const t = normalizePhonetics(rawT);
-                    let currentDist = levenshteinDistance(normSearch, t);
-                    let threshold = Math.max(2, Math.floor(t.length * 0.3)); 
-                    if (qWords.length === 1) {
-                        t.split(/\s+/).forEach(w => {
-                            let wordDist = levenshteinDistance(normSearch, w);
-                            if (wordDist < currentDist) { currentDist = wordDist; threshold = Math.max(2, Math.floor(w.length * 0.3)); }
-                        });
-                    }
-                    if(currentDist <= threshold && currentDist < closestDist) { closestDist = currentDist; closestMatchText = rawT; }
-                });
-            }
-
-            const matchesStatus = status ? row.status === status : true; 
-            const matchesContractor = contractor ? row.contractor === contractor : true;
-            const matchesTl = tl ? row.tl === tl : true;
-            const matchesSup = sup ? row.sanctioner === sup : true;
-
-            return matchesSearch && matchesStatus && matchesContractor && matchesTl && matchesSup;
+            return matchesSearch && (status ? row.status === status : true) && (contractor ? row.contractor === contractor : true) && (tl ? row.tl === tl : true) && (sup ? row.sanctioner === sup : true);
         });
 
-        let showSuggestion = true;
-        if(closestMatchText && blacklist.some(b => closestMatchText.toLowerCase().includes(b.toLowerCase()))) {
-            showSuggestion = false;
-        }
-
-        if (filteredData.length === 0 && closestMatchText && search !== '' && showSuggestion) {
-            const prettySuggestion = toTitleCase(closestMatchText);
-            suggestionBox.innerHTML = `Did you mean: <button onclick="document.getElementById('searchInput').value='${prettySuggestion}'; applyFilters();" class="font-bold text-indigo-700 hover:text-indigo-900 underline cursor-pointer outline-none rounded">${prettySuggestion}</button> ?`;
-            suggestionBox.classList.remove('hidden');
-        } else {
-            suggestionBox.classList.add('hidden');
-        }
-
         const count = document.getElementById('contractor-count'); 
-        if (contractor || status || tl || sup || search) { let badgeText = `${filteredData.length} Employee(s)`; if (search !== '') { if (scope === 'tl' && filteredData.length > 0) badgeText = `Team: ${filteredData.length} Employee(s)`; if (scope === 'sup' && filteredData.length > 0) badgeText = `Under Shift Sup: ${filteredData.length} Employee(s)`; } count.textContent = badgeText; count.classList.remove('hidden'); } else { count.classList.add('hidden'); }
+        if (contractor || status || tl || sup || search) { count.textContent = `${filteredData.length} Records`; count.classList.remove('hidden'); } else count.classList.add('hidden');
         renderTable();
     }
 
-    window.toggleCalendarFullscreen = function() {
-        const calPanel = document.getElementById('modal-calendar-panel');
-        const btn = document.getElementById('cal-fullscreen-btn');
-        const header = document.getElementById('mobile-modal-header');
-        if (calPanel.classList.contains('fixed')) {
-            calPanel.classList.remove('fixed', 'inset-0', 'z-[100]', 'bg-slate-50', 'pt-14', 'px-4', 'pb-4');
-            btn.innerHTML = '<i class="fa-solid fa-expand"></i> Maximize';
-            btn.classList.remove('fixed', 'top-4', 'right-4', 'bg-white', 'border', 'border-slate-200');
-            header.style.display = 'block';
-        } else {
-            calPanel.classList.add('fixed', 'inset-0', 'z-[100]', 'bg-slate-50', 'pt-14', 'px-4', 'pb-4');
-            btn.innerHTML = '<i class="fa-solid fa-compress"></i> Minimize';
-            btn.classList.add('fixed', 'top-4', 'right-4', 'bg-white', 'border', 'border-slate-200');
-            header.style.display = 'none';
-        }
-    };
+    document.getElementById('searchInput')?.addEventListener('keyup', () => { currentPage = 1; applyFilters(); });
+    ['statusFilter', 'contractorFilter', 'tlFilter', 'supFilter'].forEach(id => { document.getElementById(id)?.addEventListener('change', () => { currentPage = 1; applyFilters(); }); });
 
     function openEmployeeModal(index) {
         const employee = filteredData[index]; 
-        let date = new Date(currentMonthStr); 
-        let firstDay = 0, totalDays = 31, displayMonthStr = currentMonthStr;
-        
-        if (!isNaN(date.getTime())) { 
-            firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay(); 
-            totalDays = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate(); 
-        }
-
         let p = 0, a = 0, mp = 0, fd = 0, validDays = 0;
-        for (let i = 0; i < totalDays; i++) {
+        for (let i = 0; i < 31; i++) {
             const rawStatus = employee.dates[i] ? employee.dates[i].trim().toUpperCase() : '';
             if (rawStatus && rawStatus !== '-' && rawStatus !== '--' && rawStatus !== 'L' && rawStatus !== 'CF' && rawStatus !== 'WHO' && rawStatus !== 'WHO (ROTA)') { 
                 validDays++; 
@@ -1015,131 +673,74 @@
         let attendancePercentage = validDays > 0 ? Math.round((p / validDays) * 100) : 0;
         const statusColor = employee.status === 'Active' ? 'text-emerald-600' : 'text-rose-600';
 
-        document.getElementById('mobile-modal-header').innerHTML = `
-            <h2 class="text-xl md:text-2xl font-bold text-slate-800 leading-tight">${employee.name}</h2>
-            <p class="text-slate-500 mt-1 font-semibold text-xs md:text-sm">${employee.code} &bull; ${employee.contractor} &bull; <span class="${statusColor} font-bold">${employee.status}</span></p>
-        `;
-
-        const legendHTML = `
-            <div class="grid grid-cols-2 gap-x-2 gap-y-2 text-[11px] md:text-xs">
-                <div class="flex items-center gap-2"><span class="legend-badge status-p border border-emerald-200">P</span><span class="font-medium text-slate-700">Present</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-fd border border-cyan-200">FD</span><span class="font-medium text-slate-700">Wrong Shift</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-a border border-rose-200">A</span><span class="font-medium text-slate-700">Absent</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-hd border border-yellow-200">HD</span><span class="font-medium text-slate-700">Half Day</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-wo border border-slate-300">WO</span><span class="font-medium text-slate-700">Week Off</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-pl border border-blue-200">PL</span><span class="font-medium text-slate-700">Privilege Leave</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-wwo border border-yellow-300">WWO</span><span class="font-medium text-slate-700">Worked WO</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-slwp border border-purple-200">SLWP</span><span class="font-medium text-slate-700">Sick Leave</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-mp border border-orange-200">MP</span><span class="font-medium text-slate-700">Miss Punch</span></div>
-                <div class="flex items-center gap-2"><span class="legend-badge status-l border border-pink-200">L</span><span class="font-medium text-slate-700">Left</span></div>
-            </div>
-        `;
-
         document.getElementById('modal-info-panel').innerHTML = `
-            <div class="mb-3 hidden lg:block">
-                <h2 class="text-2xl md:text-3xl font-bold text-slate-800 leading-tight">${employee.name}</h2>
-                <p class="text-slate-500 mt-1 font-semibold">${employee.code} &bull; ${employee.contractor} &bull; <span class="${statusColor} font-bold">${employee.status}</span></p>
-            </div>
-            
+            <div class="mb-3 hidden lg:block"><h2 class="text-2xl md:text-3xl font-bold text-slate-800 leading-tight">${employee.name}</h2><p class="text-slate-500 mt-1 font-semibold">${employee.code} &bull; ${employee.contractor} &bull; <span class="${statusColor} font-bold">${employee.status}</span></p></div>
             <div class="mt-2 lg:mt-0 p-3 md:p-4 bg-slate-50 rounded-xl text-xs md:text-sm text-slate-700 space-y-1.5 md:space-y-2 border border-slate-200">
                 <p class="flex items-center gap-2"><i class="fa-solid fa-user-tie text-indigo-500 w-4"></i> <strong>Team Leader:</strong> <span class="ml-auto text-right font-medium">${employee.tl || 'N/A'}</span></p>
                 <p class="flex items-center gap-2 border-t border-slate-200 pt-1.5 md:pt-2"><i class="fa-solid fa-file-signature text-indigo-500 w-4"></i> <strong>Shift Sup:</strong> <span class="ml-auto text-right font-medium">${employee.sanctioner || 'N/A'}</span></p>
             </div>
-            
             <div class="mt-3 grid grid-cols-4 gap-1.5 md:gap-2 text-sm h-14 md:h-16">
-                <div class="bg-emerald-50 text-emerald-700 p-1.5 rounded-xl border border-emerald-200 flex flex-col items-center justify-between h-full"><span class="font-bold text-lg md:text-xl leading-none mt-1">${p}</span><span class="text-[8px] md:text-[9px] font-bold uppercase tracking-wide text-center leading-tight opacity-80 mb-1">Present</span></div>
-                <div class="bg-rose-50 text-rose-700 p-1.5 rounded-xl border border-rose-200 flex flex-col items-center justify-between h-full"><span class="font-bold text-lg md:text-xl leading-none mt-1">${a}</span><span class="text-[8px] md:text-[9px] font-bold uppercase tracking-wide text-center leading-tight opacity-80 mb-1">Absent</span></div>
-                <div class="bg-blue-50 text-blue-700 p-1.5 rounded-xl border border-blue-200 flex flex-col items-center justify-between h-full"><span class="font-bold text-lg md:text-xl leading-none mt-1">${fd}</span><span class="text-[8px] md:text-[9px] font-bold uppercase tracking-wide text-center leading-tight opacity-80 mb-1">Wrong Shift</span></div>
-                <div class="bg-orange-50 text-orange-700 p-1.5 rounded-xl border border-orange-200 flex flex-col items-center justify-between h-full"><span class="font-bold text-lg md:text-xl leading-none mt-1">${mp}</span><span class="text-[8px] md:text-[9px] font-bold uppercase tracking-wide text-center leading-tight opacity-80 mb-1">Miss Punch</span></div>
+                <div class="bg-emerald-50 text-emerald-700 p-1.5 rounded-xl border border-emerald-200 flex flex-col items-center justify-between h-full"><span class="font-bold text-lg md:text-xl leading-none mt-1">${p}</span><span class="text-[8px] md:text-[9px] font-bold uppercase tracking-wide text-center opacity-80 mb-1">Present</span></div>
+                <div class="bg-rose-50 text-rose-700 p-1.5 rounded-xl border border-rose-200 flex flex-col items-center justify-between h-full"><span class="font-bold text-lg md:text-xl leading-none mt-1">${a}</span><span class="text-[8px] md:text-[9px] font-bold uppercase tracking-wide text-center opacity-80 mb-1">Absent</span></div>
+                <div class="bg-blue-50 text-blue-700 p-1.5 rounded-xl border border-blue-200 flex flex-col items-center justify-between h-full"><span class="font-bold text-lg md:text-xl leading-none mt-1">${fd}</span><span class="text-[8px] md:text-[9px] font-bold uppercase tracking-wide text-center opacity-80 mb-1">Wrong Shift</span></div>
+                <div class="bg-orange-50 text-orange-700 p-1.5 rounded-xl border border-orange-200 flex flex-col items-center justify-between h-full"><span class="font-bold text-lg md:text-xl leading-none mt-1">${mp}</span><span class="text-[8px] md:text-[9px] font-bold uppercase tracking-wide text-center opacity-80 mb-1">Miss Punch</span></div>
             </div>
-            
-            <div class="mt-3 bg-indigo-50 text-indigo-800 p-3 md:p-4 rounded-xl flex justify-between items-center border border-indigo-100"><span class="font-bold text-xs md:text-sm uppercase tracking-wide"><i class="fa-solid fa-chart-pie mr-1 text-indigo-500"></i> Attendance Rate</span><span class="font-bold text-xl md:text-2xl">${attendancePercentage}%</span></div>
-            
-            <button onclick="shareEmployeeURL('${employee.name.replace(/'/g, "\\'")}')" class="w-full mt-3 md:mt-4 bg-teal-50 hover:bg-teal-100 text-teal-700 py-2.5 md:py-3 rounded-xl font-bold text-xs md:text-sm transition flex items-center justify-center gap-2 border border-teal-200 outline-none focus:ring-2 focus:ring-teal-500"><i class="fa-solid fa-share-nodes"></i> Share Attendance</button>
-            
-            <div class="mt-auto pt-3 md:pt-4 border-t border-slate-200">
-                <details class="lg:hidden group mb-1 outline-none">
-                    <summary class="font-semibold text-slate-800 cursor-pointer select-none flex justify-between items-center outline-none bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-sm">
-                        <span>View Legend</span>
-                        <i class="fa-solid fa-chevron-down transition-transform group-open:rotate-180 text-slate-500"></i>
-                    </summary>
-                    <div class="mt-2 p-1.5">${legendHTML}</div>
-                </details>
-                <div class="hidden lg:block">
-                    <div class="font-bold text-slate-800 cursor-default select-none mb-3">Legend</div>
-                    ${legendHTML}
-                </div>
-            </div>
+            <div class="mt-3 bg-indigo-50 text-indigo-800 p-3 md:p-4 rounded-xl flex justify-between items-center border border-indigo-100"><span class="font-bold text-xs md:text-sm uppercase tracking-wide">Attendance Rate</span><span class="font-bold text-xl md:text-2xl">${attendancePercentage}%</span></div>
         `;
 
-        document.getElementById('modal-calendar-title').textContent = `Attendance for ${displayMonthStr}`;
-        
-        let daysHTML = Array(firstDay).fill('<div class="border border-slate-100 bg-slate-50/50 rounded-xl h-full w-full"></div>').join('');
-        for (let i = 0; i < totalDays; i++) {
-            const rawStatus = employee.dates[i] || '-';
-            daysHTML += `<div class="status-${getStatusClass(rawStatus)} flex flex-col justify-center items-center rounded-xl font-bold border border-slate-200 transition hover:scale-105 h-full w-full min-h-[35px] md:min-h-[50px] p-0.5"><span class="text-[11px] md:text-lg leading-none">${i+1}</span><span class="text-[8px] md:text-sm opacity-80 mt-0.5 leading-none w-full text-center truncate">${getDisplayStatus(rawStatus)}</span></div>`;
-        }
-        
-        const totalRenderedCells = firstDay + totalDays;
-        const extraCells = (7 - (totalRenderedCells % 7)) % 7;
-        daysHTML += Array(extraCells).fill('<div class="border border-slate-100 bg-slate-50/50 rounded-xl h-full w-full"></div>').join('');
-
+        document.getElementById('modal-calendar-title').textContent = `Attendance for ${currentMonthStr}`;
+        let daysHTML = ''; for (let i = 0; i < 31; i++) { const rawStatus = employee.dates[i] || '-'; daysHTML += `<div class="status-${getStatusClass(rawStatus)} flex flex-col justify-center items-center rounded-xl font-bold border border-slate-200 transition hover:scale-105 h-full w-full min-h-[35px] md:min-h-[50px] p-0.5"><span class="text-[11px] md:text-lg leading-none">${i+1}</span><span class="text-[8px] md:text-sm opacity-80 mt-0.5 leading-none w-full text-center truncate">${getDisplayStatus(rawStatus)}</span></div>`; }
         document.getElementById('modal-calendar').innerHTML = daysHTML; 
         document.getElementById('employee-modal').classList.remove('opacity-0', 'pointer-events-none'); 
         document.getElementById('modal-content').classList.remove('scale-95'); 
-        history.pushState({}, '', `?Employee=${encodeURIComponent(employee.name)}`);
     }
+    function closeEmployeeModal() { document.getElementById('employee-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('modal-content').classList.add('scale-95'); }
 
-    function closeEmployeeModal() { 
-        document.getElementById('employee-modal').classList.add('opacity-0', 'pointer-events-none'); 
-        document.getElementById('modal-content').classList.add('scale-95'); 
-        history.pushState({}, '', window.location.pathname); 
-        const calPanel = document.getElementById('modal-calendar-panel');
-        if (calPanel.classList.contains('fixed')) { window.toggleCalendarFullscreen(); }
-    }
-    
-    function getMonday(d) { const date = new Date(d); date.setHours(0,0,0,0); const day = date.getDay(); const diff = date.getDate() - day + (day === 0 ? -6 : 1); return new Date(date.setDate(diff)); }
-    function updateShiftDropdown() { const shiftSelect = document.getElementById('sc-setup-shift'); const pattern = shiftSettings.pattern; shiftSelect.innerHTML = ''; if (pattern === 'ACB') { shiftSelect.innerHTML = '<option value="A">A Shift</option><option value="B">B Shift</option><option value="C">C Shift</option>'; } else if (pattern === 'BC') { shiftSelect.innerHTML = '<option value="B">B Shift</option><option value="C">C Shift</option>'; if (shiftSettings.baseShift === 'A') shiftSettings.baseShift = 'B'; } shiftSelect.value = shiftSettings.baseShift; }
-    function onPatternChange() { shiftSettings.pattern = document.getElementById('sc-setup-pattern').value; updateShiftDropdown(); saveShiftSettings(); }
-    function saveShiftSettings() { shiftSettings.pattern = document.getElementById('sc-setup-pattern').value; shiftSettings.baseShift = document.getElementById('sc-setup-shift').value; shiftSettings.baseDate = document.getElementById('sc-setup-date').value || shiftSettings.baseDate; localStorage.setItem('shiftSettings', JSON.stringify(shiftSettings)); renderShiftCalendar(); }
-    function getShiftForDate(dateObj) { if (dateObj.getDay() === 0) return 'OFF'; const targetMon = getMonday(dateObj), baseMon = getMonday(new Date(shiftSettings.baseDate)); const diffWeeks = Math.floor(Math.round((targetMon - baseMon) / (1000 * 60 * 60 * 24)) / 7); const activeSeq = SEQUENCES[shiftSettings.pattern] || SEQUENCES['ACB']; let baseIndex = activeSeq.indexOf(shiftSettings.baseShift); if (baseIndex === -1) baseIndex = 0; let currentIndex = (baseIndex + diffWeeks) % activeSeq.length; if (currentIndex < 0) currentIndex += activeSeq.length; return activeSeq[currentIndex]; }
-
-    function renderShiftCalendar() {
-        const y = calCurrentDate.getFullYear(), m = calCurrentDate.getMonth(); const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; document.getElementById('sc-month-title').innerText = `${monthNames[m]} ${y}`; const grid = document.getElementById('sc-days'); grid.innerHTML = ''; const firstDay = new Date(y, m, 1).getDay(), daysInMonth = new Date(y, m + 1, 0).getDate();
-        const logicalToday = getLogicalToday();
-        
-        for (let i = 0; i < firstDay; i++) { grid.innerHTML += `<div class="border border-slate-100 bg-slate-50/50 rounded-xl min-h-[48px]"></div>`; }
-        for (let d = 1; d <= daysInMonth; d++) {
-            const cDate = new Date(y, m, d), isoDate = formatISODate(cDate), sCode = getShiftForDate(cDate), isHol = holidays2026[isoDate];
-            let cls = `sc-cell sc-shift-${sCode}`; let isToday = (d === logicalToday.getDate() && m === logicalToday.getMonth() && y === logicalToday.getFullYear());
-            if (isToday) cls += ' ring-2 ring-indigo-500 ring-offset-2 scale-105 shadow-sm z-10'; if (isHol) cls += ' sc-holiday';
-            grid.innerHTML += `<div class="${cls} text-xs md:text-sm transition hover:scale-105 rounded-xl"><div class="font-bold text-slate-700 ${isHol ? 'text-amber-900' : ''} ${isToday && !isHol ? 'text-indigo-900' : ''}">${d}</div><div class="text-[9px] md:text-xs font-bold mt-1 px-2 py-0.5 rounded-full bg-white border border-slate-200/50 tracking-wider">${sCode}</div></div>`;
-        }
-        const totalRendered = firstDay + daysInMonth; const remainder = (7 - (totalRendered % 7)) % 7;
-        for(let i=0; i<remainder; i++) { grid.innerHTML += `<div class="border border-slate-100 bg-slate-50/50 rounded-xl min-h-[48px]"></div>`; }
-        
-        let holHtml = ''; Object.keys(holidays2026).sort().forEach(dateStr => { let hd = new Date(dateStr); if(hd.getFullYear() === y && hd.getMonth() === m) { holHtml += `<div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm flex justify-between items-center"><span class="font-bold text-amber-700">${hd.getDate()} ${monthNames[m]}</span> <span class="text-amber-900 font-semibold text-right">${holidays2026[dateStr]}</span></div>`; } });
-        if(!holHtml) holHtml = `<div class="text-sm text-slate-400 text-center font-medium mt-4 bg-white p-4 rounded-xl border border-slate-200">No public holidays this month</div>`; document.getElementById('sc-holiday-list').innerHTML = holHtml;
-    }
-
-    function changeShiftMonth(dir) { calCurrentDate.setMonth(calCurrentDate.getMonth() + dir); renderShiftCalendar(); }
-    function openShiftModal() { 
-        document.getElementById('sc-setup-pattern').value = shiftSettings.pattern; 
-        updateShiftDropdown(); 
-        const logicalTodayStr = formatISODate(getLogicalToday());
-        shiftSettings.baseDate = logicalTodayStr;
-        document.getElementById('sc-setup-date').value = logicalTodayStr;
-        saveShiftSettings();
-        document.getElementById('shift-modal').classList.remove('opacity-0', 'pointer-events-none'); 
-        document.getElementById('shift-modal-content').classList.remove('scale-95'); 
-    }
+    // Shift Setup Base 
+    const DEFAULT_SETTINGS = { pattern: 'ACB', baseDate: formatISODate(getLogicalToday()), baseShift: 'A' }; 
+    let shiftSettings = JSON.parse(localStorage.getItem('shiftSettings')) || DEFAULT_SETTINGS;
+    function openShiftModal() { document.getElementById('shift-modal').classList.remove('opacity-0', 'pointer-events-none'); document.getElementById('shift-modal-content').classList.remove('scale-95'); }
     function closeShiftModal() { document.getElementById('shift-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('shift-modal-content').classList.add('scale-95'); }
+    
+    function openAdminModal() { document.getElementById('admin-modal').classList.remove('opacity-0', 'pointer-events-none'); document.getElementById('admin-content').classList.remove('scale-95'); }
+    function closeAdminModal() { document.getElementById('admin-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('admin-content').classList.add('scale-95'); }
+    
+    // Chat Toggle Logic
+    function toggleChat() {
+        const chat = document.getElementById('chat-container');
+        if(chat.classList.contains('hidden')) {
+            chat.classList.remove('hidden'); 
+            setTimeout(() => chat.classList.remove('scale-0', 'opacity-0'), 10);
+            
+            // Check if user has a global chat name saved
+            if (!localStorage.getItem('chat_username')) {
+                document.getElementById('chat-setup-view').classList.remove('hidden');
+                document.getElementById('chat-interface-view').classList.add('hidden');
+            } else {
+                document.getElementById('chat-setup-view').classList.add('hidden');
+                document.getElementById('chat-interface-view').classList.remove('hidden');
+                document.getElementById('chat-interface-view').classList.add('flex');
+            }
+        } else {
+            chat.classList.add('scale-0', 'opacity-0'); 
+            setTimeout(() => chat.classList.add('hidden'), 300);
+        }
+    }
+
+    function joinChat() {
+        const nameInput = document.getElementById('chat-name-input').value.trim();
+        if (nameInput.length < 3) return alert("Name must be at least 3 characters.");
+        localStorage.setItem('chat_username', nameInput);
+        document.getElementById('chat-setup-view').classList.add('hidden');
+        document.getElementById('chat-interface-view').classList.remove('hidden');
+        document.getElementById('chat-interface-view').classList.add('flex');
+    }
 </script>
 
 <script type="module">
-    // FIREBASE INITIALIZATION, AUTH & VISITOR COUNTER SETUP
+    // FIREBASE INITIALIZATION & LOGIC
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getDatabase, ref, increment, update, get, onValue, onDisconnect, set, push } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+    import { getDatabase, ref, get, set, push, onChildAdded, query, limitToLast, startAt, orderByChild } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCeNFC0hZaz7H9nxsiYwtMbrbsoncliNqQ",
@@ -1153,113 +754,142 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
-    const sitePwdRef = ref(db, 'site_password');
 
-    // Site Password Logic (Strictly no local storage saving, required field, blocked paste)
-    window.verifySitePassword = async function() {
-        const input = document.getElementById('site-pwd-input').value.trim();
+    // Verify User / Admin Login
+    window.verifyUserLogin = async function() {
+        const idInput = document.getElementById('login-id-input').value.trim().toUpperCase();
+        const pwdInput = document.getElementById('login-pwd-input').value.trim();
         const btn = document.getElementById('site-login-btn');
         const err = document.getElementById('site-login-error');
 
-        // Check if field is empty
-        if (!input) {
-            err.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Password is required.';
-            err.classList.remove('hidden');
-            return;
-        }
+        if (!idInput || !pwdInput) { err.innerHTML = 'ID and Password are required.'; err.classList.remove('hidden'); return; }
 
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Checking...';
-        btn.disabled = true;
-        err.classList.add('hidden');
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Checking...'; btn.disabled = true; err.classList.add('hidden');
 
         try {
-            const snapshot = await get(sitePwdRef);
-            const actualPwd = snapshot.val();
+            // Check if Admin Login
+            const adminRef = ref(db, `admin_creds`);
+            const adminSnap = await get(adminRef);
+            
+            if(adminSnap.exists() && adminSnap.val().username.toUpperCase() === idInput && adminSnap.val().password === pwdInput) {
+                window.loggedInUser = { role: 'admin', name: 'Administrator' };
+                window.startApp();
+                return;
+            }
 
-            if (actualPwd && input === actualPwd) {
-                // Success - Intentionally NOT saving to localStorage so it prompts every time.
-                document.getElementById('site-login-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('site-login-screen').classList.add('hidden');
-                    window.startApp(); 
-                }, 300);
+            // Normal User Login
+            const employeeData = window.rawGlobalData.find(e => e.code.toUpperCase() === idInput);
+            if (!employeeData) { throw new Error("ID not found."); }
+
+            const userRef = ref(db, `users/${idInput}`);
+            const userSnap = await get(userRef);
+
+            if (userSnap.exists()) {
+                const userData = userSnap.val();
+                if (userData.password === pwdInput) {
+                    window.loggedInUser = { role: 'user', id: idInput, name: employeeData.name };
+                    window.startApp();
+                } else { throw new Error("Incorrect Password."); }
             } else {
-                // Fail
-                err.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Incorrect password.';
-                err.classList.remove('hidden');
-                btn.innerHTML = 'Enter Portal';
-                btn.disabled = false;
+                throw new Error("Access not configured. Contact Admin.");
             }
         } catch (error) {
-            err.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Error connecting to server.';
+            err.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${error.message}`;
             err.classList.remove('hidden');
-            btn.innerHTML = 'Enter Portal';
-            btn.disabled = false;
+            btn.innerHTML = 'Enter Portal'; btn.disabled = false;
         }
     };
 
-    // Make login screen visible immediately on load (forces login every visit)
-    document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('splash-screen').style.display = 'none';
-        document.getElementById('site-login-screen').classList.remove('hidden');
+    // Admin Tools - Fetch User Data
+    window.fetchUserForAdmin = async function() {
+        const id = document.getElementById('admin-search-id').value.trim().toUpperCase();
+        if(!id) return alert("Enter an ID");
+        
+        const emp = window.rawGlobalData.find(e => e.code.toUpperCase() === id);
+        if(emp) {
+            document.getElementById('admin-found-name').innerText = emp.name;
+            document.getElementById('admin-user-details').classList.remove('hidden');
+            document.getElementById('admin-user-details').classList.add('flex');
+            
+            // Try fetching existing data
+            const userSnap = await get(ref(db, `users/${id}`));
+            if(userSnap.exists()) {
+                document.getElementById('admin-set-pwd').value = userSnap.val().password || '';
+            } else {
+                document.getElementById('admin-set-pwd').value = '';
+            }
+        } else {
+            alert("Employee ID not found in the current dataset.");
+            document.getElementById('admin-user-details').classList.add('hidden');
+            document.getElementById('admin-user-details').classList.remove('flex');
+        }
+    };
+
+    // Admin Tools - Save User Creds
+    window.saveUserAccess = async function() {
+        const id = document.getElementById('admin-search-id').value.trim().toUpperCase();
+        const pwd = document.getElementById('admin-set-pwd').value.trim();
+        const btn = document.getElementById('admin-save-btn');
+        
+        if(!id || !pwd) return alert("All fields are required.");
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+        
+        try {
+            await set(ref(db, `users/${id}`), { password: pwd });
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Saved!';
+            btn.classList.replace('bg-emerald-600', 'bg-indigo-600');
+            setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Access'; btn.classList.replace('bg-indigo-600', 'bg-emerald-600'); }, 2000);
+        } catch(e) { alert("Error saving: " + e.message); btn.innerHTML = 'Save Access'; }
+    };
+
+    // ==========================================
+    // CHAT (TIME PASS) LOGIC - OPEN TO PUBLIC
+    // ==========================================
+    function get6AMTimestamp() {
+        let now = new Date();
+        let sixAM = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 0, 0);
+        if (now < sixAM) { sixAM.setDate(sixAM.getDate() - 1); } // Before 6 AM, use yesterday's 6 AM
+        return sixAM.getTime();
+    }
+
+    const chatContainerList = document.getElementById('chat-messages');
+    
+    // Listen for new messages (Last 100, Resetting at 6 AM)
+    const chatQuery = query(ref(db, 'chat'), orderByChild('timestamp'), startAt(get6AMTimestamp()), limitToLast(100));
+    
+    onChildAdded(chatQuery, (snap) => {
+        const msg = snap.val();
+        
+        const myName = localStorage.getItem('chat_username') || "Anonymous";
+        const isMe = msg.name === myName;
+        const alignClass = isMe ? 'chat-me' : 'chat-other';
+        const wrapperClass = isMe ? 'justify-end' : 'justify-start';
+        const nameLabel = isMe ? '' : `<div class="text-[10px] font-bold text-slate-400 mb-0.5 ml-1">${msg.name}</div>`;
+        
+        chatContainerList.innerHTML += `
+            <div class="flex ${wrapperClass} w-full fade-in-up">
+                <div class="flex flex-col">
+                    ${nameLabel}
+                    <div class="chat-bubble ${alignClass} shadow-sm">${msg.text}</div>
+                </div>
+            </div>`;
+        
+        // Auto scroll to bottom
+        chatContainerList.scrollTop = chatContainerList.scrollHeight;
     });
 
-    const randomDelay = Math.random() * 2000; 
-    setTimeout(() => {
-        if(IS_MAINTENANCE_MODE) return; 
-
-        const d = new Date(), utc = d.getTime() + (d.getTimezoneOffset() * 60000), ist = new Date(utc + (3600000 * 5.5)); 
-        const todayStr = ist.toISOString().split('T')[0];
-        const yesterday = new Date(ist); yesterday.setDate(yesterday.getDate() - 1);
-        const yesterdayStr = yesterday.toISOString().split('T')[0];
-
-        const updates = {}; 
-        updates['/visitors/total'] = increment(1); 
-        updates['/visitors/daily/' + todayStr] = increment(1);
-
-        const visitedTodayFlag = localStorage.getItem('visited_unique_' + todayStr);
-        if (!visitedTodayFlag) {
-            updates['/visitors/unique/' + todayStr] = increment(1);
-            localStorage.setItem('visited_unique_' + todayStr, 'true');
-        }
-
-        update(ref(db), updates).then(() => {
-            get(ref(db, 'visitors')).then((snapshot) => {
-                let realTotal = 0, realToday = 0, realYday = 0;
-                if(snapshot.exists()) { 
-                    const data = snapshot.val(); 
-                    window.globalVisitorData = data; 
-                    realTotal = data.total || 0; 
-                    realToday = data.daily[todayStr] || 0; 
-                    realYday = data.daily[yesterdayStr] || 0; 
-                }
-                document.getElementById('vis-total').innerText = realTotal.toLocaleString(); 
-                document.getElementById('vis-today').innerText = realToday.toLocaleString(); 
-                document.getElementById('vis-yday').innerText = realYday.toLocaleString();
-            }).catch(console.error);
-        }).catch(console.error);
+    window.sendChat = function() {
+        const input = document.getElementById('chat-input');
+        const text = input.value.trim();
+        const chatName = localStorage.getItem('chat_username');
         
-        const connectionsRef = ref(db, 'live_users');
-        const connectedRef = ref(db, '.info/connected');
-
-        onValue(connectedRef, (snap) => {
-            if (snap.val() === true) {
-                const conRef = push(connectionsRef);
-                onDisconnect(conRef).remove().then(() => {
-                    set(conRef, true);
-                });
-            }
-        });
-
-        onValue(connectionsRef, (snap) => {
-            const liveEl = document.getElementById('live-users-count');
-            if(liveEl) {
-                const size = snap.exists() ? Object.keys(snap.val()).length : 0;
-                liveEl.innerText = size > 100 ? '100+' : size;
-            }
-        });
-
-    }, randomDelay);
+        if(!text) return;
+        if(!chatName) return alert("Please set a name first.");
+        
+        const msgObj = { name: chatName, text: text, timestamp: Date.now() };
+        
+        push(ref(db, 'chat'), msgObj).then(() => { input.value = ''; }).catch(e => alert("Error sending: " + e.message));
+    };
 </script>
 </body>
 </html>
