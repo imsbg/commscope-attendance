@@ -216,6 +216,19 @@
                 </div>
             </header>
 
+            <!-- Attendance Legend -->
+            <div id="attendance-legend" class="bg-white p-4 rounded-2xl mb-2 w-full flex flex-wrap gap-x-4 gap-y-2 justify-center sm:justify-start items-center text-xs shadow-sm border border-slate-200">
+                <span class="font-bold text-slate-500 uppercase tracking-wider mr-2 hidden md:block">Legend:</span>
+                <div class="flex items-center gap-1.5"><span class="legend-badge status-p">P</span> <span class="text-slate-600 font-medium whitespace-nowrap">Present</span></div>
+                <div class="flex items-center gap-1.5"><span class="legend-badge status-a">A</span> <span class="text-slate-600 font-medium whitespace-nowrap">Absent</span></div>
+                <div class="flex items-center gap-1.5"><span class="legend-badge status-mp">MP</span> <span class="text-slate-600 font-medium whitespace-nowrap">Miss Punch</span></div>
+                <div class="flex items-center gap-1.5"><span class="legend-badge status-hd">HD</span> <span class="text-slate-600 font-medium whitespace-nowrap">Half Day</span></div>
+                <div class="flex items-center gap-1.5"><span class="legend-badge status-fd">FD</span> <span class="text-slate-600 font-medium whitespace-nowrap">Wrong Shift</span></div>
+                <div class="flex items-center gap-1.5"><span class="legend-badge status-l">L</span> <span class="text-slate-600 font-medium whitespace-nowrap">Left</span></div>
+                <div class="flex items-center gap-1.5"><span class="legend-badge status-slwp">SLWP</span> <span class="text-slate-600 font-medium whitespace-nowrap">Sick Leave</span></div>
+                <div class="flex items-center gap-1.5"><span class="legend-badge status-pl">PL</span> <span class="text-slate-600 font-medium whitespace-nowrap">Privileged Leave</span></div>
+            </div>
+
             <!-- Metric Cards (Admin Only) -->
             <div class="admin-only hidden grid grid-cols-1 md:grid-cols-3 gap-6 transition-all duration-300 hide-always-minimal">
                <div class="bg-indigo-600 text-white p-6 rounded-2xl shadow-sm transform transition hover:-translate-y-1 relative overflow-hidden">
@@ -335,6 +348,19 @@
                 <button onclick="window.closeAdminModal()" class="text-slate-400 hover:text-rose-500 text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-6 overflow-y-auto custom-scrollbar flex-1 flex flex-col">
+                
+                <!-- Global Calendar Override -->
+                <div class="mb-4 pb-4 border-b border-slate-200">
+                   <h4 class="font-bold text-slate-700 mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-calendar-check text-slate-400"></i> Global Calendar Override</h4>
+                   <p class="text-xs text-slate-500 mb-3">Fix or override the displayed month if auto-fetch fails.</p>
+                   <div class="flex gap-2">
+                       <input type="month" id="admin-calendar-month" class="flex-1 border border-slate-200 bg-slate-50 p-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                       <button onclick="window.saveCalendarOverride()" id="admin-save-cal-btn" class="bg-indigo-600 text-white font-bold px-4 py-2 rounded-xl hover:bg-indigo-700 transition shadow-sm flex items-center justify-center gap-2 w-24">
+                           <i class="fa-solid fa-floppy-disk"></i> Save
+                       </button>
+                   </div>
+                </div>
+
                 <div class="mb-4">
                    <h4 class="font-bold text-slate-700 mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-user-plus text-slate-400"></i> Set User Access</h4>
                    <p class="text-xs text-slate-500 mb-3">Give a user access to their attendance profile.</p>
@@ -454,6 +480,7 @@
     window.rawGlobalData = [];
     window.globalData = [];
     window.filteredData = [];
+    window.defaultMonthStr = "";
     window.currentMonthStr = "";
     window.loggedInUser = null;
     window.currentPage = 1;
@@ -492,7 +519,8 @@
             if (res.ok) {
                 const rawData = await res.json();
                 window.rawGlobalData = rawData.globalData;
-                window.currentMonthStr = rawData.currentMonthStr; 
+                window.defaultMonthStr = rawData.currentMonthStr; 
+                if(!window.currentMonthStr) window.currentMonthStr = window.defaultMonthStr;
             }
         } catch (error) { console.error("Error loading JSON", error); }
     }
@@ -571,10 +599,28 @@
     window.startApp = function() {
         document.getElementById('site-login-screen').style.opacity = '0';
         
-        // Fetch Shift Settings
-        get(ref(db, 'settings/shift')).then(snap => {
+        // Fetch Settings (Shift & Calendar)
+        get(ref(db, 'settings')).then(snap => {
             const defaultShift = { pattern: 'ACB', baseDate: formatISODate(getLogicalToday()), baseShift: 'A' };
-            window.shiftSettings = snap.exists() ? snap.val() : defaultShift;
+            if (snap.exists()) {
+                const settings = snap.val();
+                window.shiftSettings = settings.shift || defaultShift;
+                if(settings.calendar && settings.calendar.overrideMonth) {
+                    window.currentMonthStr = settings.calendar.overrideMonth;
+                    const calInput = document.getElementById('admin-calendar-month');
+                    if(calInput) calInput.value = settings.calendar.rawValue || '';
+                } else {
+                    window.currentMonthStr = window.defaultMonthStr;
+                }
+            } else {
+                window.shiftSettings = defaultShift;
+                window.currentMonthStr = window.defaultMonthStr;
+            }
+            
+            const header = document.getElementById('current-month-header');
+            if (header && window.loggedInUser && window.loggedInUser.role === 'admin') {
+                header.textContent = `Overview for ${window.currentMonthStr}`;
+            }
         });
 
         setTimeout(() => {
@@ -997,6 +1043,31 @@
             window.renderShiftCalendar();
         }).catch(e => alert("Error saving shift: " + e.message));
     }
+    
+    // Admin Tools - Global Calendar Override
+    window.saveCalendarOverride = async function() {
+        const val = document.getElementById('admin-calendar-month').value;
+        const btn = document.getElementById('admin-save-cal-btn');
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+        try {
+            let overrideStr = "";
+            if(val) {
+                const d = new Date(val + "-01");
+                const mNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                overrideStr = mNames[d.getMonth()] + " " + d.getFullYear();
+            }
+            await set(ref(db, 'settings/calendar'), { overrideMonth: overrideStr, rawValue: val });
+            btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+            setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save'; }, 2000);
+            
+            window.currentMonthStr = overrideStr || window.defaultMonthStr;
+            const header = document.getElementById('current-month-header');
+            if(header) header.textContent = `Overview for ${window.currentMonthStr}`;
+        } catch(e) {
+            alert("Error: " + e.message);
+            btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save';
+        }
+    };
 
     // Admin Tools - Fetch Single User for Editing
     window.fetchUserForAdmin = async function() {
@@ -1088,7 +1159,17 @@
         const delBtnHTML = `<button onclick="window.deleteChatMessage('${msgKey}')" class="admin-only ${adminClass} text-rose-500 hover:text-rose-700 ml-2" title="Delete Message"><i class="fa-solid fa-trash text-xs"></i></button>`;
         
         const alignWrapper = isMe ? 'justify-end' : 'justify-start';
-        const nameHeader = isMe ? `<div class="text-[10px] font-bold text-slate-400 mb-0.5 mr-1 flex justify-end w-full">${delBtnHTML} You</div>` : `<div class="text-[10px] font-bold text-slate-400 mb-0.5 ml-1 flex justify-between w-full">${msg.name} ${delBtnHTML}</div>`;
+        
+        let timeString = '';
+        if(msg.timestamp) {
+            const d = new Date(msg.timestamp);
+            timeString = d.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
+        }
+
+        const nameHeader = isMe ? 
+            `<div class="text-[9px] font-bold text-slate-400 mb-0.5 mr-1 flex justify-end items-center w-full">${delBtnHTML} <span class="font-normal text-slate-300 mr-1.5">${timeString}</span> You</div>` : 
+            `<div class="text-[9px] font-bold text-slate-400 mb-0.5 ml-1 flex justify-between items-center w-full"><span>${msg.name} <span class="font-normal text-slate-300 ml-1.5">${timeString}</span></span> ${delBtnHTML}</div>`;
+            
         const bubbleColor = isMe ? 'chat-me' : 'chat-other';
         
         chatContainerList.innerHTML += `
