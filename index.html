@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     
+    
     <!-- SEO & Branding -->
-    <title>CommScope Contractor Attendance Portal - Sandeep Biswal G</title>
+    <title>CommSpace Contractor Attendance Portal - Sandeep Biswal G</title>
     <link rel="canonical" href="https://imsbg.github.io/commscope-attendance/" />
     <link rel="icon" type="image/png" href="https://ugc.production.linktr.ee/3185d4c0-2ed6-4e02-b0e3-d464551e7f43_canva-design.png?io=true&size=avatar-v3_0">
-    <meta name="description" content="Check your CommScope contractor attendance online Unofficial. Track daily logs and attendance records for ADECCO, ANANYA, Dibya, ESJAY, Om Sai Krupa, and YASHASWI.">
-    <meta name="keywords" content="CommScope contractor attendance, CommScope attendance portal, CommScope worker login, ADECCO CommScope attendance, ANANYA contractor attendance, Dibya Industrial Service attendance, ESJAY CommScope attendance, MATHEW contractor attendance, Om Sai Krupa Enterprise attendance, SHAM contractor attendance, VASUDEVA CommScope attendance, YASHASWI contractor attendance, contractor attendance tracking, vendor employee attendance login, Sandeep Biswal, Sandeep Biswal G" />
+    <meta name="description" content="Check your CommSpace contractor attendance online Unofficial. Track daily logs and attendance records for ADECCO, ANANYA, Dibya, ESJAY, Om Sai Krupa, and YASHASWI.">
+    <meta name="keywords" content="CommSpace contractor attendance, CommSpace attendance portal, CommSpace worker login, ADECCO CommSpace attendance, ANANYA contractor attendance, Dibya Industrial Service attendance, ESJAY CommSpace attendance, MATHEW contractor attendance, Om Sai Krupa Enterprise attendance, SHAM contractor attendance, VASUDEVA CommSpace attendance, YASHASWI contractor attendance, contractor attendance tracking, vendor employee attendance login, Sandeep Biswal, Sandeep Biswal G" />
     <meta name="author" content="Sandeep Biswal G">
-    <meta property="og:title" content="CommScope Contractor Attendance Portal - Sandeep Biswal G">
-    <meta property="og:description" content="Check your CommScope contractor attendance online. Track daily logs and attendance records for ADECCO, ANANYA, Dibya, ESJAY, Om Sai Krupa, and YASHASWI.">
+    <meta property="og:title" content="CommSpace Contractor Attendance Portal - Sandeep Biswal G">
+    <meta property="og:description" content="Check your CommSpace contractor attendance online. Track daily logs and attendance records for ADECCO, ANANYA, Dibya, ESJAY, Om Sai Krupa, and YASHASWI.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://imsbg.github.io/commscope-attendance/">
     <meta property="og:image" content="https://ugc.production.linktr.ee/3185d4c0-2ed6-4e02-b0e3-d464551e7f43_canva-design.png?io=true&size=avatar-v3_0">
@@ -20,7 +20,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,wght@0,400..700;1,400..700&family=Noto+Sans+Oriya:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     
     <!-- External Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -32,7 +32,7 @@
         html { scroll-behavior: smooth; height: 100%; overscroll-behavior-y: contain; }
         
         body { 
-            font-family: 'Google Sans', 'Noto Sans Oriya', sans-serif; 
+            font-family: 'Google Sans', sans-serif; 
             color: #1e293b; 
             overflow-x: hidden; 
             min-height: 100vh; 
@@ -42,17 +42,10 @@
             background-color: #f4f7fe; 
         }
 
-        .glass-panel {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-        }
-        
-        #splash-screen { background: #ffffff; z-index: 9000; transition: opacity 0.3s ease-out; }
+        .glass-panel { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); }
         #site-login-screen { z-index: 9999; }
         
         .secure-password-mask { -webkit-text-security: disc; text-security: disc; }
-
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
@@ -87,7 +80,6 @@
 
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         .fade-in-up { animation: fadeInUp 0.3s ease-out forwards; }
-        @keyframes shimmer { 100% { transform: translateX(100%); } }
 
         /* Minimal Mode Global Rules */
         body.minimal-mode .hide-always-minimal { display: none !important; }
@@ -109,39 +101,22 @@
         body.minimal-mode #dropdown-container { display: none !important; }
 
         /* Chat System Custom Styles */
-        .chat-bubble { padding: 8px 12px; border-radius: 12px; font-size: 13px; max-width: 85%; word-wrap: break-word; }
-        .chat-me { background: #4f46e5; color: white; border-bottom-right-radius: 2px; align-self: flex-end; }
-        .chat-other { background: #e2e8f0; color: #1e293b; border-bottom-left-radius: 2px; align-self: flex-start; }
+        .chat-bubble { padding: 8px 12px; border-radius: 12px; font-size: 13px; max-width: 100%; word-wrap: break-word; }
+        .chat-me { background: #4f46e5; color: white; border-bottom-right-radius: 2px; }
+        .chat-other { background: #e2e8f0; color: #1e293b; border-bottom-left-radius: 2px; }
     </style>
 </head>
 <body class="antialiased minimal-mode">
 
-    <!-- SPLASH SCREEN -->
-    <div id="splash-screen" class="fixed inset-0 flex justify-center items-center bg-[#f4f7fe]">
-        <div class="text-center w-80 bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
-            <div class="flex flex-col items-center justify-center gap-3 mb-4">
-                <img src="https://ugc.production.linktr.ee/3185d4c0-2ed6-4e02-b0e3-d464551e7f43_canva-design.png?io=true&size=avatar-v3_0" alt="Logo" class="h-12 w-12 drop-shadow-sm">
-                <h1 class="text-lg font-bold text-slate-800 leading-tight">CommScope<br>Attendance Portal</h1>
-            </div>
-            <div class="w-full bg-slate-100 rounded-full h-1.5 mb-2 overflow-hidden relative">
-                <div class="absolute top-0 left-0 h-full bg-indigo-500 w-1/2 animate-[shimmer_1s_infinite]"></div>
-            </div>
-            <p class="mt-3 text-xs font-bold text-slate-500 uppercase tracking-widest">Loading Data...</p>
-        </div>
-    </div>
-
     <!-- SITE LOGIN SCREEN -->
-    <div id="site-login-screen" class="fixed inset-0 bg-[#f4f7fe] flex justify-center items-center hidden">
-        <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 w-96 max-w-[90%] text-center transform transition-all duration-300 relative z-10">
-            <div class="bg-indigo-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-600 text-2xl">
-                <i class="fa-solid fa-shield-halved"></i>
-            </div>
-            <h2 class="text-2xl font-bold text-slate-800 mb-2">Portal Access</h2>
-            <p class="text-sm text-slate-500 mb-6 font-medium">Please enter your credentials to continue.</p>
+    <div id="site-login-screen" class="fixed inset-0 bg-[#f4f7fe] flex justify-center items-center transition-opacity duration-300">
+        <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 w-96 max-w-[90%] text-center relative z-10">
+            <h1 class="text-4xl font-extrabold mb-2 tracking-tight"><span class="text-indigo-600">Comm</span><span class="text-slate-800">Space</span></h1>
+            <h2 class="text-xs font-bold text-slate-500 mb-6 uppercase tracking-wider">Secret Portal Access</h2>
             
             <div id="login-wrapper">
-                <input type="text" id="login-id-input" autocomplete="off" spellcheck="false" placeholder="Employee ID (e.g., AD-12345)" class="w-full px-4 py-3 text-center border border-slate-200 rounded-xl mb-3 focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-slate-50 text-slate-700 font-medium uppercase tracking-widest">
-                <input type="text" id="login-pwd-input" autocomplete="off" spellcheck="false" placeholder="Password" class="secure-password-mask w-full px-4 py-3 text-center border border-slate-200 rounded-xl mb-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-slate-50 text-slate-700 font-medium tracking-widest" onkeypress="if(event.key === 'Enter') window.verifyUserLogin();">
+                <input type="text" id="login-id-input" autocomplete="off" spellcheck="false" placeholder="Enter ID" class="w-full px-4 py-3 text-center border border-slate-200 rounded-xl mb-3 focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-slate-50 text-slate-700 font-medium uppercase tracking-widest">
+                <input type="password" id="login-pwd-input" autocomplete="off" spellcheck="false" placeholder="Enter Password" class="secure-password-mask w-full px-4 py-3 text-center border border-slate-200 rounded-xl mb-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-slate-50 text-slate-700 font-medium tracking-widest" onkeypress="if(event.key === 'Enter') window.verifyUserLogin();">
                 
                 <button type="button" onclick="window.verifyUserLogin();" id="site-login-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-md flex justify-center items-center gap-2">
                     Enter Portal
@@ -151,14 +126,14 @@
             <p id="site-login-error" class="text-rose-500 text-xs font-bold mt-4 hidden bg-rose-50 p-2 rounded-lg border border-rose-100"><i class="fa-solid fa-circle-exclamation"></i> Error.</p>
             
             <div class="mt-5 pt-4 border-t border-slate-100 text-center">
-                <p class="text-[11px] text-slate-400 font-medium italic">Disclaimer: This is a funny portal.</p>
+                <p class="text-[11px] text-slate-400 font-medium italic">Disclaimer: CommSpace is an independent community portal.</p>
             </div>
         </div>
     </div>
 
     <!-- Floating Action Buttons -->
-    <button onclick="toggleChat()" class="fixed bottom-6 right-6 bg-indigo-600 text-white h-14 w-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 z-[10000] transform hover:scale-110 outline-none focus:ring-2 focus:ring-indigo-300" title="Let's Chat">
-        <i class="fa-solid fa-messages text-xl"></i>
+    <button onclick="toggleChat()" class="fixed bottom-6 right-6 bg-indigo-600 text-white h-14 w-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 z-[10000] transform hover:scale-110 outline-none focus:ring-2 focus:ring-indigo-300" title="CommSpace Chat">
+        <i class="fa-solid fa-message text-xl"></i>
     </button>
     <button id="backToTopFab" onclick="window.scrollTo({top:0, behavior:'smooth'})" class="fixed bottom-24 right-6 bg-slate-700 text-white h-12 w-12 rounded-full shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 z-40 transform translate-y-4 hover:scale-110 outline-none focus:ring-2 focus:ring-slate-400" title="Back to Top">
         <i class="fa-solid fa-arrow-up text-lg"></i>
@@ -167,7 +142,7 @@
     <!-- Public Chat Modal -->
     <div id="chat-container" class="hidden fixed bottom-24 right-6 w-80 sm:w-96 bg-white shadow-2xl rounded-2xl border border-slate-200 z-[10001] flex-col h-[450px] transform transition-transform duration-300 origin-bottom-right overflow-hidden">
         <div class="bg-indigo-600 text-white p-4 flex justify-between items-center shadow-sm z-10">
-            <h3 class="font-bold flex items-center gap-2"><i class="fa-solid fa-comments"></i> Let's Chat (Time Pass)</h3>
+            <h3 class="font-bold flex items-center gap-2"><i class="fa-solid fa-comments"></i> CommSpace Chat</h3>
             <button onclick="toggleChat()" class="hover:text-rose-300 transition text-lg"><i class="fa-solid fa-xmark"></i></button>
         </div>
         
@@ -176,7 +151,7 @@
             <div class="bg-indigo-100 text-indigo-600 w-16 h-16 rounded-full flex items-center justify-center text-3xl mb-4"><i class="fa-solid fa-user-ninja"></i></div>
             <h4 class="font-bold text-slate-800 mb-2">Choose a Nickname</h4>
             <p class="text-xs text-slate-500 text-center mb-6">You don't need to login to chat! Just pick a display name.</p>
-            <input type="text" id="chat-name-input" placeholder="E.g., DarkKnight" maxlength="15" class="w-full border border-slate-200 p-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500 mb-4 text-center font-bold text-slate-700">
+            <input type="text" id="chat-name-input" placeholder="E.g., DarkKnight" maxlength="15" class="w-full border border-slate-200 p-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500 mb-4 text-center font-bold text-slate-700" onkeypress="if(event.key==='Enter') joinChat()">
             <button onclick="joinChat()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl shadow-md hover:bg-indigo-700 transition">Join Global Chat</button>
         </div>
 
@@ -199,7 +174,7 @@
             <!-- Header -->
             <header class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 transition-all duration-300 mb-2">
                 <div>
-                    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-800">CommScope Contractor Attendance Portal</h1>
+                    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-800"><span class="text-indigo-600">Comm</span>Space Portal</h1>
                     <p id="current-month-header" class="text-slate-500 mt-2 font-medium hide-always-minimal">Loading Data...</p>
                     <p id="welcome-user-text" class="text-indigo-600 font-bold mt-1 hidden"></p>
                 </div>
@@ -217,7 +192,7 @@
                         <i class="fa-solid fa-right-from-bracket"></i> Logout
                     </button>
                     <button onclick="openAdminModal()" class="admin-only hidden bg-slate-800 text-white px-3 md:px-4 py-2 rounded-xl shadow-sm hover:bg-slate-700 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 md:w-auto cursor-pointer">
-                        <i class="fa-solid fa-user-shield"></i> Admin Settings
+                        <i class="fa-solid fa-user-shield"></i> Admin Config
                     </button>
                 </div>
             </header>
@@ -312,7 +287,7 @@
                 </div>
             </a>
             <div class="bg-white px-4 py-2 rounded-lg border border-slate-200 text-slate-500 font-medium text-xs">
-                Disclaimer: This site is not made by, endorsed by, or affiliated with CommScope.
+                CommSpace is an independent community portal.
             </div>
             <p class="mt-3 font-semibold">© <span id="footer-year"></span> <a href="https://imsbg.github.io/commscope/" target="_blank" class="text-indigo-600 hover:underline">Sandeep Biswal G Apps</a></p>
         </footer>
@@ -328,7 +303,7 @@
             <div class="p-6 overflow-y-auto custom-scrollbar">
                 <div class="mb-2">
                    <h4 class="font-bold text-slate-700 mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-users-gear text-slate-400"></i> Set User Password</h4>
-                   <p class="text-xs text-slate-500 mb-4">Find an Employee ID from the database and set their login password.</p>
+                   <p class="text-xs text-slate-500 mb-4">Assign a password to any User ID to grant them access.</p>
                    <div class="flex gap-2 mb-4">
                        <input type="text" id="admin-search-id" placeholder="Employee ID (e.g. AD-12345)" class="flex-1 border border-slate-200 bg-slate-50 p-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500 uppercase">
                        <button onclick="window.fetchUserForAdmin()" class="bg-indigo-600 text-white font-bold px-4 py-2 rounded-xl hover:bg-indigo-700 transition shadow-sm"><i class="fa-solid fa-magnifying-glass"></i> Find</button>
@@ -336,8 +311,8 @@
                    
                    <div id="admin-user-details" class="hidden flex-col gap-3 bg-slate-50 border border-slate-200 p-4 rounded-xl">
                        <div>
-                           <p class="text-xs text-slate-400 font-bold uppercase">Found Employee</p>
-                           <p class="font-bold text-lg text-slate-800" id="admin-found-name">Name</p>
+                           <p class="text-xs text-slate-400 font-bold uppercase">Configure Access For:</p>
+                           <p class="font-bold text-lg text-slate-800" id="admin-found-name">ID</p>
                        </div>
                        <div>
                            <label class="text-xs text-slate-500 font-bold mb-1 block">Login Password</label>
@@ -412,7 +387,7 @@
     // UI Helpers
     document.getElementById('footer-year').textContent = new Date().getFullYear();
     
-    // Preload Data JSON
+    // Preload Data JSON (Without splash screen visible)
     async function preloadData() {
         try {
             const res = await fetch('data.json?t=' + new Date().getTime());
@@ -420,14 +395,11 @@
             const rawData = await res.json();
             rawGlobalData = rawData.globalData;
             currentMonthStr = rawData.currentMonthStr; 
-            
-            document.getElementById('splash-screen').style.display = 'none';
-            document.getElementById('site-login-screen').classList.remove('hidden');
         } catch (error) {
-            document.getElementById('splash-screen').innerHTML = `<div class="p-8 bg-white text-rose-500 font-bold rounded-2xl shadow-sm"><i class="fa-solid fa-triangle-exclamation"></i> Error loading core files. Please refresh.</div>`;
+            console.error("Data load error", error);
         }
     }
-
+    
     document.addEventListener('DOMContentLoaded', () => { preloadData(); });
     
     window.startApp = function() {
@@ -446,7 +418,7 @@
             } else {
                 globalData = [...rawGlobalData];
                 document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden', 'hide-for-user'));
-                document.body.classList.remove('minimal-mode'); // Admins get standard view by default
+                document.body.classList.remove('minimal-mode');
                 document.getElementById('welcome-user-text').classList.add('hidden');
             }
             
@@ -462,24 +434,25 @@
         document.getElementById('main-content').classList.add('hidden');
         document.getElementById('site-login-screen').classList.remove('hidden');
         document.getElementById('site-login-screen').style.opacity = '1';
+        
+        // Hide delete buttons from chat if admin logged out
+        document.querySelectorAll('.admin-only').forEach(el => el.classList.add('hidden'));
     }
 
-    // Scroll Fab Observer
     window.addEventListener('scroll', () => {
         const fab = document.getElementById('backToTopFab');
         if (window.scrollY > 300) { fab.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4'); fab.classList.add('opacity-100'); } 
         else { fab.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4'); fab.classList.remove('opacity-100'); }
     });
 
-    // Filtering, Highlighting, rendering logic
+    // Filtering & Display Logic
     function handleScopeClick(radioBtn) { currentSearchScope = radioBtn.value; currentPage = 1; applyFilters(); }
     function highlightMatch(text, query, isActive) { if (!text) return 'N/A'; if (!query || !isActive) return text; const escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'); const regex = new RegExp(`(${escapedQuery})`, 'gi'); if(regex.test(text)) { return text.replace(regex, `<span class="bg-yellow-200 text-yellow-900 font-bold px-1 rounded">$1</span>`); } return text; }
-
     function getDisplayStatus(val) { return (!val || val.trim() === '-') ? '-' : (val.trim() === '--' ? 'L' : val.trim()); }
     function getStatusClass(val) { return (!val || val.trim() === '-') ? 'pending' : (val.trim() === '--' || val.trim().toUpperCase() === 'L') ? 'l' : val.trim().toLowerCase().replace(/[^a-z0-9]/g, ''); }
 
     function populateFilters() { 
-        if(loggedInUser && loggedInUser.role === 'user') return; // no filters for normal users
+        if(loggedInUser && loggedInUser.role === 'user') return;
         const contractors = [...new Set(globalData.map(d => d.contractor).filter(Boolean))].sort(); 
         const tls = [...new Set(globalData.map(d => d.tl).filter(Boolean).filter(t => t !== 'N/A'))].sort();
         const sups = [...new Set(globalData.map(d => d.sanctioner).filter(Boolean).filter(s => s !== 'N/A'))].sort();
@@ -542,16 +515,10 @@
         const pageData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
         const minimalContainer = document.getElementById('minimalCardsContainer'); minimalContainer.innerHTML = '';
         
-        let searchVal = "";
-        let hlAll = false;
-        let scope = 'emp';
-        if(loggedInUser.role === 'admin') {
-            searchVal = document.getElementById('searchInput').value.trim();
-            scope = currentSearchScope;
-            hlAll = scope === 'all';
-        }
+        let searchVal = ""; let hlAll = false; let scope = 'emp';
+        if(loggedInUser.role === 'admin') { searchVal = document.getElementById('searchInput').value.trim(); scope = currentSearchScope; hlAll = scope === 'all'; }
 
-        if(pageData.length === 0) { minimalContainer.innerHTML = `<div class="text-center py-12 text-slate-500 font-medium">No records found.</div>`; return; }
+        if(pageData.length === 0) { minimalContainer.innerHTML = `<div class="text-center py-12 text-slate-500 font-medium bg-white rounded-2xl shadow-sm border border-slate-100">No records found.</div>`; return; }
 
         pageData.forEach((row, i) => {
             const tlDisplay = highlightMatch(row.tl, searchVal, hlAll || scope === 'tl');
@@ -593,9 +560,7 @@
     function renderStandardRows() {
         const pageData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
         let searchVal = ""; let scope = 'emp'; let hlAll = false;
-        if(loggedInUser.role === 'admin') {
-            searchVal = document.getElementById('searchInput').value.trim(); scope = currentSearchScope; hlAll = scope === 'all';
-        }
+        if(loggedInUser.role === 'admin') { searchVal = document.getElementById('searchInput').value.trim(); scope = currentSearchScope; hlAll = scope === 'all'; }
 
         const fragment = document.createDocumentFragment();
         pageData.forEach((row, i) => {
@@ -696,7 +661,7 @@
     }
     function closeEmployeeModal() { document.getElementById('employee-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('modal-content').classList.add('scale-95'); }
 
-    // Shift Setup Base 
+    // Shift Setup
     const DEFAULT_SETTINGS = { pattern: 'ACB', baseDate: formatISODate(getLogicalToday()), baseShift: 'A' }; 
     let shiftSettings = JSON.parse(localStorage.getItem('shiftSettings')) || DEFAULT_SETTINGS;
     function openShiftModal() { document.getElementById('shift-modal').classList.remove('opacity-0', 'pointer-events-none'); document.getElementById('shift-modal-content').classList.remove('scale-95'); }
@@ -716,6 +681,7 @@
             if (!localStorage.getItem('chat_username')) {
                 document.getElementById('chat-setup-view').classList.remove('hidden');
                 document.getElementById('chat-interface-view').classList.add('hidden');
+                document.getElementById('chat-interface-view').classList.remove('flex');
             } else {
                 document.getElementById('chat-setup-view').classList.add('hidden');
                 document.getElementById('chat-interface-view').classList.remove('hidden');
@@ -731,6 +697,7 @@
         const nameInput = document.getElementById('chat-name-input').value.trim();
         if (nameInput.length < 3) return alert("Name must be at least 3 characters.");
         localStorage.setItem('chat_username', nameInput);
+        
         document.getElementById('chat-setup-view').classList.add('hidden');
         document.getElementById('chat-interface-view').classList.remove('hidden');
         document.getElementById('chat-interface-view').classList.add('flex');
@@ -740,7 +707,7 @@
 <script type="module">
     // FIREBASE INITIALIZATION & LOGIC
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getDatabase, ref, get, set, push, onChildAdded, query, limitToLast, startAt, orderByChild } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+    import { getDatabase, ref, get, set, push, onChildAdded, remove, onChildRemoved, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCeNFC0hZaz7H9nxsiYwtMbrbsoncliNqQ",
@@ -773,13 +740,18 @@
             
             if(adminSnap.exists() && adminSnap.val().username.toUpperCase() === idInput && adminSnap.val().password === pwdInput) {
                 window.loggedInUser = { role: 'admin', name: 'Administrator' };
+                // Unhide delete buttons in chat if it's already open
+                document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
                 window.startApp();
                 return;
             }
 
             // Normal User Login
-            const employeeData = window.rawGlobalData.find(e => e.code.toUpperCase() === idInput);
-            if (!employeeData) { throw new Error("ID not found."); }
+            let employeeName = "Employee";
+            if (window.rawGlobalData && window.rawGlobalData.length > 0) {
+                const employeeData = window.rawGlobalData.find(e => e.code.toUpperCase() === idInput);
+                if (employeeData) employeeName = employeeData.name;
+            }
 
             const userRef = ref(db, `users/${idInput}`);
             const userSnap = await get(userRef);
@@ -787,11 +759,11 @@
             if (userSnap.exists()) {
                 const userData = userSnap.val();
                 if (userData.password === pwdInput) {
-                    window.loggedInUser = { role: 'user', id: idInput, name: employeeData.name };
+                    window.loggedInUser = { role: 'user', id: idInput, name: employeeName };
                     window.startApp();
                 } else { throw new Error("Incorrect Password."); }
             } else {
-                throw new Error("Access not configured. Contact Admin.");
+                throw new Error("Access not configured.");
             }
         } catch (error) {
             err.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${error.message}`;
@@ -805,23 +777,16 @@
         const id = document.getElementById('admin-search-id').value.trim().toUpperCase();
         if(!id) return alert("Enter an ID");
         
-        const emp = window.rawGlobalData.find(e => e.code.toUpperCase() === id);
-        if(emp) {
-            document.getElementById('admin-found-name').innerText = emp.name;
-            document.getElementById('admin-user-details').classList.remove('hidden');
-            document.getElementById('admin-user-details').classList.add('flex');
-            
-            // Try fetching existing data
-            const userSnap = await get(ref(db, `users/${id}`));
-            if(userSnap.exists()) {
-                document.getElementById('admin-set-pwd').value = userSnap.val().password || '';
-            } else {
-                document.getElementById('admin-set-pwd').value = '';
-            }
+        document.getElementById('admin-found-name').innerText = "User ID: " + id;
+        document.getElementById('admin-user-details').classList.remove('hidden');
+        document.getElementById('admin-user-details').classList.add('flex');
+        
+        // Try fetching existing data
+        const userSnap = await get(ref(db, `users/${id}`));
+        if(userSnap.exists()) {
+            document.getElementById('admin-set-pwd').value = userSnap.val().password || '';
         } else {
-            alert("Employee ID not found in the current dataset.");
-            document.getElementById('admin-user-details').classList.add('hidden');
-            document.getElementById('admin-user-details').classList.remove('flex');
+            document.getElementById('admin-set-pwd').value = '';
         }
     };
 
@@ -854,28 +819,49 @@
 
     const chatContainerList = document.getElementById('chat-messages');
     
-    // Listen for new messages (Last 100, Resetting at 6 AM)
-    const chatQuery = query(ref(db, 'chat'), orderByChild('timestamp'), startAt(get6AMTimestamp()), limitToLast(100));
+    // Listen for new messages
+    const chatQuery = query(ref(db, 'chat'), limitToLast(100));
     
     onChildAdded(chatQuery, (snap) => {
         const msg = snap.val();
+        const msgKey = snap.key;
+        
+        // Discard old messages client-side
+        if(msg.timestamp < get6AMTimestamp()) return;
         
         const myName = localStorage.getItem('chat_username') || "Anonymous";
         const isMe = msg.name === myName;
-        const alignClass = isMe ? 'chat-me' : 'chat-other';
-        const wrapperClass = isMe ? 'justify-end' : 'justify-start';
-        const nameLabel = isMe ? '' : `<div class="text-[10px] font-bold text-slate-400 mb-0.5 ml-1">${msg.name}</div>`;
+        
+        // Delete button (visible only to admin)
+        const delBtnHTML = `<button onclick="window.deleteChatMessage('${msgKey}')" class="admin-only hidden text-rose-500 hover:text-rose-700 ml-2" title="Delete Message"><i class="fa-solid fa-trash text-xs"></i></button>`;
+        
+        const alignWrapper = isMe ? 'justify-end' : 'justify-start';
+        const nameHeader = isMe ? '' : `<div class="text-[10px] font-bold text-slate-400 mb-0.5 ml-1 flex justify-between w-full">${msg.name} ${delBtnHTML}</div>`;
+        const bubbleColor = isMe ? 'chat-me' : 'chat-other';
         
         chatContainerList.innerHTML += `
-            <div class="flex ${wrapperClass} w-full fade-in-up">
-                <div class="flex flex-col">
-                    ${nameLabel}
-                    <div class="chat-bubble ${alignClass} shadow-sm">${msg.text}</div>
+            <div id="chat-${msgKey}" class="flex ${alignWrapper} w-full fade-in-up mb-3">
+                <div class="flex flex-col max-w-[85%]">
+                    ${nameHeader}
+                    <div class="flex items-center justify-end">
+                        ${isMe ? delBtnHTML : ''}
+                        <div class="chat-bubble ${bubbleColor} shadow-sm ${isMe ? 'ml-1' : ''}">${msg.text}</div>
+                    </div>
                 </div>
             </div>`;
         
-        // Auto scroll to bottom
         chatContainerList.scrollTop = chatContainerList.scrollHeight;
+
+        // If admin is logged in right now, unhide the new delete button immediately
+        if(window.loggedInUser && window.loggedInUser.role === 'admin') {
+            document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden', 'hide-for-user'));
+        }
+    });
+
+    // Remove chat from DOM if deleted by Admin
+    onChildRemoved(ref(db, 'chat'), (snap) => {
+        const el = document.getElementById(`chat-${snap.key}`);
+        if(el) el.remove();
     });
 
     window.sendChat = function() {
@@ -889,6 +875,14 @@
         const msgObj = { name: chatName, text: text, timestamp: Date.now() };
         
         push(ref(db, 'chat'), msgObj).then(() => { input.value = ''; }).catch(e => alert("Error sending: " + e.message));
+    };
+
+    window.deleteChatMessage = async function(key) {
+        if(confirm("Are you sure you want to delete this message?")) {
+            try {
+                await remove(ref(db, `chat/${key}`));
+            } catch(e) { alert("Error deleting message: " + e.message); }
+        }
     };
 </script>
 </body>
