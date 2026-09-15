@@ -5,12 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- SEO & Branding -->
-    <title>CommSpace Contractor Attendance Portal - Sandeep Biswal G</title>
+    <title>CommScope Contractor Attendance Portal - Sandeep Biswal G</title>
     <link rel="canonical" href="https://imsbg.github.io/commscope-attendance/" />
     <link rel="icon" type="image/png" href="https://ugc.production.linktr.ee/3185d4c0-2ed6-4e02-b0e3-d464551e7f43_canva-design.png?io=true&size=avatar-v3_0">
-    <meta name="description" content="Check your CommSpace contractor attendance online. Track daily logs and attendance records.">
-    <meta name="keywords" content="CommSpace contractor attendance, CommSpace attendance portal, CommSpace worker login, contractor attendance tracking, Sandeep Biswal" />
+    <meta name="description" content="Check your CommScope contractor attendance online. Track daily logs and attendance records.">
+    <meta name="keywords" content="CommScope contractor attendance, CommScope attendance portal, CommScope worker login, contractor attendance tracking, Sandeep Biswal" />
     <meta name="author" content="Sandeep Biswal G">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#4f46e5">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://imsbg.github.io/commscope-attendance/">
+    <meta property="og:title" content="CommScope Contractor Attendance Portal - Sandeep Biswal G">
+    <meta property="og:description" content="Check your CommScope contractor attendance online. Track daily logs and attendance records.">
+    <meta property="og:image" content="https://ugc.production.linktr.ee/3185d4c0-2ed6-4e02-b0e3-d464551e7f43_canva-design.png?io=true&size=avatar-v3_0">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://imsbg.github.io/commscope-attendance/">
+    <meta name="twitter:title" content="CommScope Contractor Attendance Portal - Sandeep Biswal G">
+    <meta name="twitter:description" content="Check your CommScope contractor attendance online. Track daily logs and attendance records.">
+    <meta name="twitter:image" content="https://ugc.production.linktr.ee/3185d4c0-2ed6-4e02-b0e3-d464551e7f43_canva-design.png?io=true&size=avatar-v3_0">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -240,7 +256,8 @@
                     <div id="search-container" class="relative w-full rounded-full bg-white group">
                         <div id="search-inner" class="relative">
                             <i class="fa-solid fa-magnifying-glass text-slate-400 pointer-events-none absolute left-4 top-1/2 transform -translate-y-1/2" id="search-icon"></i>
-                            <input type="text" id="searchInput" placeholder="Search Employee, TL, ID..." class="pl-12 pr-10 py-3 border border-slate-200 rounded-full w-full outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-transparent font-medium">
+                            <input type="text" id="searchInput" oninput="document.getElementById('clear-search-btn').classList.toggle('hidden', this.value === '')" placeholder="Search Employee, TL, ID..." class="pl-12 pr-10 py-3 border border-slate-200 rounded-full w-full outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-transparent font-medium">
+                            <i id="clear-search-btn" class="fa-solid fa-xmark hidden cursor-pointer absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition text-lg" onclick="document.getElementById('searchInput').value=''; window.currentPage=1; window.applyFilters(); this.classList.add('hidden');"></i>
                         </div>
                     </div>
                     
@@ -367,6 +384,20 @@
              
              <!-- Admin Shift Settings & Holidays -->
              <div class="w-full lg:w-80 p-5 md:p-6 bg-white lg:border-l border-slate-200 flex flex-col flex-shrink-0">
+                
+                <div class="mb-5 border-b border-slate-100 pb-5">
+                    <h4 class="font-bold text-slate-800 mb-3 text-base flex items-center gap-2"><i class="fa-solid fa-eye text-blue-500"></i> Personal Shift View</h4>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase tracking-wide">Preview My Shift</label>
+                        <select id="local-shift-override" onchange="window.renderShiftCalendar()" class="w-full border border-slate-200 rounded-lg p-2.5 bg-white outline-none focus:ring-2 focus:ring-blue-500 font-medium text-sm transition-all">
+                            <option value="">-- Use Global Settings --</option>
+                            <option value="A">Base: A Shift</option>
+                            <option value="B">Base: B Shift</option>
+                            <option value="C">Base: C Shift</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="admin-only hidden">
                     <h4 class="font-bold text-slate-800 mb-3 text-base flex items-center gap-2"><i class="fa-solid fa-gear text-indigo-500"></i> Global Shift Settings</h4>
                     <div class="space-y-4 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
@@ -411,6 +442,10 @@
     window.currentSearchScope = 'emp'; 
     window.calCurrentDate = new Date(); 
     if(window.calCurrentDate.getFullYear() !== 2026) window.calCurrentDate.setFullYear(2026);
+    
+    // Helpers
+    function getLogicalToday() { return new Date(); }
+    function formatISODate(d) { return d.toISOString().split('T')[0]; }
     
     // Auto Hyphen Feature
     window.autoHyphen = function(el) {
@@ -778,10 +813,15 @@
     window.getShiftForDate = function(dateObj) { 
         if (!window.shiftSettings) return 'A';
         if (dateObj.getDay() === 0) return 'OFF'; 
+        
+        let baseShiftToUse = window.shiftSettings.baseShift;
+        const override = document.getElementById('local-shift-override')?.value;
+        if (override) baseShiftToUse = override;
+
         const targetMon = getMonday(dateObj), baseMon = getMonday(new Date(window.shiftSettings.baseDate)); 
         const diffWeeks = Math.floor(Math.round((targetMon - baseMon) / (1000 * 60 * 60 * 24)) / 7); 
         const activeSeq = window.SEQUENCES[window.shiftSettings.pattern] || window.SEQUENCES['ACB']; 
-        let baseIndex = activeSeq.indexOf(window.shiftSettings.baseShift); 
+        let baseIndex = activeSeq.indexOf(baseShiftToUse); 
         if (baseIndex === -1) baseIndex = 0; 
         let currentIndex = (baseIndex + diffWeeks) % activeSeq.length; 
         if (currentIndex < 0) currentIndex += activeSeq.length; 
@@ -823,6 +863,10 @@
         document.getElementById('sc-setup-pattern').value = window.shiftSettings.pattern; 
         window.updateShiftDropdown(); 
         document.getElementById('sc-setup-date').value = window.shiftSettings.baseDate;
+        
+        const localOverride = document.getElementById('local-shift-override');
+        if (localOverride) localOverride.value = ''; // Reset local override
+        
         window.renderShiftCalendar();
         
         document.getElementById('shift-modal').classList.remove('opacity-0', 'pointer-events-none'); 
