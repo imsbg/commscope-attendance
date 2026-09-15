@@ -145,7 +145,7 @@
     </div>
 
     <!-- Floating Action Buttons -->
-    <button onclick="window.toggleChat()" class="fixed bottom-6 right-6 bg-indigo-600 text-white h-14 w-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 z-[10000] transform hover:scale-110 outline-none focus:ring-2 focus:ring-indigo-300" title="CommSpace Chat">
+    <button id="chat-fab-btn" onclick="window.toggleChat()" class="fixed bottom-6 right-6 bg-indigo-600 text-white h-14 w-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 z-[10000] transform hover:scale-110 outline-none focus:ring-2 focus:ring-indigo-300" title="CommSpace Chat">
         <i class="fa-solid fa-message text-xl"></i>
     </button>
     <button id="backToTopFab" onclick="window.scrollTo({top:0, behavior:'smooth'})" class="fixed bottom-24 right-6 bg-slate-700 text-white h-12 w-12 rounded-full shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 z-40 transform translate-y-4 hover:scale-110 outline-none focus:ring-2 focus:ring-slate-400" title="Back to Top">
@@ -217,8 +217,8 @@
             </header>
 
             <!-- Attendance Legend -->
-            <div id="attendance-legend" class="bg-white p-4 rounded-2xl mb-2 w-full flex flex-wrap gap-x-4 gap-y-2 justify-center sm:justify-start items-center text-xs shadow-sm border border-slate-200">
-                <span class="font-bold text-slate-500 uppercase tracking-wider mr-2 hidden md:block">Legend:</span>
+            <div id="attendance-legend" class="bg-white p-3 md:p-4 rounded-2xl mb-2 w-full flex flex-wrap gap-x-3 gap-y-2 justify-center sm:justify-start items-center text-xs shadow-sm border border-slate-200">
+                <span class="font-bold text-slate-500 uppercase tracking-wider mr-1">Legend:</span>
                 <div class="flex items-center gap-1.5"><span class="legend-badge status-p">P</span> <span class="text-slate-600 font-medium whitespace-nowrap">Present</span></div>
                 <div class="flex items-center gap-1.5"><span class="legend-badge status-a">A</span> <span class="text-slate-600 font-medium whitespace-nowrap">Absent</span></div>
                 <div class="flex items-center gap-1.5"><span class="legend-badge status-mp">MP</span> <span class="text-slate-600 font-medium whitespace-nowrap">Miss Punch</span></div>
@@ -349,6 +349,19 @@
             </div>
             <div class="p-6 overflow-y-auto custom-scrollbar flex-1 flex flex-col">
                 
+                <!-- Global Chat Settings -->
+                <div class="mb-4 pb-4 border-b border-slate-200">
+                   <h4 class="font-bold text-slate-700 mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-message text-slate-400"></i> Global Chat Settings</h4>
+                   <p class="text-xs text-slate-500 mb-3">Enable or disable the public chat for all users.</p>
+                   <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-200">
+                       <span class="text-xs font-bold text-slate-600 uppercase tracking-wider">Enable Chat Feature</span>
+                       <label class="relative inline-flex items-center cursor-pointer">
+                           <input type="checkbox" id="admin-chat-toggle" onchange="window.saveChatToggle()" class="sr-only peer" checked>
+                           <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                       </label>
+                   </div>
+                </div>
+
                 <!-- Global Calendar Override -->
                 <div class="mb-4 pb-4 border-b border-slate-200">
                    <h4 class="font-bold text-slate-700 mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-calendar-check text-slate-400"></i> Global Calendar Override</h4>
@@ -461,7 +474,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getDatabase, ref, get, set, push, onChildAdded, remove, onChildRemoved, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+    import { getDatabase, ref, get, set, push, onChildAdded, remove, onChildRemoved, query, limitToLast, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCeNFC0hZaz7H9nxsiYwtMbrbsoncliNqQ",
@@ -484,6 +497,7 @@
     window.currentMonthStr = "";
     window.loggedInUser = null;
     window.currentPage = 1;
+    window.chatEnabled = true;
     const rowsPerPage = 15; 
     let trendChartInstance = null; let trendChartData = null;
     const absenceList = ['A', 'ABSENT', 'FD', 'Wrong Shift', 'HD', 'HALF DAY', 'SLWP', 'SICK LEAVE', 'MP', 'MISS PUNCH'];
@@ -599,6 +613,24 @@
     window.startApp = function() {
         document.getElementById('site-login-screen').style.opacity = '0';
         
+        // Listen to Chat Enabled state globally
+        onValue(ref(db, 'settings/chatEnabled'), (snap) => {
+            const isEnabled = snap.exists() ? snap.val() : true;
+            window.chatEnabled = isEnabled;
+            const toggleEl = document.getElementById('admin-chat-toggle');
+            if(toggleEl) toggleEl.checked = isEnabled;
+            
+            const chatFab = document.getElementById('chat-fab-btn');
+            if (chatFab) {
+                 if(isEnabled) {
+                     chatFab.classList.remove('hidden');
+                 } else {
+                     chatFab.classList.add('hidden');
+                     document.getElementById('chat-container').classList.add('hidden'); // Force close if open
+                 }
+            }
+        });
+
         // Fetch Settings (Shift & Calendar)
         get(ref(db, 'settings')).then(snap => {
             const defaultShift = { pattern: 'ACB', baseDate: formatISODate(getLogicalToday()), baseShift: 'A' };
@@ -887,7 +919,23 @@
         `;
 
         document.getElementById('modal-calendar-title').textContent = `Attendance for ${window.currentMonthStr}`;
-        let daysHTML = ''; for (let i = 0; i < 31; i++) { const rawStatus = employee.dates[i] || '-'; daysHTML += `<div class="status-${getStatusClass(rawStatus)} flex flex-col justify-center items-center rounded-xl font-bold border border-slate-200 transition hover:scale-105 h-full w-full min-h-[35px] md:min-h-[50px] p-0.5"><span class="text-[11px] md:text-lg leading-none">${i+1}</span><span class="text-[8px] md:text-sm opacity-80 mt-0.5 leading-none w-full text-center truncate">${getDisplayStatus(rawStatus)}</span></div>`; }
+        
+        let parseDate = new Date(window.currentMonthStr + " 1");
+        let firstDay = 0;
+        let daysInMonth = 31;
+        if (!isNaN(parseDate.getTime())) {
+            firstDay = parseDate.getDay();
+            daysInMonth = new Date(parseDate.getFullYear(), parseDate.getMonth() + 1, 0).getDate();
+        }
+        
+        let daysHTML = ''; 
+        for(let i = 0; i < firstDay; i++) {
+            daysHTML += `<div class="rounded-xl border border-slate-50/50 bg-slate-50/30 min-h-[35px] md:min-h-[50px]"></div>`;
+        }
+        for (let i = 0; i < daysInMonth; i++) { 
+            const rawStatus = employee.dates[i] || '-'; 
+            daysHTML += `<div class="status-${getStatusClass(rawStatus)} flex flex-col justify-center items-center rounded-xl font-bold border border-slate-200 transition hover:scale-105 h-full w-full min-h-[35px] md:min-h-[50px] p-0.5"><span class="text-[11px] md:text-lg leading-none">${i+1}</span><span class="text-[8px] md:text-sm opacity-80 mt-0.5 leading-none w-full text-center truncate">${getDisplayStatus(rawStatus)}</span></div>`; 
+        }
         document.getElementById('modal-calendar').innerHTML = daysHTML; 
         document.getElementById('employee-modal').classList.remove('opacity-0', 'pointer-events-none'); 
         document.getElementById('modal-content').classList.remove('scale-95'); 
@@ -1016,24 +1064,6 @@
         document.getElementById('chat-interface-view').classList.remove('hidden');
         document.getElementById('chat-interface-view').classList.add('flex');
     }
-</script>
-
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getDatabase, ref, get, set, push, onChildAdded, remove, onChildRemoved, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCeNFC0hZaz7H9nxsiYwtMbrbsoncliNqQ",
-      authDomain: "sg-fun.firebaseapp.com",
-      databaseURL: "https://sg-fun-default-rtdb.firebaseio.com",
-      projectId: "sg-fun",
-      storageBucket: "sg-fun.firebasestorage.app",
-      messagingSenderId: "70359168339",
-      appId: "1:70359168339:web:94d5ecf8b08ffe880c9da6"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
 
     window.saveGlobalShiftSettings = function() {
         window.shiftSettings.pattern = document.getElementById('sc-setup-pattern').value; 
@@ -1044,6 +1074,16 @@
         }).catch(e => alert("Error saving shift: " + e.message));
     }
     
+    // Admin Tools - Global Chat Settings Enable/Disable
+    window.saveChatToggle = async function() {
+        const isEnabled = document.getElementById('admin-chat-toggle').checked;
+        try {
+            await set(ref(db, 'settings/chatEnabled'), isEnabled);
+        } catch(e) {
+            alert("Error saving chat settings: " + e.message);
+        }
+    }
+
     // Admin Tools - Global Calendar Override
     window.saveCalendarOverride = async function() {
         const val = document.getElementById('admin-calendar-month').value;
