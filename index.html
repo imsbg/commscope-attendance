@@ -8,14 +8,9 @@
     <title>CommSpace Contractor Attendance Portal - Sandeep Biswal G</title>
     <link rel="canonical" href="https://imsbg.github.io/commscope-attendance/" />
     <link rel="icon" type="image/png" href="https://ugc.production.linktr.ee/3185d4c0-2ed6-4e02-b0e3-d464551e7f43_canva-design.png?io=true&size=avatar-v3_0">
-    <meta name="description" content="Check your CommSpace contractor attendance online Unofficial. Track daily logs and attendance records for ADECCO, ANANYA, Dibya, ESJAY, Om Sai Krupa, and YASHASWI.">
-    <meta name="keywords" content="CommSpace contractor attendance, CommSpace attendance portal, CommSpace worker login, ADECCO CommSpace attendance, ANANYA contractor attendance, Dibya Industrial Service attendance, ESJAY CommSpace attendance, MATHEW contractor attendance, Om Sai Krupa Enterprise attendance, SHAM contractor attendance, VASUDEVA CommSpace attendance, YASHASWI contractor attendance, contractor attendance tracking, vendor employee attendance login, Sandeep Biswal, Sandeep Biswal G" />
+    <meta name="description" content="Check your CommSpace contractor attendance online Unofficial. Track daily logs and attendance records.">
+    <meta name="keywords" content="CommSpace contractor attendance, CommSpace attendance portal, CommSpace worker login, contractor attendance tracking, vendor employee attendance login, Sandeep Biswal" />
     <meta name="author" content="Sandeep Biswal G">
-    <meta property="og:title" content="CommSpace Contractor Attendance Portal - Sandeep Biswal G">
-    <meta property="og:description" content="Check your CommSpace contractor attendance online. Track daily logs and attendance records for ADECCO, ANANYA, Dibya, ESJAY, Om Sai Krupa, and YASHASWI.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://imsbg.github.io/commscope-attendance/">
-    <meta property="og:image" content="https://ugc.production.linktr.ee/3185d4c0-2ed6-4e02-b0e3-d464551e7f43_canva-design.png?io=true&size=avatar-v3_0">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -86,7 +81,6 @@
         .hide-for-user { display: none !important; }
 
         #filter-wrapper { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; transition: all 0.3s ease; }
-        
         body.minimal-mode #table-section-header { background: transparent; border: none; box-shadow: none; padding: 1rem 0; }
         body.minimal-mode #table-header-title-container { justify-content: center; margin-bottom: 2rem; position: relative; }
         body.minimal-mode #viewToggleBtn { position: absolute; right: 0; }
@@ -116,7 +110,7 @@
             
             <div id="login-wrapper">
                 <input type="text" id="login-id-input" autocomplete="off" spellcheck="false" placeholder="Enter ID" class="w-full px-4 py-3 text-center border border-slate-200 rounded-xl mb-3 focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-slate-50 text-slate-700 font-medium uppercase tracking-widest">
-                <input type="password" id="login-pwd-input" autocomplete="off" spellcheck="false" placeholder="Enter Password" class="secure-password-mask w-full px-4 py-3 text-center border border-slate-200 rounded-xl mb-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-slate-50 text-slate-700 font-medium tracking-widest" onkeypress="if(event.key === 'Enter') window.verifyUserLogin();">
+                <input type="password" id="login-pwd-input" autocomplete="off" spellcheck="false" placeholder="Enter Password" class="w-full px-4 py-3 text-center border border-slate-200 rounded-xl mb-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-slate-50 text-slate-700 font-medium tracking-widest" onkeypress="if(event.key === 'Enter') window.verifyUserLogin();">
                 
                 <button type="button" onclick="window.verifyUserLogin();" id="site-login-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-md flex justify-center items-center gap-2">
                     Enter Portal
@@ -185,7 +179,7 @@
                     <button onclick="openShiftModal()" class="bg-indigo-600 text-white px-3 md:px-4 py-2 rounded-xl shadow-sm hover:bg-indigo-700 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 xl:flex-none" title="Shift Calendar (Shortcut: T)">
                         <i class="fa-solid fa-calendar-days"></i> <span class="hidden sm:inline">Shift</span> Calendar
                     </button>
-                    <button onclick="openPdfModal()" class="bg-teal-600 text-white px-3 md:px-4 py-2 rounded-xl shadow-sm hover:bg-teal-700 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 md:w-auto cursor-pointer">
+                    <button onclick="openPdfModal()" class="admin-only hidden bg-teal-600 text-white px-3 md:px-4 py-2 rounded-xl shadow-sm hover:bg-teal-700 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 md:w-auto cursor-pointer">
                         <i class="fa-solid fa-folder-open"></i> Original PDF
                     </button>
                     <button onclick="logoutUser()" class="bg-rose-100 text-rose-700 px-3 md:px-4 py-2 rounded-xl shadow-sm hover:bg-rose-200 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 md:w-auto cursor-pointer">
@@ -232,9 +226,9 @@
             </section>
 
             <!-- Main Search & Results Section -->
-            <div id="table-section-header" class="glass-panel p-4 md:p-6 rounded-2xl relative transition-all duration-300 w-full">
+            <div id="table-section-header" class="glass-panel p-4 md:p-6 rounded-2xl relative transition-all duration-300 w-full admin-only hidden">
                 
-                <div id="table-header-title-container" class="flex justify-between items-center w-full mb-4 relative transition-all duration-300 admin-only hidden">
+                <div id="table-header-title-container" class="flex justify-between items-center w-full mb-4 relative transition-all duration-300">
                     <h2 class="text-lg md:text-xl font-bold text-slate-800 flex items-center gap-2 whitespace-nowrap hide-always-minimal">
                         Records <span id="contractor-count" class="hidden bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-md font-bold transition-all border border-indigo-200"></span>
                     </h2>
@@ -243,7 +237,7 @@
                     </button>
                 </div>
                 
-                <div id="filter-wrapper" class="admin-only hidden">
+                <div id="filter-wrapper">
                     <div id="search-container" class="relative w-full rounded-full bg-white group">
                         <div id="search-inner" class="relative">
                             <i class="fa-solid fa-magnifying-glass text-slate-400 pointer-events-none absolute left-4 top-1/2 transform -translate-y-1/2" id="search-icon"></i>
@@ -271,9 +265,12 @@
                     <div id="mobileCardsContainer" class="md:hidden flex flex-col gap-3"></div>
                 </div>
                 
-                <div id="minimalCardsContainer" class="flex flex-col gap-4 mt-5 max-w-4xl mx-auto hidden"></div>
-                <div id="pagination-controls" class="pt-6 flex flex-col md:flex-row justify-between items-center text-sm gap-4 font-medium admin-only hidden"></div>
+                <div id="pagination-controls" class="pt-6 flex flex-col md:flex-row justify-between items-center text-sm gap-4 font-medium"></div>
             </div>
+
+            <!-- Single Container for User Card/Minimal View -->
+            <div id="minimalCardsContainer" class="flex flex-col gap-4 mt-2 max-w-4xl mx-auto hidden w-full"></div>
+
         </div>
         
        <footer class="text-center text-xs text-slate-500 pt-10 pb-12 relative flex flex-col items-center mt-auto w-full">
@@ -300,16 +297,16 @@
                 <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2"><i class="fa-solid fa-user-shield text-indigo-600"></i> Admin Panel</h3>
                 <button onclick="closeAdminModal()" class="text-slate-400 hover:text-rose-500 text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="p-6 overflow-y-auto custom-scrollbar">
-                <div class="mb-2">
-                   <h4 class="font-bold text-slate-700 mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-users-gear text-slate-400"></i> Set User Password</h4>
-                   <p class="text-xs text-slate-500 mb-4">Assign a password to any User ID to grant them access.</p>
+            <div class="p-6 overflow-y-auto custom-scrollbar flex-1 flex flex-col">
+                <div class="mb-4">
+                   <h4 class="font-bold text-slate-700 mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-user-plus text-slate-400"></i> Set User Access</h4>
+                   <p class="text-xs text-slate-500 mb-3">Give a user access to their attendance profile.</p>
                    <div class="flex gap-2 mb-4">
                        <input type="text" id="admin-search-id" placeholder="Employee ID (e.g. AD-12345)" class="flex-1 border border-slate-200 bg-slate-50 p-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500 uppercase">
                        <button onclick="window.fetchUserForAdmin()" class="bg-indigo-600 text-white font-bold px-4 py-2 rounded-xl hover:bg-indigo-700 transition shadow-sm"><i class="fa-solid fa-magnifying-glass"></i> Find</button>
                    </div>
                    
-                   <div id="admin-user-details" class="hidden flex-col gap-3 bg-slate-50 border border-slate-200 p-4 rounded-xl">
+                   <div id="admin-user-details" class="hidden flex-col gap-3 bg-slate-50 border border-slate-200 p-4 rounded-xl mb-4">
                        <div>
                            <p class="text-xs text-slate-400 font-bold uppercase">Configure Access For:</p>
                            <p class="font-bold text-lg text-slate-800" id="admin-found-name">ID</p>
@@ -323,12 +320,19 @@
                        </button>
                    </div>
                 </div>
+
+                <div class="mt-4 border-t border-slate-200 pt-4 flex-1">
+                    <h4 class="font-bold text-slate-700 mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-users text-slate-400"></i> Configured Users</h4>
+                    <div id="admin-users-list" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
+                        <!-- Render users here -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Employee Profile Calendar Modal -->
-    <div id="employee-modal" onclick="if(event.target === this) closeEmployeeModal()" class="fixed inset-0 bg-slate-900/40 z-50 p-2 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="employee-modal" onclick="if(event.target === this) closeEmployeeModal()" class="fixed inset-0 bg-slate-900/40 z-[500] p-2 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300">
         <div id="modal-content" class="bg-white border border-slate-100 rounded-2xl w-full h-[95dvh] lg:h-full flex flex-col lg:flex-row scale-95 transition-transform duration-300 overflow-y-auto lg:overflow-hidden max-w-7xl mx-auto relative shadow-xl custom-scrollbar cursor-default">
              <button onclick="closeEmployeeModal()" class="absolute top-3 right-3 text-slate-600 bg-white shadow-md hover:bg-slate-100 border border-slate-200 rounded-full h-10 w-10 text-xl z-20 transition flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
              
@@ -347,7 +351,7 @@
     </div>
     
     <!-- Shift Modal -->
-    <div id="shift-modal" onclick="if(event.target === this) closeShiftModal()" class="fixed inset-0 bg-slate-900/40 z-50 p-2 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="shift-modal" onclick="if(event.target === this) closeShiftModal()" class="fixed inset-0 bg-slate-900/40 z-[500] p-2 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300">
         <div id="shift-modal-content" class="bg-white border border-slate-100 rounded-2xl w-full max-h-[95vh] h-auto flex flex-col lg:flex-row scale-95 transition-transform duration-300 overflow-y-auto max-w-6xl mx-auto relative shadow-xl custom-scrollbar cursor-default">
              <button onclick="closeShiftModal()" class="absolute top-4 right-4 text-slate-600 bg-slate-100 shadow-sm border border-slate-200 hover:bg-slate-200 rounded-full h-10 w-10 text-xl z-20 transition flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
              <div class="p-4 md:p-6 flex-1 flex flex-col bg-slate-50">
@@ -387,14 +391,15 @@
     // UI Helpers
     document.getElementById('footer-year').textContent = new Date().getFullYear();
     
-    // Preload Data JSON (Without splash screen visible)
+    // Preload Data JSON 
     async function preloadData() {
         try {
             const res = await fetch('data.json?t=' + new Date().getTime());
-            if (!res.ok) throw new Error("Network Error");
-            const rawData = await res.json();
-            rawGlobalData = rawData.globalData;
-            currentMonthStr = rawData.currentMonthStr; 
+            if (res.ok) {
+                const rawData = await res.json();
+                rawGlobalData = rawData.globalData;
+                currentMonthStr = rawData.currentMonthStr; 
+            }
         } catch (error) {
             console.error("Data load error", error);
         }
@@ -408,16 +413,23 @@
             document.getElementById('site-login-screen').classList.add('hidden');
             document.getElementById('main-content').classList.remove('hidden');
             
-            // Apply User/Admin Views
+            // Set User Mode or Admin Mode logic
             if(loggedInUser.role === 'user') {
                 globalData = rawGlobalData.filter(emp => emp.code.toUpperCase() === loggedInUser.id.toUpperCase());
-                document.querySelectorAll('.admin-only').forEach(el => el.classList.add('hide-for-user'));
+                // Completely hide all admin wrappers
+                document.getElementById('table-section-header').classList.add('hidden', 'hide-for-user');
+                document.querySelectorAll('.admin-only').forEach(el => el.classList.add('hidden', 'hide-for-user'));
+                
                 document.getElementById('welcome-user-text').innerHTML = `Welcome, ${loggedInUser.name}`;
                 document.getElementById('welcome-user-text').classList.remove('hidden');
+                
                 document.body.classList.add('minimal-mode');
             } else {
                 globalData = [...rawGlobalData];
+                // Unhide admin controls
+                document.getElementById('table-section-header').classList.remove('hidden', 'hide-for-user');
                 document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden', 'hide-for-user'));
+                
                 document.body.classList.remove('minimal-mode');
                 document.getElementById('welcome-user-text').classList.add('hidden');
             }
@@ -492,7 +504,14 @@
     function initOrUpdateTrendChart(type) { if(trendChartInstance) trendChartInstance.destroy(); const ctx = document.getElementById('dayWiseChart').getContext('2d'); trendChartInstance = new Chart(ctx, { type: type, data: trendChartData, options: { responsive: true, maintainAspectRatio: false }}); }
     function changeChartType(type) { initOrUpdateTrendChart(type); }
     function toggleGraphs() { const section = document.getElementById('graphs-section'); const text = document.getElementById('toggle-graphs-text'); if (section.classList.contains('hidden')) { section.classList.remove('hidden'); setTimeout(() => section.classList.remove('opacity-0'), 10); text.textContent = 'Hide Graphs'; } else { section.classList.add('opacity-0'); setTimeout(() => section.classList.add('hidden'), 300); text.textContent = 'Show Graphs'; } }
-    function toggleViewMode() { const isMinimal = document.body.classList.contains('minimal-mode'); if (isMinimal) { document.body.classList.remove('minimal-mode'); document.getElementById('viewToggleBtn').innerHTML = '<i class="fa-solid fa-desktop"></i> <span class="hidden sm:inline">Standard View</span>'; } else { document.body.classList.add('minimal-mode'); document.getElementById('viewToggleBtn').innerHTML = '<i class="fa-solid fa-bolt"></i> <span class="hidden sm:inline">Minimal View</span>'; } renderTable(); }
+    
+    function toggleViewMode() { 
+        if(loggedInUser.role === 'user') return; // User cannot toggle
+        const isMinimal = document.body.classList.contains('minimal-mode'); 
+        if (isMinimal) { document.body.classList.remove('minimal-mode'); document.getElementById('viewToggleBtn').innerHTML = '<i class="fa-solid fa-desktop"></i> <span class="hidden sm:inline">Standard View</span>'; } 
+        else { document.body.classList.add('minimal-mode'); document.getElementById('viewToggleBtn').innerHTML = '<i class="fa-solid fa-bolt"></i> <span class="hidden sm:inline">Minimal View</span>'; } 
+        renderTable(); 
+    }
 
     function renderTable() {
         const isMinimal = document.body.classList.contains('minimal-mode');
@@ -500,12 +519,15 @@
         const minimalCards = document.getElementById('minimalCardsContainer');
         const pagination = document.getElementById('pagination-controls');
 
-        if (isMinimal) {
-            standardWrapper.classList.add('hidden'); minimalCards.classList.remove('hidden');
+        // Always minimal for standard user
+        if (isMinimal || loggedInUser.role === 'user') {
+            standardWrapper.classList.add('hidden'); 
+            minimalCards.classList.remove('hidden');
             renderMinimalCards();
             if(loggedInUser.role === 'admin') renderPagination(); else pagination.innerHTML = '';
         } else {
-            minimalCards.classList.add('hidden'); standardWrapper.classList.remove('hidden');
+            minimalCards.classList.add('hidden'); 
+            standardWrapper.classList.remove('hidden');
             renderStandardRows(); 
             if(loggedInUser.role === 'admin') renderPagination();
         }
@@ -592,7 +614,7 @@
     function renderPagination() { const container = document.getElementById('pagination-controls'); const totalPages = Math.ceil(filteredData.length / rowsPerPage); if (filteredData.length === 0) { container.innerHTML = ''; return; } const endRecord = Math.min(currentPage * rowsPerPage, filteredData.length); container.innerHTML = `<span class="text-slate-600 font-semibold bg-white px-3 py-1.5 rounded-lg border border-slate-200">Showing ${((currentPage-1)*rowsPerPage)+1}-${endRecord} of ${filteredData.length}</span><div class="flex gap-2"><button onclick="changePage(-1)" ${currentPage === 1 ? 'disabled' : ''} class="px-4 py-2 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 disabled:opacity-50 transition shadow-sm font-bold text-slate-700">Previous</button><button onclick="changePage(1)" ${currentPage === totalPages || totalPages === 1 ? 'disabled' : ''} class="px-4 py-2 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 disabled:opacity-50 transition shadow-sm font-bold text-slate-700">Next</button></div>`; }
     
     function applyFilters() {
-        if(loggedInUser.role === 'user') return; // User cannot filter
+        if(loggedInUser && loggedInUser.role === 'user') return; // User cannot filter
         const search = document.getElementById('searchInput').value.toLowerCase().trim(); 
         const status = document.getElementById('statusFilter').value; 
         const contractor = document.getElementById('contractorFilter').value;
@@ -667,7 +689,11 @@
     function openShiftModal() { document.getElementById('shift-modal').classList.remove('opacity-0', 'pointer-events-none'); document.getElementById('shift-modal-content').classList.remove('scale-95'); }
     function closeShiftModal() { document.getElementById('shift-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('shift-modal-content').classList.add('scale-95'); }
     
-    function openAdminModal() { document.getElementById('admin-modal').classList.remove('opacity-0', 'pointer-events-none'); document.getElementById('admin-content').classList.remove('scale-95'); }
+    function openAdminModal() { 
+        document.getElementById('admin-modal').classList.remove('opacity-0', 'pointer-events-none'); 
+        document.getElementById('admin-content').classList.remove('scale-95'); 
+        if(window.loadAdminUsers) window.loadAdminUsers();
+    }
     function closeAdminModal() { document.getElementById('admin-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('admin-content').classList.add('scale-95'); }
     
     // Chat Toggle Logic
@@ -686,6 +712,10 @@
                 document.getElementById('chat-setup-view').classList.add('hidden');
                 document.getElementById('chat-interface-view').classList.remove('hidden');
                 document.getElementById('chat-interface-view').classList.add('flex');
+                
+                // Scroll to bottom when opening
+                const chatList = document.getElementById('chat-messages');
+                chatList.scrollTop = chatList.scrollHeight;
             }
         } else {
             chat.classList.add('scale-0', 'opacity-0'); 
@@ -750,7 +780,13 @@
             let employeeName = "Employee";
             if (window.rawGlobalData && window.rawGlobalData.length > 0) {
                 const employeeData = window.rawGlobalData.find(e => e.code.toUpperCase() === idInput);
-                if (employeeData) employeeName = employeeData.name;
+                if (employeeData) {
+                    employeeName = employeeData.name;
+                } else {
+                    throw new Error("ID not found in current attendance records.");
+                }
+            } else {
+                throw new Error("Data not fully loaded. Try again.");
             }
 
             const userRef = ref(db, `users/${idInput}`);
@@ -763,7 +799,7 @@
                     window.startApp();
                 } else { throw new Error("Incorrect Password."); }
             } else {
-                throw new Error("Access not configured.");
+                throw new Error("Access not configured. Contact Admin.");
             }
         } catch (error) {
             err.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${error.message}`;
@@ -772,7 +808,7 @@
         }
     };
 
-    // Admin Tools - Fetch User Data
+    // Admin Tools - Fetch Single User for Editing
     window.fetchUserForAdmin = async function() {
         const id = document.getElementById('admin-search-id').value.trim().toUpperCase();
         if(!id) return alert("Enter an ID");
@@ -803,59 +839,83 @@
             await set(ref(db, `users/${id}`), { password: pwd });
             btn.innerHTML = '<i class="fa-solid fa-check"></i> Saved!';
             btn.classList.replace('bg-emerald-600', 'bg-indigo-600');
+            window.loadAdminUsers(); // Refresh the list
             setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Access'; btn.classList.replace('bg-indigo-600', 'bg-emerald-600'); }, 2000);
         } catch(e) { alert("Error saving: " + e.message); btn.innerHTML = 'Save Access'; }
     };
 
-    // ==========================================
-    // CHAT (TIME PASS) LOGIC - OPEN TO PUBLIC
-    // ==========================================
-    function get6AMTimestamp() {
-        let now = new Date();
-        let sixAM = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 0, 0);
-        if (now < sixAM) { sixAM.setDate(sixAM.getDate() - 1); } // Before 6 AM, use yesterday's 6 AM
-        return sixAM.getTime();
-    }
+    // Admin Tools - Load All Created Users
+    window.loadAdminUsers = async function() {
+        const listContainer = document.getElementById('admin-users-list');
+        listContainer.innerHTML = '<div class="text-xs text-slate-500 font-medium text-center py-2">Loading users...</div>';
+        
+        try {
+            const usersSnap = await get(ref(db, 'users'));
+            if(usersSnap.exists()) {
+                let html = '';
+                usersSnap.forEach(child => {
+                    const id = child.key;
+                    html += `
+                        <div class="flex justify-between items-center bg-white border border-slate-200 p-2.5 rounded-xl shadow-sm">
+                            <span class="text-sm font-bold text-slate-700">${id}</span>
+                            <button onclick="window.revokeUser('${id}')" class="text-rose-500 hover:text-white hover:bg-rose-500 w-7 h-7 rounded-lg flex items-center justify-center transition" title="Revoke Access">
+                                <i class="fa-solid fa-trash text-xs"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                listContainer.innerHTML = html;
+            } else {
+                listContainer.innerHTML = '<div class="text-xs text-slate-500 font-medium text-center py-2 border border-dashed border-slate-200 rounded-lg">No users configured.</div>';
+            }
+        } catch(e) {
+            listContainer.innerHTML = '<div class="text-xs text-rose-500 text-center py-2">Error loading users.</div>';
+        }
+    };
 
+    // Admin Tools - Delete/Revoke a User
+    window.revokeUser = async function(id) {
+        if(confirm(`Are you sure you want to completely revoke access for Employee ID: ${id}?`)) {
+            try {
+                await remove(ref(db, `users/${id}`));
+                window.loadAdminUsers();
+            } catch(e) { alert("Failed to revoke user: " + e.message); }
+        }
+    };
+
+    // ==========================================
+    // CHAT LOGIC 
+    // ==========================================
     const chatContainerList = document.getElementById('chat-messages');
     
-    // Listen for new messages
-    const chatQuery = query(ref(db, 'chat'), limitToLast(100));
+    // Listen for new messages (Fetch latest 50 messages)
+    const chatQuery = query(ref(db, 'chat'), limitToLast(50));
     
     onChildAdded(chatQuery, (snap) => {
         const msg = snap.val();
         const msgKey = snap.key;
         
-        // Discard old messages client-side
-        if(msg.timestamp < get6AMTimestamp()) return;
-        
         const myName = localStorage.getItem('chat_username') || "Anonymous";
         const isMe = msg.name === myName;
         
-        // Delete button (visible only to admin)
-        const delBtnHTML = `<button onclick="window.deleteChatMessage('${msgKey}')" class="admin-only hidden text-rose-500 hover:text-rose-700 ml-2" title="Delete Message"><i class="fa-solid fa-trash text-xs"></i></button>`;
+        const adminClass = (window.loggedInUser && window.loggedInUser.role === 'admin') ? '' : 'hidden hide-for-user';
+        const delBtnHTML = `<button onclick="window.deleteChatMessage('${msgKey}')" class="admin-only ${adminClass} text-rose-500 hover:text-rose-700 ml-2" title="Delete Message"><i class="fa-solid fa-trash text-xs"></i></button>`;
         
         const alignWrapper = isMe ? 'justify-end' : 'justify-start';
-        const nameHeader = isMe ? '' : `<div class="text-[10px] font-bold text-slate-400 mb-0.5 ml-1 flex justify-between w-full">${msg.name} ${delBtnHTML}</div>`;
+        const nameHeader = isMe ? `<div class="text-[10px] font-bold text-slate-400 mb-0.5 mr-1 flex justify-end w-full">${delBtnHTML} You</div>` : `<div class="text-[10px] font-bold text-slate-400 mb-0.5 ml-1 flex justify-between w-full">${msg.name} ${delBtnHTML}</div>`;
         const bubbleColor = isMe ? 'chat-me' : 'chat-other';
         
         chatContainerList.innerHTML += `
-            <div id="chat-${msgKey}" class="flex ${alignWrapper} w-full fade-in-up mb-3">
+            <div id="chat-${msgKey}" class="flex ${alignWrapper} w-full fade-in-up mb-2">
                 <div class="flex flex-col max-w-[85%]">
                     ${nameHeader}
                     <div class="flex items-center justify-end">
-                        ${isMe ? delBtnHTML : ''}
-                        <div class="chat-bubble ${bubbleColor} shadow-sm ${isMe ? 'ml-1' : ''}">${msg.text}</div>
+                        <div class="chat-bubble ${bubbleColor} shadow-sm">${msg.text}</div>
                     </div>
                 </div>
             </div>`;
         
         chatContainerList.scrollTop = chatContainerList.scrollHeight;
-
-        // If admin is logged in right now, unhide the new delete button immediately
-        if(window.loggedInUser && window.loggedInUser.role === 'admin') {
-            document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden', 'hide-for-user'));
-        }
     });
 
     // Remove chat from DOM if deleted by Admin
