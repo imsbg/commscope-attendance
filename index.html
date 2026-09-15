@@ -81,6 +81,9 @@
         .hide-for-user { display: none !important; }
 
         #filter-wrapper { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; transition: all 0.3s ease; }
+        body.minimal-mode #table-section-header { background: transparent; border: none; box-shadow: none; padding: 1rem 0; }
+        body.minimal-mode #table-header-title-container { justify-content: center; margin-bottom: 2rem; position: relative; }
+        body.minimal-mode #viewToggleBtn { position: absolute; right: 0; }
         body.minimal-mode #filter-wrapper { max-width: 750px; margin: 0 auto 2.5rem auto; align-items: center; }
         
         body.minimal-mode #search-container { width: 100%; background: #ffffff; padding: 4px; border-radius: 9999px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.08); transition: all 0.2s ease; }
@@ -106,7 +109,7 @@
             <h2 class="text-xs font-bold text-slate-500 mb-6 uppercase tracking-wider">Secret Portal Access</h2>
             
             <div id="login-wrapper">
-                <input type="text" id="login-id-input" autocomplete="off" spellcheck="false" placeholder="Enter ID" class="w-full px-4 py-3 text-center border border-slate-200 rounded-xl mb-3 focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-slate-50 text-slate-700 font-medium uppercase tracking-widest">
+                <input type="text" id="login-id-input" autocomplete="off" spellcheck="false" placeholder="Enter ID" oninput="window.autoHyphen(this)" class="w-full px-4 py-3 text-center border border-slate-200 rounded-xl mb-3 focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-slate-50 text-slate-700 font-medium uppercase tracking-widest">
                 <input type="password" id="login-pwd-input" autocomplete="off" spellcheck="false" placeholder="Enter Password" class="secure-password-mask w-full px-4 py-3 text-center border border-slate-200 rounded-xl mb-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-slate-50 text-slate-700 font-medium tracking-widest" onkeypress="if(event.key === 'Enter') window.verifyUserLogin();">
                 
                 <button type="button" onclick="window.verifyUserLogin();" id="site-login-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-md flex justify-center items-center gap-2">
@@ -134,7 +137,10 @@
     <div id="chat-container" class="hidden fixed bottom-24 right-6 w-80 sm:w-96 bg-white shadow-2xl rounded-2xl border border-slate-200 z-[10001] flex flex-col h-[450px] transform transition-transform duration-300 origin-bottom-right overflow-hidden">
         <div class="bg-indigo-600 text-white p-4 flex justify-between items-center shadow-sm z-10">
             <h3 class="font-bold flex items-center gap-2"><i class="fa-solid fa-comments"></i> CommSpace Chat</h3>
-            <button onclick="window.toggleChat()" class="hover:text-rose-300 transition text-lg"><i class="fa-solid fa-xmark"></i></button>
+            <div class="flex items-center gap-3">
+                <button onclick="window.clearAllChats()" class="admin-only hidden hover:text-rose-300 transition text-sm" title="Clear All Chats"><i class="fa-solid fa-trash-can"></i></button>
+                <button onclick="window.toggleChat()" class="hover:text-rose-300 transition text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
         </div>
         
         <!-- Setup Name View -->
@@ -175,9 +181,6 @@
                     </button>
                     <button onclick="window.openShiftModal()" class="bg-indigo-600 text-white px-3 md:px-4 py-2 rounded-xl shadow-sm hover:bg-indigo-700 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 xl:flex-none" title="Shift Calendar">
                         <i class="fa-solid fa-calendar-days"></i> <span class="hidden sm:inline">Shift</span> Calendar
-                    </button>
-                    <button onclick="window.openPdfModal()" class="admin-only hidden bg-teal-600 text-white px-3 md:px-4 py-2 rounded-xl shadow-sm hover:bg-teal-700 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 md:w-auto cursor-pointer">
-                        <i class="fa-solid fa-folder-open"></i> Original PDF
                     </button>
                     <button onclick="window.logoutUser()" class="bg-rose-100 text-rose-700 px-3 md:px-4 py-2 rounded-xl shadow-sm hover:bg-rose-200 transition flex items-center justify-center gap-2 text-sm font-medium flex-1 md:w-auto cursor-pointer">
                         <i class="fa-solid fa-right-from-bracket"></i> Logout
@@ -298,7 +301,7 @@
                    <h4 class="font-bold text-slate-700 mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-user-plus text-slate-400"></i> Set User Access</h4>
                    <p class="text-xs text-slate-500 mb-3">Give a user access to their attendance profile.</p>
                    <div class="flex gap-2 mb-4">
-                       <input type="text" id="admin-search-id" placeholder="Employee ID (e.g. AD-12345)" class="flex-1 border border-slate-200 bg-slate-50 p-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500 uppercase">
+                       <input type="text" id="admin-search-id" oninput="window.autoHyphen(this)" placeholder="Employee ID (e.g. AD-12345)" class="flex-1 border border-slate-200 bg-slate-50 p-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500 uppercase">
                        <button onclick="window.fetchUserForAdmin()" class="bg-indigo-600 text-white font-bold px-4 py-2 rounded-xl hover:bg-indigo-700 transition shadow-sm"><i class="fa-solid fa-magnifying-glass"></i> Find</button>
                    </div>
                    
@@ -338,7 +341,6 @@
                 <div id="mobile-modal-header" class="lg:hidden mb-2 pb-2 border-b border-slate-200 relative"></div>
                 <div class="flex justify-between items-center mb-4">
                     <h3 id="modal-calendar-title" class="text-base md:text-xl font-bold text-slate-800"></h3>
-                    <button id="cal-fullscreen-btn" onclick="window.toggleCalendarFullscreen()" class="lg:hidden bg-indigo-100 text-indigo-700 hover:bg-indigo-200 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm z-[110] outline-none border border-indigo-200"><i class="fa-solid fa-expand"></i> Maximize</button>
                 </div>
                 <div class="grid grid-cols-7 gap-1 md:gap-1.5 mb-1 text-[10px] md:text-xs font-bold text-center text-slate-500 uppercase tracking-wider"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
                 <div id="modal-calendar" class="grid grid-cols-7 gap-1 md:gap-1.5 flex-1 auto-rows-fr min-h-0"></div>
@@ -350,6 +352,7 @@
     <div id="shift-modal" onclick="if(event.target === this) window.closeShiftModal()" class="fixed inset-0 bg-slate-900/40 z-[500] p-2 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300">
         <div id="shift-modal-content" class="bg-white border border-slate-100 rounded-2xl w-full max-h-[95vh] h-auto flex flex-col lg:flex-row scale-95 transition-transform duration-300 overflow-y-auto max-w-6xl mx-auto relative shadow-xl custom-scrollbar cursor-default">
              <button onclick="window.closeShiftModal()" class="absolute top-4 right-4 text-slate-600 bg-slate-100 shadow-sm border border-slate-200 hover:bg-slate-200 rounded-full h-10 w-10 text-xl z-20 transition flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+             
              <div class="p-4 md:p-6 flex-1 flex flex-col bg-slate-50">
                 <div class="flex justify-between items-center mb-6">
                     <button onclick="window.changeShiftMonth(-1)" class="w-10 h-10 rounded-full bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 flex items-center justify-center font-bold transition shadow-sm">&lt;</button>
@@ -361,19 +364,41 @@
                 <div class="grid grid-cols-7 gap-1 md:gap-2 text-center font-bold text-[10px] md:text-xs text-slate-500 mb-2 uppercase tracking-wider"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
                 <div id="sc-days" class="grid grid-cols-7 gap-1 md:gap-2 flex-1 content-start"></div>
              </div>
+             
+             <!-- Admin Shift Settings & Holidays -->
              <div class="w-full lg:w-80 p-5 md:p-6 bg-white lg:border-l border-slate-200 flex flex-col flex-shrink-0">
-                <h4 class="font-bold text-slate-800 mb-3 text-base flex items-center gap-2"><i class="fa-solid fa-gear text-indigo-500"></i> Shift Settings</h4>
-                <div class="space-y-4 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
-                    <div><label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase tracking-wide">Shift Pattern</label><select id="sc-setup-pattern" onchange="window.onPatternChange()" class="w-full border border-slate-200 rounded-lg p-2.5 bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-sm transition-all"><option value="ACB">3 Shifts (A - C - B)</option><option value="BC">2 Shifts (Only B & C)</option></select></div>
-                    <div><label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase tracking-wide">Current/Base Shift</label><select id="sc-setup-shift" onchange="window.saveShiftSettings()" class="w-full border border-slate-200 rounded-lg p-2.5 bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-sm transition-all"></select></div>
-                    <div><label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase tracking-wide">Start Date</label><input type="date" id="sc-setup-date" onchange="window.saveShiftSettings()" class="w-full border border-slate-200 rounded-lg p-2.5 bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-sm transition-all"></div>
+                <div class="admin-only hidden">
+                    <h4 class="font-bold text-slate-800 mb-3 text-base flex items-center gap-2"><i class="fa-solid fa-gear text-indigo-500"></i> Global Shift Settings</h4>
+                    <div class="space-y-4 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div><label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase tracking-wide">Shift Pattern</label><select id="sc-setup-pattern" onchange="window.onPatternChange()" class="w-full border border-slate-200 rounded-lg p-2.5 bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-sm transition-all"><option value="ACB">3 Shifts (A - C - B)</option><option value="BC">2 Shifts (Only B & C)</option></select></div>
+                        <div><label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase tracking-wide">Current/Base Shift</label><select id="sc-setup-shift" onchange="window.saveGlobalShiftSettings()" class="w-full border border-slate-200 rounded-lg p-2.5 bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-sm transition-all"></select></div>
+                        <div><label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase tracking-wide">Start Date</label><input type="date" id="sc-setup-date" onchange="window.saveGlobalShiftSettings()" class="w-full border border-slate-200 rounded-lg p-2.5 bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-sm transition-all"></div>
+                    </div>
                 </div>
+                <h4 class="font-bold text-slate-800 mb-3 text-base flex items-center gap-2"><i class="fa-solid fa-gift text-rose-500"></i> Holidays 2026</h4>
+                <div id="sc-holiday-list" class="space-y-2 flex-1 pr-2 overflow-y-auto custom-scrollbar"></div>
              </div>
         </div>
     </div>
 
-<script>
-    // Make variables globally accessible
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getDatabase, ref, get, set, push, onChildAdded, remove, onChildRemoved, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCeNFC0hZaz7H9nxsiYwtMbrbsoncliNqQ",
+      authDomain: "sg-fun.firebaseapp.com",
+      databaseURL: "https://sg-fun-default-rtdb.firebaseio.com",
+      projectId: "sg-fun",
+      storageBucket: "sg-fun.firebasestorage.app",
+      messagingSenderId: "70359168339",
+      appId: "1:70359168339:web:94d5ecf8b08ffe880c9da6"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Global variables
     window.rawGlobalData = [];
     window.globalData = [];
     window.filteredData = [];
@@ -384,36 +409,113 @@
     let trendChartInstance = null; let trendChartData = null;
     const absenceList = ['A', 'ABSENT', 'FD', 'Wrong Shift', 'HD', 'HALF DAY', 'SLWP', 'SICK LEAVE', 'MP', 'MISS PUNCH'];
     window.currentSearchScope = 'emp'; 
-
-    function getLogicalToday() { const now = new Date(); if (now.getHours() < 8) { now.setDate(now.getDate() - 1); } return now; }
-    function formatISODate(d) { return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0'); }
-
-    document.getElementById('footer-year').textContent = new Date().getFullYear();
+    window.calCurrentDate = new Date(); 
+    if(window.calCurrentDate.getFullYear() !== 2026) window.calCurrentDate.setFullYear(2026);
     
-    // UI Setup & Rendering
+    // Auto Hyphen Feature
+    window.autoHyphen = function(el) {
+        let val = el.value.toUpperCase();
+        const prefixes = ['AD', 'YA', 'ES', 'VIS', 'MES', 'SIS', 'AMS', 'DIS', 'OSK'];
+        if (prefixes.includes(val)) {
+            el.value = val + '-';
+        } else {
+            let match = val.match(/^(AD|YA|ES|VIS|MES|SIS|AMS|DIS|OSK)([0-9]+)$/);
+            if(match) { el.value = match[1] + '-' + match[2]; }
+        }
+    };
+
+    // Load Data
+    async function loadJsonData() {
+        try {
+            const res = await fetch('data.json?t=' + new Date().getTime());
+            if (res.ok) {
+                const rawData = await res.json();
+                window.rawGlobalData = rawData.globalData;
+                window.currentMonthStr = rawData.currentMonthStr; 
+            }
+        } catch (error) { console.error("Error loading JSON", error); }
+    }
+    loadJsonData();
+
+    // Verify User / Admin Login
+    window.verifyUserLogin = async function() {
+        const idInput = document.getElementById('login-id-input').value.trim().toUpperCase();
+        const pwdInput = document.getElementById('login-pwd-input').value.trim();
+        const btn = document.getElementById('site-login-btn');
+        const err = document.getElementById('site-login-error');
+
+        if (!idInput || !pwdInput) { err.innerHTML = 'ID and Password are required.'; err.classList.remove('hidden'); return; }
+
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Checking...'; btn.disabled = true; err.classList.add('hidden');
+
+        try {
+            if(window.rawGlobalData.length === 0) await loadJsonData();
+
+            // Check if Admin Login
+            const adminRef = ref(db, `admin_creds`);
+            const adminSnap = await get(adminRef);
+            
+            if(adminSnap.exists() && adminSnap.val().username.toUpperCase() === idInput && adminSnap.val().password === pwdInput) {
+                window.loggedInUser = { role: 'admin', name: 'Administrator' };
+                document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden', 'hide-for-user'));
+                window.startApp();
+                return;
+            }
+
+            // Normal User Login
+            let employeeName = "Employee";
+            if (window.rawGlobalData && window.rawGlobalData.length > 0) {
+                const employeeData = window.rawGlobalData.find(e => e.code.toUpperCase() === idInput);
+                if (employeeData) {
+                    employeeName = employeeData.name;
+                } else {
+                    throw new Error("ID not found in current attendance records.");
+                }
+            } else { throw new Error("Data not fully loaded. Try again."); }
+
+            const userRef = ref(db, `users/${idInput}`);
+            const userSnap = await get(userRef);
+
+            if (userSnap.exists()) {
+                const userData = userSnap.val();
+                if (userData.password === pwdInput) {
+                    window.loggedInUser = { role: 'user', id: idInput, name: employeeName };
+                    window.startApp();
+                } else { throw new Error("Incorrect Password."); }
+            } else { throw new Error("Access not configured. Contact Admin."); }
+        } catch (error) {
+            err.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${error.message}`;
+            err.classList.remove('hidden');
+            btn.innerHTML = 'Enter Portal'; btn.disabled = false;
+        }
+    };
+
     window.startApp = function() {
         document.getElementById('site-login-screen').style.opacity = '0';
+        
+        // Fetch Shift Settings
+        get(ref(db, 'settings/shift')).then(snap => {
+            const defaultShift = { pattern: 'ACB', baseDate: formatISODate(getLogicalToday()), baseShift: 'A' };
+            window.shiftSettings = snap.exists() ? snap.val() : defaultShift;
+        });
+
         setTimeout(() => {
             document.getElementById('site-login-screen').classList.add('hidden');
             document.getElementById('main-content').classList.remove('hidden');
             
-            // Set User Mode or Admin Mode logic
             if(window.loggedInUser.role === 'user') {
                 window.globalData = window.rawGlobalData.filter(emp => emp.code.toUpperCase() === window.loggedInUser.id.toUpperCase());
                 
-                // Hide ALL admin panels
                 document.getElementById('admin-search-wrapper').classList.add('hidden', 'hide-for-user');
                 document.getElementById('standard-view-wrapper').classList.add('hidden', 'hide-for-user');
                 document.querySelectorAll('.admin-only').forEach(el => el.classList.add('hidden', 'hide-for-user'));
                 
                 document.getElementById('welcome-user-text').innerHTML = `Welcome, ${window.loggedInUser.name}`;
                 document.getElementById('welcome-user-text').classList.remove('hidden');
-                
                 document.body.classList.add('minimal-mode');
             } else {
                 window.globalData = [...window.rawGlobalData];
                 
-                // Unhide admin controls
                 document.getElementById('admin-search-wrapper').classList.remove('hidden', 'hide-for-user');
                 document.getElementById('standard-view-wrapper').classList.remove('hidden', 'hide-for-user');
                 document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden', 'hide-for-user'));
@@ -491,7 +593,7 @@
     window.toggleGraphs = function() { const section = document.getElementById('graphs-section'); const text = document.getElementById('toggle-graphs-text'); if (section.classList.contains('hidden')) { section.classList.remove('hidden'); setTimeout(() => section.classList.remove('opacity-0'), 10); text.textContent = 'Hide Graphs'; } else { section.classList.add('opacity-0'); setTimeout(() => section.classList.add('hidden'), 300); text.textContent = 'Show Graphs'; } }
     
     window.toggleViewMode = function() { 
-        if(window.loggedInUser.role === 'user') return; // User cannot toggle
+        if(window.loggedInUser.role === 'user') return; 
         const isMinimal = document.body.classList.contains('minimal-mode'); 
         if (isMinimal) { document.body.classList.remove('minimal-mode'); document.getElementById('viewToggleBtn').innerHTML = '<i class="fa-solid fa-desktop"></i> <span class="hidden sm:inline">Standard View</span>'; } 
         else { document.body.classList.add('minimal-mode'); document.getElementById('viewToggleBtn').innerHTML = '<i class="fa-solid fa-bolt"></i> <span class="hidden sm:inline">Minimal View</span>'; } 
@@ -668,11 +770,67 @@
     window.closeEmployeeModal = function() { document.getElementById('employee-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('modal-content').classList.add('scale-95'); }
 
     // Shift Setup
-    const DEFAULT_SETTINGS = { pattern: 'ACB', baseDate: formatISODate(getLogicalToday()), baseShift: 'A' }; 
-    let shiftSettings = JSON.parse(localStorage.getItem('shiftSettings')) || DEFAULT_SETTINGS;
-    window.openShiftModal = function() { document.getElementById('shift-modal').classList.remove('opacity-0', 'pointer-events-none'); document.getElementById('shift-modal-content').classList.remove('scale-95'); }
+    window.SEQUENCES = { 'ACB': ['A', 'C', 'B'], 'BC': ['B', 'C'] };
+    window.holidays2026 = { "2026-01-01": "New Year Day", "2026-01-26": "Republic Day", "2026-04-03": "Good Friday", "2026-04-14": "Ambedkar Jayanti", "2026-05-01": "May Day", "2026-08-15": "Independence Day", "2026-09-14": "Ganesh Chaturthi", "2026-09-15": "Ganesh Chaturthi", "2026-10-02": "Gandhi Jayanti", "2026-10-20": "Dussehra", "2026-12-19": "Goa Liberation Day", "2026-12-25": "Christmas Day" };
+
+    function getMonday(d) { const date = new Date(d); date.setHours(0,0,0,0); const day = date.getDay(); const diff = date.getDate() - day + (day === 0 ? -6 : 1); return new Date(date.setDate(diff)); }
+    
+    window.getShiftForDate = function(dateObj) { 
+        if (!window.shiftSettings) return 'A';
+        if (dateObj.getDay() === 0) return 'OFF'; 
+        const targetMon = getMonday(dateObj), baseMon = getMonday(new Date(window.shiftSettings.baseDate)); 
+        const diffWeeks = Math.floor(Math.round((targetMon - baseMon) / (1000 * 60 * 60 * 24)) / 7); 
+        const activeSeq = window.SEQUENCES[window.shiftSettings.pattern] || window.SEQUENCES['ACB']; 
+        let baseIndex = activeSeq.indexOf(window.shiftSettings.baseShift); 
+        if (baseIndex === -1) baseIndex = 0; 
+        let currentIndex = (baseIndex + diffWeeks) % activeSeq.length; 
+        if (currentIndex < 0) currentIndex += activeSeq.length; 
+        return activeSeq[currentIndex]; 
+    }
+
+    window.updateShiftDropdown = function() { 
+        const shiftSelect = document.getElementById('sc-setup-shift'); 
+        const pattern = window.shiftSettings.pattern; shiftSelect.innerHTML = ''; 
+        if (pattern === 'ACB') { shiftSelect.innerHTML = '<option value="A">A Shift</option><option value="B">B Shift</option><option value="C">C Shift</option>'; } 
+        else if (pattern === 'BC') { shiftSelect.innerHTML = '<option value="B">B Shift</option><option value="C">C Shift</option>'; if (window.shiftSettings.baseShift === 'A') window.shiftSettings.baseShift = 'B'; } 
+        shiftSelect.value = window.shiftSettings.baseShift; 
+    }
+    
+    window.onPatternChange = function() { window.shiftSettings.pattern = document.getElementById('sc-setup-pattern').value; window.updateShiftDropdown(); window.saveGlobalShiftSettings(); }
+
+    window.renderShiftCalendar = function() {
+        const y = window.calCurrentDate.getFullYear(), m = window.calCurrentDate.getMonth(); const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; document.getElementById('sc-month-title').innerText = `${monthNames[m]} ${y}`; const grid = document.getElementById('sc-days'); grid.innerHTML = ''; const firstDay = new Date(y, m, 1).getDay(), daysInMonth = new Date(y, m + 1, 0).getDate();
+        const logicalToday = getLogicalToday();
+        
+        for (let i = 0; i < firstDay; i++) { grid.innerHTML += `<div class="border border-slate-100 bg-slate-50/50 rounded-xl min-h-[48px]"></div>`; }
+        for (let d = 1; d <= daysInMonth; d++) {
+            const cDate = new Date(y, m, d), isoDate = formatISODate(cDate), sCode = window.getShiftForDate(cDate), isHol = window.holidays2026[isoDate];
+            let cls = `sc-cell sc-shift-${sCode}`; let isToday = (d === logicalToday.getDate() && m === logicalToday.getMonth() && y === logicalToday.getFullYear());
+            if (isToday) cls += ' ring-2 ring-indigo-500 ring-offset-2 scale-105 shadow-sm z-10'; if (isHol) cls += ' sc-holiday';
+            grid.innerHTML += `<div class="${cls} text-xs md:text-sm transition hover:scale-105 rounded-xl"><div class="font-bold text-slate-700 ${isHol ? 'text-amber-900' : ''} ${isToday && !isHol ? 'text-indigo-900' : ''}">${d}</div><div class="text-[9px] md:text-xs font-bold mt-1 px-2 py-0.5 rounded-full bg-white border border-slate-200/50 tracking-wider">${sCode}</div></div>`;
+        }
+        const totalRendered = firstDay + daysInMonth; const remainder = (7 - (totalRendered % 7)) % 7;
+        for(let i=0; i<remainder; i++) { grid.innerHTML += `<div class="border border-slate-100 bg-slate-50/50 rounded-xl min-h-[48px]"></div>`; }
+        
+        let holHtml = ''; Object.keys(window.holidays2026).sort().forEach(dateStr => { let hd = new Date(dateStr); if(hd.getFullYear() === y && hd.getMonth() === m) { holHtml += `<div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm flex justify-between items-center"><span class="font-bold text-amber-700">${hd.getDate()} ${monthNames[m]}</span> <span class="text-amber-900 font-semibold text-right">${window.holidays2026[dateStr]}</span></div>`; } });
+        if(!holHtml) holHtml = `<div class="text-sm text-slate-400 text-center font-medium mt-4 bg-white p-4 rounded-xl border border-slate-200">No public holidays this month</div>`; document.getElementById('sc-holiday-list').innerHTML = holHtml;
+    }
+
+    window.changeShiftMonth = function(dir) { window.calCurrentDate.setMonth(window.calCurrentDate.getMonth() + dir); window.renderShiftCalendar(); }
+
+    window.openShiftModal = function() { 
+        if(!window.shiftSettings) window.shiftSettings = { pattern: 'ACB', baseDate: formatISODate(getLogicalToday()), baseShift: 'A' };
+        document.getElementById('sc-setup-pattern').value = window.shiftSettings.pattern; 
+        window.updateShiftDropdown(); 
+        document.getElementById('sc-setup-date').value = window.shiftSettings.baseDate;
+        window.renderShiftCalendar();
+        
+        document.getElementById('shift-modal').classList.remove('opacity-0', 'pointer-events-none'); 
+        document.getElementById('shift-modal-content').classList.remove('scale-95'); 
+    }
     window.closeShiftModal = function() { document.getElementById('shift-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('shift-modal-content').classList.add('scale-95'); }
     
+    // Admin functions
     window.openAdminModal = function() { 
         document.getElementById('admin-modal').classList.remove('opacity-0', 'pointer-events-none'); 
         document.getElementById('admin-content').classList.remove('scale-95'); 
@@ -687,7 +845,6 @@
             chat.classList.remove('hidden'); 
             setTimeout(() => chat.classList.remove('scale-0', 'opacity-0'), 10);
             
-            // Check if user has a global chat name saved
             if (!localStorage.getItem('chat_username')) {
                 document.getElementById('chat-setup-view').classList.remove('hidden');
                 document.getElementById('chat-interface-view').classList.add('hidden');
@@ -697,7 +854,6 @@
                 document.getElementById('chat-interface-view').classList.remove('hidden');
                 document.getElementById('chat-interface-view').classList.add('flex');
                 
-                // Scroll to bottom when opening
                 const chatList = document.getElementById('chat-messages');
                 chatList.scrollTop = chatList.scrollHeight;
             }
@@ -719,7 +875,6 @@
 </script>
 
 <script type="module">
-    // FIREBASE INITIALIZATION & LOGIC
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getDatabase, ref, get, set, push, onChildAdded, remove, onChildRemoved, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
@@ -736,81 +891,14 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Fetch local data on page load
-    async function loadJsonData() {
-        try {
-            const res = await fetch('data.json?t=' + new Date().getTime());
-            if (res.ok) {
-                const rawData = await res.json();
-                window.rawGlobalData = rawData.globalData;
-                window.currentMonthStr = rawData.currentMonthStr; 
-            }
-        } catch (error) { console.error("Error loading JSON", error); }
+    window.saveGlobalShiftSettings = function() {
+        window.shiftSettings.pattern = document.getElementById('sc-setup-pattern').value; 
+        window.shiftSettings.baseShift = document.getElementById('sc-setup-shift').value; 
+        window.shiftSettings.baseDate = document.getElementById('sc-setup-date').value || window.shiftSettings.baseDate; 
+        set(ref(db, 'settings/shift'), window.shiftSettings).then(() => {
+            window.renderShiftCalendar();
+        }).catch(e => alert("Error saving shift: " + e.message));
     }
-    
-    // Call it immediately
-    loadJsonData();
-
-    // Verify User / Admin Login
-    window.verifyUserLogin = async function() {
-        const idInput = document.getElementById('login-id-input').value.trim().toUpperCase();
-        const pwdInput = document.getElementById('login-pwd-input').value.trim();
-        const btn = document.getElementById('site-login-btn');
-        const err = document.getElementById('site-login-error');
-
-        if (!idInput || !pwdInput) { err.innerHTML = 'ID and Password are required.'; err.classList.remove('hidden'); return; }
-
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Checking...'; btn.disabled = true; err.classList.add('hidden');
-
-        try {
-            // Wait just in case JSON is still loading
-            if(window.rawGlobalData.length === 0) {
-                await loadJsonData();
-            }
-
-            // Check if Admin Login
-            const adminRef = ref(db, `admin_creds`);
-            const adminSnap = await get(adminRef);
-            
-            if(adminSnap.exists() && adminSnap.val().username.toUpperCase() === idInput && adminSnap.val().password === pwdInput) {
-                window.loggedInUser = { role: 'admin', name: 'Administrator' };
-                // Unhide delete buttons in chat if it's already open
-                document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden', 'hide-for-user'));
-                window.startApp();
-                return;
-            }
-
-            // Normal User Login
-            let employeeName = "Employee";
-            if (window.rawGlobalData && window.rawGlobalData.length > 0) {
-                const employeeData = window.rawGlobalData.find(e => e.code.toUpperCase() === idInput);
-                if (employeeData) {
-                    employeeName = employeeData.name;
-                } else {
-                    throw new Error("ID not found in current attendance records.");
-                }
-            } else {
-                throw new Error("Data not fully loaded. Try again.");
-            }
-
-            const userRef = ref(db, `users/${idInput}`);
-            const userSnap = await get(userRef);
-
-            if (userSnap.exists()) {
-                const userData = userSnap.val();
-                if (userData.password === pwdInput) {
-                    window.loggedInUser = { role: 'user', id: idInput, name: employeeName };
-                    window.startApp();
-                } else { throw new Error("Incorrect Password."); }
-            } else {
-                throw new Error("Access not configured. Contact Admin.");
-            }
-        } catch (error) {
-            err.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${error.message}`;
-            err.classList.remove('hidden');
-            btn.innerHTML = 'Enter Portal'; btn.disabled = false;
-        }
-    };
 
     // Admin Tools - Fetch Single User for Editing
     window.fetchUserForAdmin = async function() {
@@ -821,7 +909,6 @@
         document.getElementById('admin-user-details').classList.remove('hidden');
         document.getElementById('admin-user-details').classList.add('flex');
         
-        // Try fetching existing data
         const userSnap = await get(ref(db, `users/${id}`));
         if(userSnap.exists()) {
             document.getElementById('admin-set-pwd').value = userSnap.val().password || '';
@@ -843,7 +930,7 @@
             await set(ref(db, `users/${id}`), { password: pwd });
             btn.innerHTML = '<i class="fa-solid fa-check"></i> Saved!';
             btn.classList.replace('bg-emerald-600', 'bg-indigo-600');
-            window.loadAdminUsers(); // Refresh the list
+            window.loadAdminUsers(); 
             setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Access'; btn.classList.replace('bg-indigo-600', 'bg-emerald-600'); }, 2000);
         } catch(e) { alert("Error saving: " + e.message); btn.innerHTML = 'Save Access'; }
     };
@@ -877,7 +964,6 @@
         }
     };
 
-    // Admin Tools - Delete/Revoke a User
     window.revokeUser = async function(id) {
         if(confirm(`Are you sure you want to completely revoke access for Employee ID: ${id}?`)) {
             try {
@@ -891,8 +977,6 @@
     // CHAT LOGIC 
     // ==========================================
     const chatContainerList = document.getElementById('chat-messages');
-    
-    // Fetch latest 50 messages unconditionally
     const chatQuery = query(ref(db, 'chat'), limitToLast(50));
     
     onChildAdded(chatQuery, (snap) => {
@@ -922,7 +1006,6 @@
         chatContainerList.scrollTop = chatContainerList.scrollHeight;
     });
 
-    // Remove chat from DOM if deleted by Admin
     onChildRemoved(ref(db, 'chat'), (snap) => {
         const el = document.getElementById(`chat-${snap.key}`);
         if(el) el.remove();
@@ -943,9 +1026,17 @@
 
     window.deleteChatMessage = async function(key) {
         if(confirm("Are you sure you want to delete this message?")) {
-            try {
-                await remove(ref(db, `chat/${key}`));
-            } catch(e) { alert("Error deleting message: " + e.message); }
+            try { await remove(ref(db, `chat/${key}`)); } catch(e) { alert("Error deleting message: " + e.message); }
+        }
+    };
+    
+    window.clearAllChats = async function() {
+        if(confirm("Are you sure you want to permanently delete ALL chat messages?")) {
+            try { 
+                await remove(ref(db, 'chat')); 
+                document.getElementById('chat-messages').innerHTML = '';
+                alert("All chats cleared.");
+            } catch(e) { alert("Error clearing chats: " + e.message); }
         }
     };
 </script>
