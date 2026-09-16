@@ -50,7 +50,7 @@ async function fetchAndParsePDF() {
 
         if (items.length === 0) continue;
 
-        // SMART VERTICAL SCANNER: Glues multi-line cells like HO + (ROTA) together before rows are even built
+        // 1. SMART VERTICAL SCANNER: Glues multi-line cells like HO + (ROTA) together before rows are built
         for (let a = 0; a < items.length; a++) {
             let t1 = items[a].text.trim().toUpperCase();
             if (t1 === 'HO' || t1 === 'WHO' || t1 === 'SLWP') {
@@ -59,11 +59,12 @@ async function fetchAndParsePDF() {
                     let t2 = items[b].text.trim().toUpperCase();
                     if (t2 === '(ROTA)' || t2 === '(PENDING)') {
                         let xDiff = Math.abs(items[a].x - items[b].x);
-                        let yDiff = Math.abs(items[a].y - items[b].y);
-                        // If they are strictly in the same column and adjacent lines, merge them!
-                        if (xDiff < 15 && yDiff < 15) {
+                        let yDiff = items[a].y - items[b].y; // PDF Y coordinates go bottom-to-top. 'a' is above 'b'.
+                        
+                        // If they are in the same column and directly above/below each other, merge them!
+                        if (xDiff < 15 && yDiff > 0 && yDiff < 15) {
                             items[a].text += " " + items[b].text;
-                            items[b].text = ""; // Empty out the bottom part
+                            items[b].text = ""; // Empty out the bottom part so it disappears
                         }
                     }
                 }
@@ -71,17 +72,19 @@ async function fetchAndParsePDF() {
         }
         items = items.filter(itm => itm.text.trim() !== '');
 
-        // strictly group elements by Y coordinate to form rows without bleeding into the next employee
+        // 2. PREVENT DRIFT: Sort all items strictly Top-to-Bottom first
+        items.sort((a, b) => b.y - a.y);
+
+        // 3. ROW CLUSTERING: Group elements by Y coordinate with a very strict tolerance
         let rows = [];
         items.forEach(item => {
             let closestRow = null;
-            let minDiff = 4.5; // Very tight tolerance prevents rows from merging!
-
+            
             for (let r of rows) {
-                let diff = Math.abs(r.y - item.y);
-                if (diff < minDiff) {
-                    minDiff = diff;
+                // Strict 5 pixel tolerance guarantees adjacent employees never merge together
+                if (Math.abs(r.y - item.y) < 5) {
                     closestRow = r;
+                    break;
                 }
             }
 
@@ -92,7 +95,9 @@ async function fetchAndParsePDF() {
             }
         });
 
+        // Process rows
         for (let row of rows) {
+            // Sort items horizontally Left-to-Right
             row.items.sort((a, b) => a.x - b.x); 
 
             let fullText = row.items.map(itm => itm.text).join(" ").replace(/\s+/g, ' ').trim();
@@ -136,11 +141,9 @@ async function fetchAndParsePDF() {
 
             let code = match[1].replace(/\s+/g, ''); 
             
-            // Failsafe: Remove any rogue IDs that managed to sneak into the name string
-            let rawName = match[2];
-            rawName = rawName.replace(/[A-Z0-9]{2,4}\s*[-–—]\s*\d+/gi, '').trim(); 
+            // Failsafe: Remove any duplicate ID if it accidentally merged into the Name
+            let rawName = match[2].replace(/[A-Z0-9]{2,4}\s*[-–—]\s*\d+/gi, '').trim(); 
             let name = fixSpacing(rawName); 
-            
             let status = match[3];
 
             let contractor = "Unknown";
@@ -177,7 +180,7 @@ async function fetchAndParsePDF() {
 
                     if (finalVal) {
                         let closestDay = null;
-                        let currentMinDiff = 30; 
+                        let currentMinDiff = 30; // Tolerance for wide center coordinates (like HO ROTA)
                         
                         for (let col of dayColumns) {
                             let diff = Math.abs(itmCenter - col.xCenter);
@@ -226,6 +229,7 @@ async function fetchAndParsePDF() {
             if (name.length > 2) {
                 let existingEmp = globalData.find(e => e.code === code);
                 if (existingEmp) {
+                    // Update existing employee if they flow over to the next page
                     for (let d = 0; d < 31; d++) {
                         if (datesArray[d] !== '-' && datesArray[d] !== '--') {
                             existingEmp.dates[d] = datesArray[d];
