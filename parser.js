@@ -5,8 +5,15 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbzBMx-fZAifindtXbsXVueY
 
 async function fetchAndParsePDF() {
     console.log("🌐 Fetching PDF from Google Apps Script...");
-    const response = await fetch(GAS_URL);
-    if (!response.ok) throw new Error("Network response was not ok");
+    
+    // Request with redirect: 'follow' is crucial for Google Scripts in GitHub Actions
+    const response = await fetch(GAS_URL, { redirect: 'follow' });
+    
+    // Better error logging to see exactly why it fails in GitHub Actions
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Google Script returned HTTP ${response.status} ${response.statusText}\nDetails: ${errorText.substring(0, 500)}`);
+    }
 
     const json = await response.json();
     if (!json.success) throw new Error("GAS Error: " + json.error);
