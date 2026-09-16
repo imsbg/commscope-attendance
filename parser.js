@@ -50,12 +50,32 @@ async function fetchAndParsePDF() {
 
         if (items.length === 0) continue;
 
-        // Group elements by Y coordinate to form rows
+        // SMART VERTICAL SCANNER: Glues multi-line cells like HO + (ROTA) together before rows are even built
+        for (let a = 0; a < items.length; a++) {
+            let t1 = items[a].text.trim().toUpperCase();
+            if (t1 === 'HO' || t1 === 'WHO' || t1 === 'SLWP') {
+                for (let b = 0; b < items.length; b++) {
+                    if (a === b) continue;
+                    let t2 = items[b].text.trim().toUpperCase();
+                    if (t2 === '(ROTA)' || t2 === '(PENDING)') {
+                        let xDiff = Math.abs(items[a].x - items[b].x);
+                        let yDiff = Math.abs(items[a].y - items[b].y);
+                        // If they are strictly in the same column and adjacent lines, merge them!
+                        if (xDiff < 15 && yDiff < 15) {
+                            items[a].text += " " + items[b].text;
+                            items[b].text = ""; // Empty out the bottom part
+                        }
+                    }
+                }
+            }
+        }
+        items = items.filter(itm => itm.text.trim() !== '');
+
+        // strictly group elements by Y coordinate to form rows without bleeding into the next employee
         let rows = [];
         items.forEach(item => {
             let closestRow = null;
-            // INCREASED back to 8 to prevent subscripts/parentheses from breaking onto new lines!
-            let minDiff = 8; 
+            let minDiff = 4.5; // Very tight tolerance prevents rows from merging!
 
             for (let r of rows) {
                 let diff = Math.abs(r.y - item.y);
@@ -115,7 +135,12 @@ async function fetchAndParsePDF() {
             if (!match) continue; 
 
             let code = match[1].replace(/\s+/g, ''); 
-            let name = fixSpacing(match[2]); 
+            
+            // Failsafe: Remove any rogue IDs that managed to sneak into the name string
+            let rawName = match[2];
+            rawName = rawName.replace(/[A-Z0-9]{2,4}\s*[-–—]\s*\d+/gi, '').trim(); 
+            let name = fixSpacing(rawName); 
+            
             let status = match[3];
 
             let contractor = "Unknown";
@@ -138,12 +163,11 @@ async function fetchAndParsePDF() {
 
                 // Days columns extraction
                 if (dayColumns.length > 0 && itm.x >= dayColumns[0].xCenter - 15 && itm.x < reportingX - 15) {
-                    let ctext = text.toUpperCase();
+                    let ctext = text.toUpperCase().replace(/\s+/g, '');
                     let finalVal = null;
                     
-                    // Robust substring matching for tricky fields (HO ROTA, SLWP, etc.)
-                    if (ctext.includes('HO') && ctext.includes('ROTA')) finalVal = 'HO (ROTA)';
-                    else if (ctext.includes('WHO') && ctext.includes('ROTA')) finalVal = 'WHO (ROTA)';
+                    if (ctext === 'HO(ROTA)') finalVal = 'HO (ROTA)';
+                    else if (ctext === 'WHO(ROTA)') finalVal = 'WHO (ROTA)';
                     else if (ctext.includes('SLWP')) finalVal = 'SLWP';
                     else if (ctext.includes('LVP')) finalVal = 'LVP';
                     else if (ctext.includes('U/A')) finalVal = 'U/A';
@@ -153,7 +177,7 @@ async function fetchAndParsePDF() {
 
                     if (finalVal) {
                         let closestDay = null;
-                        let currentMinDiff = 40; // Wide enough to catch center of long strings in tight columns
+                        let currentMinDiff = 30; 
                         
                         for (let col of dayColumns) {
                             let diff = Math.abs(itmCenter - col.xCenter);
@@ -169,7 +193,7 @@ async function fetchAndParsePDF() {
                     continue;
                 }
 
-                // TL & Sanctioner
+                // TL & Sanctioner Extraction
                 if (reportingX > 0 && itm.x >= reportingX - 15 && (sanctionerX === 0 || itm.x < sanctionerX - 15)) {
                     tlTokens.push(text);
                     continue;
