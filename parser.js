@@ -25,7 +25,7 @@ async function fetchAndParsePDF() {
     let currentMonthStr = "Unknown Month";
     let maxDays = 31; 
 
-    // Acceptable attendance statuses
+    // Acceptable attendance statuses (lowercase, without spaces)
     const validAttSet = new Set(['p', 'mp', 'a', 'hd', 'wo', 'slwp', 'lvp', 'slp', 'pl', 'fd', 'l', 'ho', 'wwo', 'cf', 'who', 'ho(rota)', 'who(rota)', '-', '--', 'co', 'u/a', 'w/o']);
 
     // Helper to fix squished names
@@ -55,11 +55,10 @@ async function fetchAndParsePDF() {
         if (items.length === 0) continue;
 
         // Group elements by Y coordinate to form rows
-        // FIXED: Tightened threshold and find "closest" match to prevent adjacent rows from merging
         let rows = [];
         items.forEach(item => {
             let closestRow = null;
-            let minDiff = 3.5; // Reduced from 8 to strictly separate tight rows
+            let minDiff = 3.5; 
 
             for (let r of rows) {
                 let diff = Math.abs(r.y - item.y);
@@ -79,6 +78,24 @@ async function fetchAndParsePDF() {
         for (let row of rows) {
             row.items.sort((a, b) => a.x - b.x); 
             
+            // Merge close items to prevent splitting text in the same column/cell (fixes split "HO (ROTA)")
+            let mergedItems = [];
+            for (let itm of row.items) {
+                if (mergedItems.length > 0) {
+                    let last = mergedItems[mergedItems.length - 1];
+                    let gap = itm.x - (last.x + last.width);
+                    
+                    // If gap is less than 10 pixels, merge them (table columns usually have > 20px gap)
+                    if (gap < 10 && gap > -15) { 
+                        last.text += " " + itm.text;
+                        last.width = (itm.x + itm.width) - last.x;
+                        continue;
+                    }
+                }
+                mergedItems.push({ ...itm });
+            }
+            row.items = mergedItems;
+
             let fullText = row.items.map(itm => itm.text).join(" ").replace(/\s+/g, ' ').trim();
             fullText = fullText.replace(/HO\s*\(ROTA\)/gi, 'HO(ROTA)').replace(/WHO\s*\(ROTA\)/gi, 'WHO(ROTA)');
 
@@ -132,26 +149,42 @@ async function fetchAndParsePDF() {
 
                 if (contractorX > 0 && itm.x < contractorX - 20) continue;
 
+                // Contractor column extraction
                 if (dayColumns.length > 0 && itmCenter >= contractorX - 10 && itm.x < dayColumns[0].xCenter - 10) {
                     if (contractor === "Unknown") contractor = text;
                     else contractor += " " + text;
                     continue;
                 }
 
+                // Days columns extraction
                 if (dayColumns.length > 0 && itm.x >= dayColumns[0].xCenter - 15 && itm.x < reportingX - 15) {
-                    let ctext = text.toLowerCase();
-                    if (validAttSet.has(ctext) || ctext === 'ho(rota)' || ctext === 'who(rota)') {
+                    // Sanitize text for accurate matching (stripping spaces)
+                    let cleanText = text.toUpperCase().replace(/\s+/g, '');
+                    let finalVal = null;
+                    
+                    if (cleanText === 'HO(ROTA)') finalVal = 'HO (ROTA)';
+                    else if (cleanText === 'WHO(ROTA)') finalVal = 'WHO (ROTA)';
+                    else if (cleanText.startsWith('SLWP')) finalVal = 'SLWP';
+                    else if (cleanText.startsWith('LVP')) finalVal = 'LVP';
+                    else if (cleanText.startsWith('U/A')) finalVal = 'U/A';
+                    else if (cleanText.startsWith('W/O') || cleanText === 'WO') finalVal = 'WO';
+                    else if (validAttSet.has(cleanText.toLowerCase())) finalVal = text.toUpperCase().trim();
+                    else if (['P', 'A', 'HD', 'FD', 'MP', 'L'].includes(cleanText)) finalVal = cleanText;
+
+                    if (finalVal) {
                         let closestDay = null;
-                        let minDiff = 12; 
+                        let minMaxAllowed = 25; // Increased to 25 to securely capture wider strings like HO (ROTA)
+                        let currentMinDiff = minMaxAllowed;
+                        
                         for (let col of dayColumns) {
                             let diff = Math.abs(itmCenter - col.xCenter);
-                            if (diff < minDiff) {
-                                minDiff = diff;
+                            if (diff < currentMinDiff) {
+                                currentMinDiff = diff;
                                 closestDay = col.day;
                             }
                         }
                         if (closestDay !== null) {
-                            datesArray[closestDay - 1] = ctext.toUpperCase() === 'HO(ROTA)' ? 'HO (ROTA)' : text.toUpperCase();
+                            datesArray[closestDay - 1] = finalVal;
                         }
                     }
                     continue;
@@ -188,7 +221,19 @@ async function fetchAndParsePDF() {
             let sanctioner = sancTokens.length > 0 ? fixSpacing(sancTokens.join(' ')) : "N/A";
 
             if (name.length > 2) {
-                globalData.push({ code, name, status, contractor, dates: datesArray, tl, sanctioner });
+                // Multi-page Merge: If employee spans multiple pages, merge data instead of overwriting
+                let existingEmp = globalData.find(e => e.code === code);
+                if (existingEmp) {
+                    for (let d = 0; d < 31; d++) {
+                        if (datesArray[d] !== '-' && datesArray[d] !== '--') {
+                            existingEmp.dates[d] = datesArray[d];
+                        }
+                    }
+                    if (existingEmp.tl === "N/A" && tl !== "N/A") existingEmp.tl = tl;
+                    if (existingEmp.sanctioner === "N/A" && sanctioner !== "N/A") existingEmp.sanctioner = sanctioner;
+                } else {
+                    globalData.push({ code, name, status, contractor, dates: datesArray, tl, sanctioner });
+                }
             }
         }
     }
