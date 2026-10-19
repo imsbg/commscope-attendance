@@ -1,668 +1,715 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO & Branding -->
-    <title>CommScope Contractor Attendance Portal - Sandeep Biswal G</title>
-    <link rel="canonical" href="https://imsbg.github.io/commscope-attendance/" />
-    <link rel="icon" type="image/png" href="https://ugc.production.linktr.ee/3185d4c0-2ed6-4e02-b0e3-d464551e7f43_canva-design.png?io=true&size=avatar-v3_0">
-    <meta name="description" content="Check your CommScope contractor attendance online. Track daily logs and attendance records.">
-    <meta name="keywords" content="CommScope contractor attendance, CommScope attendance portal, CommScope worker login, contractor attendance tracking, Sandeep Biswal" />
-    <meta name="author" content="Sandeep Biswal G">
-    <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#4f46e5">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://imsbg.github.io/commscope-attendance/">
-    <meta property="og:title" content="CommScope Contractor Attendance Portal - Sandeep Biswal G">
-    <meta property="og:description" content="Check your CommScope contractor attendance online. Track daily logs and attendance records.">
-    <meta property="og:image" content="https://ugc.production.linktr.ee/3185d4c0-2ed6-4e02-b0e3-d464551e7f43_canva-design.png?io=true&size=avatar-v3_0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://imsbg.github.io/commscope-attendance/">
-    <meta name="twitter:title" content="CommScope Contractor Attendance Portal - Sandeep Biswal G">
-    <meta name="twitter:description" content="Check your CommScope contractor attendance online. Track daily logs and attendance records.">
-    <meta name="twitter:image" content="https://ugc.production.linktr.ee/3185d4c0-2ed6-4e02-b0e3-d464551e7f43_canva-design.png?io=true&size=avatar-v3_0">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-    
-    <!-- External Libraries -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <style>
-        :root { --primary: #4f46e5; --card-bg: #ffffff; }
-        html { scroll-behavior: smooth; height: 100%; overscroll-behavior-y: contain; }
-        
-        body { 
-            font-family: 'Google Sans', sans-serif; 
-            color: #1e293b; 
-            overflow-x: hidden; 
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            overscroll-behavior-y: none;
-            background-color: #f4f7fe; 
-        }
+<title>CommScope Contractor Attendance Portal - Sandeep Biswal G</title>
+<link rel="canonical" href="https://imsbg.github.io/commscope-attendance/">
+<link rel="icon" type="image/png" href="https://ugc.production.linktr.ee/3185d4c0-2ed6-4e02-b0e3-d464551e7f43_canva-design.png?io=true&size=avatar-v3_0">
+<meta name="description" content="Check your CommScope contractor attendance online. Track daily logs and attendance records.">
+<meta name="keywords" content="CommScope contractor attendance, CommScope attendance portal, CommScope worker login, contractor attendance tracking, Sandeep Biswal">
+<meta name="author" content="Sandeep Biswal G">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#4f46e5">
 
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://imsbg.github.io/commscope-attendance/">
+<meta property="og:title" content="CommScope Contractor Attendance Portal - Sandeep Biswal G">
+<meta property="og:description" content="Check your CommScope contractor attendance online. Track daily logs and attendance records.">
+<meta property="og:image" content="https://ugc.production.linktr.ee/3185d4c0-2ed6-4e02-b0e3-d464551e7f43_canva-design.png?io=true&size=avatar-v3_0">
 
-        .sc-cell { border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: bold; min-height: 48px; }
-        .sc-shift-A { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0;}
-        .sc-shift-B { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd;}
-        .sc-shift-C { background-color: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff;}
-        .sc-shift-OFF { background-color: #ffe4e6; color: #be123c; border: 1px solid #fecdd3;}
-        .sc-holiday { background-color: #fef3c7 !important; color: #92400e !important; border: 1px dashed #d97706; }
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://imsbg.github.io/commscope-attendance/">
+<meta name="twitter:title" content="CommScope Contractor Attendance Portal - Sandeep Biswal G">
+<meta name="twitter:description" content="Check your CommScope contractor attendance online. Track daily logs and attendance records.">
+<meta name="twitter:image" content="https://ugc.production.linktr.ee/3185d4c0-2ed6-4e02-b0e3-d464551e7f43_canva-design.png?io=true&size=avatar-v3_0">
 
-        /* Animations */
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in-up { animation: fadeInUp 0.5s ease-out forwards; }
-        
-        @keyframes bounceIn {
-            0% { transform: scale(0.8); opacity: 0; }
-            50% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .animate-bounce-in { animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(79, 70, 229, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
-        }
-        .btn-glow { animation: pulse-glow 2s infinite; }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-        /* Chat System Custom Styles */
-        .chat-bubble { padding: 8px 12px; border-radius: 12px; font-size: 13px; max-width: 100%; word-wrap: break-word; }
-        .chat-me { background: #4f46e5; color: white; border-bottom-right-radius: 2px; }
-        .chat-other { background: #e2e8f0; color: #1e293b; border-bottom-left-radius: 2px; }
-    </style>
+<style>
+:root{--primary:#4f46e5;--card-bg:#fff;--page-bg:#f4f7fe;--text:#172033;--muted:#64748b;--line:#e6eaf2}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;min-height:100%;overscroll-behavior-y:contain}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;font-family:'Google Sans',sans-serif;color:var(--text);overflow-x:hidden;background:radial-gradient(ellipse at 10% 0%,rgba(99,102,241,.09),transparent 32%),radial-gradient(ellipse at 100% 20%,rgba(14,165,233,.06),transparent 28%),var(--page-bg);-webkit-font-smoothing:antialiased}
+button,a,input,select{-webkit-tap-highlight-color:transparent}
+button{cursor:pointer}
+a{text-decoration:none}
+.custom-scrollbar::-webkit-scrollbar{width:6px;height:6px}
+.custom-scrollbar::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:8px}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover{background:#94a3b8}
+.promo-banner{isolation:isolate;position:relative;overflow:hidden;width:100%;display:flex;align-items:center;justify-content:center;gap:14px;padding:15px 20px;color:white;text-align:left;background:linear-gradient(110deg,#7c3aed,#db2777 36%,#f97316 72%,#facc15);background-size:220% 220%;animation:promoGradient 9s ease infinite;box-shadow:0 8px 28px #be185d33;z-index:60;border-bottom:1px solid #ffffff59}
+.promo-banner:before{content:"";position:absolute;inset:-80% auto -80% -30%;width:22%;transform:rotate(22deg);background:linear-gradient(90deg,transparent,#ffffff4d,transparent);animation:promoShine 5s ease-in-out infinite;z-index:-1;pointer-events:none}
+.promo-icon{display:grid;place-items:center;width:43px;height:43px;flex:0 0 43px;padding:3px;overflow:hidden;border-radius:14px;background:#ffffff33;border:1px solid #ffffff7a;box-shadow:0 5px 16px #460a3229,inset 0 1px #ffffff73;backdrop-filter:blur(8px)}
+.promo-icon img{display:block;width:100%;height:100%;object-fit:cover;border-radius:10px}
+.promo-copy{min-width:0;display:flex;flex-direction:column;gap:3px}
+.promo-kicker{font-size:10px;font-weight:900;letter-spacing:.17em;text-transform:uppercase;opacity:.9}
+.promo-title{font-size:clamp(13px,2vw,16px);font-weight:800;line-height:1.35}
+.promo-subtitle{font-size:12px;opacity:.9;line-height:1.4}
+.promo-cta{flex:0 0 auto;display:inline-flex;align-items:center;gap:9px;margin-left:auto;padding:11px 16px;border-radius:999px;color:#9d174d;background:white;font-size:12px;font-weight:900;box-shadow:0 5px 18px #5007232e;transition:transform .2s;white-space:nowrap}
+.promo-cta:hover{transform:translateY(-2px)}
+@keyframes promoGradient{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes promoShine{0%,15%{left:-35%}50%,100%{left:130%}}
+@media(max-width:640px){.promo-banner{gap:10px;padding:12px 13px}.promo-icon{width:36px;height:36px;flex-basis:36px;border-radius:12px}.promo-icon img{border-radius:8px}.promo-kicker{font-size:9px}.promo-title{font-size:12px}.promo-subtitle{display:none}.promo-cta{padding:10px 12px;font-size:11px;gap:6px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+.app-header{border-bottom:1px solid #e2e8f0d9}
+.brand-mark{display:grid;place-items:center;width:43px;height:43px;border-radius:14px;color:white;background:linear-gradient(145deg,#6366f1,#4338ca);box-shadow:0 8px 18px #4f46e538}
+.surface-card{background:#ffffffe0;border:1px solid #e2e8f0d9;box-shadow:0 12px 35px #0f172a0e;backdrop-filter:blur(12px)}
+.sc-cell{border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;min-height:58px;transition:transform .18s,box-shadow .18s}
+.sc-cell:hover{transform:translateY(-2px);box-shadow:0 7px 14px #0f172a14}
+.sc-shift-A{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+.sc-shift-B{background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd}
+.sc-shift-C{background:#f3e8ff;color:#6b21a8;border:1px solid #e9d5ff}
+.sc-shift-OFF{background:#ffe4e6;color:#be123c;border:1px solid #fecdd3}
+.sc-holiday{background:#fef3c7!important;color:#92400e!important;border:1px dashed #d97706!important}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.fade-in-up{animation:fadeInUp .5s ease-out both}
+@keyframes bounceIn{0%{transform:scale(.96);opacity:0}65%{transform:scale(1.01);opacity:1}100%{transform:scale(1);opacity:1}}
+.animate-bounce-in{animation:bounceIn .45s ease-out both}
+@keyframes pulse-glow{0%{box-shadow:0 0 0 0 #10b9814d}70%{box-shadow:0 0 0 12px #10b98100}100%{box-shadow:0 0 0 0 #10b98100}}
+.btn-glow{animation:pulse-glow 2.8s infinite}
+.chat-bubble{padding:9px 12px;border-radius:14px;font-size:13px;max-width:100%;overflow-wrap:anywhere;white-space:pre-wrap}
+.chat-me{background:linear-gradient(135deg,#4f46e5,#6366f1);color:white;border-bottom-right-radius:4px}
+.chat-other{background:#e8edf5;color:#1e293b;border-bottom-left-radius:4px}
+.fab{display:flex;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s}
+.fab:hover{transform:translateY(-3px)}
+.modal-backdrop{backdrop-filter:blur(7px)}
+@media(max-width:480px){#chat-container{right:12px!important;left:12px!important;bottom:84px!important;width:auto!important;height:min(68vh,520px)!important}#backToTopFab{right:16px;bottom:88px}#chat-fab-btn{right:16px;bottom:20px}#check-attendance-fab{left:14px;bottom:20px;padding:12px 15px}#main-content{padding-left:14px;padding-right:14px}}
+</style>
 </head>
+
 <body class="antialiased">
 
-    <!-- Promotional Banner (Non-Removable) -->
-    <a id="promo-banner-link" href="https://imsbg.github.io/odiabhasa/" target="_blank" class="w-full bg-gradient-to-r from-rose-500 via-pink-500 to-orange-500 text-white text-center py-3 px-4 shadow-md flex items-center justify-center gap-2 hover:opacity-90 transition-opacity z-50 text-sm sm:text-base font-semibold">
-        <span class="animate-pulse text-lg">✨</span> 
-        <span>Are you from Odisha? And still don't know about the Odia Bhasa app?? Get it now!</span> 
-        <i class="fa-solid fa-arrow-right ml-1"></i>
-    </a>
-    <script>
-        // Set conditional link for Mobile vs Desktop
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            document.getElementById('promo-banner-link').href = "https://play.google.com/store/apps/details?id=in.sandeep.odiabhasa";
-        }
-    </script>
+<a id="promo-banner-link" href="https://imsbg.github.io/odiabhasa/" target="_blank" rel="noopener noreferrer" class="promo-banner">
+    <span class="promo-icon" aria-hidden="true"><img src="https://imsbg.github.io/odiabhasa/images/app.png" alt="" loading="eager"></span>
+    <span class="promo-copy">
+        <span class="promo-kicker">Made for Odisha · Odia Bhasa App</span>
+        <span class="promo-title">Are you from Odisha? Discover the Odia Bhasa app!</span>
+        <span class="promo-subtitle">Read, learn and explore Odia — get the app and celebrate our language.</span>
+    </span>
+    <span class="promo-cta">Get the app <i class="fa-solid fa-arrow-right"></i></span>
+</a>
 
-    <!-- Floating Action Buttons -->
-    <a href="https://tr.ee/GOA" target="_blank" class="fixed bottom-6 left-6 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-3 rounded-full shadow-[0_4px_15px_rgba(16,185,129,0.4)] flex items-center justify-center transition-all duration-300 z-40 transform hover:-translate-y-1 hover:scale-105 font-bold outline-none gap-2 btn-glow" title="Check Attendance">
-        <i class="fa-solid fa-calendar-check text-lg"></i> <span class="hidden sm:inline">Check Attendance</span>
-    </a>
+<script>
+if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+    document.getElementById('promo-banner-link').href='https://play.google.com/store/apps/details?id=in.sandeep.odiabhasa';
+}
+</script>
 
-    <button id="chat-fab-btn" onclick="window.toggleChat()" class="fixed bottom-6 right-6 bg-indigo-600 text-white h-14 w-14 rounded-full shadow-[0_4px_15px_rgba(79,70,229,0.4)] flex items-center justify-center transition-all duration-300 z-[10000] transform hover:scale-110 outline-none focus:ring-2 focus:ring-indigo-300 animate-bounce" title="Let's Chat">
-        <i class="fa-solid fa-message text-xl"></i>
-    </button>
-    
-    <button id="backToTopFab" onclick="window.scrollTo({top:0, behavior:'smooth'})" class="fixed bottom-24 right-6 bg-slate-700 text-white h-12 w-12 rounded-full shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 z-40 transform translate-y-4 hover:scale-110 outline-none focus:ring-2 focus:ring-slate-400" title="Back to Top">
-        <i class="fa-solid fa-arrow-up text-lg"></i>
-    </button>
+<a id="check-attendance-fab" href="https://tr.ee/GOA" target="_blank" rel="noopener noreferrer" class="fab fixed bottom-6 left-6 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-3 rounded-full shadow-lg z-40 font-bold gap-2 btn-glow">
+    <i class="fa-solid fa-calendar-check text-lg"></i><span class="hidden sm:inline">Check Attendance</span>
+</a>
+<button id="chat-fab-btn" onclick="window.toggleChat()" class="fab fixed bottom-6 right-6 bg-indigo-600 hover:bg-indigo-700 text-white h-14 w-14 rounded-full shadow-xl z-[10000]" title="Let's Chat" aria-label="Open chat"><i class="fa-solid fa-message text-xl"></i></button>
+<button id="backToTopFab" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fab fixed bottom-24 right-6 bg-slate-800 text-white h-12 w-12 rounded-full shadow-lg opacity-0 pointer-events-none z-40" title="Back to Top"><i class="fa-solid fa-arrow-up"></i></button>
 
-    <!-- Public Chat Modal -->
-    <div id="chat-container" class="hidden fixed bottom-24 right-6 w-80 sm:w-96 bg-white shadow-2xl rounded-2xl border border-slate-200 z-[10001] flex flex-col h-[450px] transform transition-transform duration-300 origin-bottom-right overflow-hidden">
-        <div class="bg-indigo-600 text-white p-4 flex justify-between items-center shadow-sm z-10">
-            <h3 class="font-bold flex items-center gap-2"><i class="fa-solid fa-comments"></i> Let's Chat!</h3>
-            <div class="flex items-center gap-3">
-                <button onclick="window.clearAllChats()" class="admin-only hidden hover:text-rose-300 transition text-sm" title="Clear All Chats"><i class="fa-solid fa-trash-can"></i></button>
-                <button onclick="window.toggleChat()" class="hover:text-rose-300 transition text-lg"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-        </div>
-        
-        <!-- Setup Name View -->
-        <div id="chat-setup-view" class="flex-1 flex flex-col items-center justify-center p-6 bg-slate-50">
-            <div class="bg-indigo-100 text-indigo-600 w-16 h-16 rounded-full flex items-center justify-center text-3xl mb-4"><i class="fa-solid fa-user-ninja"></i></div>
-            <h4 class="font-bold text-slate-800 mb-2">Choose a Nickname</h4>
-            <p class="text-xs text-slate-500 text-center mb-6">Join the global discussion. Just pick a display name!</p>
-            <input type="text" id="chat-name-input" placeholder="E.g., DarkKnight" maxlength="15" class="w-full border border-slate-200 p-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500 mb-4 text-center font-bold text-slate-700" onkeypress="if(event.key==='Enter') window.joinChat()">
-            <button onclick="window.joinChat()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl shadow-md hover:bg-indigo-700 transition">Join Global Chat</button>
-        </div>
-
-        <!-- Chat Interface View -->
-        <div id="chat-interface-view" class="hidden flex-1 flex flex-col h-full bg-slate-50 overflow-hidden">
-            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-3 text-sm flex flex-col custom-scrollbar">
-                <!-- Messages load here -->
-            </div>
-            <div class="p-3 bg-white border-t border-slate-200 flex gap-2 items-center relative z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
-                <input type="text" id="chat-input" placeholder="Type a message..." class="flex-1 border border-slate-300 bg-slate-50 focus:bg-white rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-indigo-500 text-sm" onkeypress="if(event.key==='Enter') window.sendChat()">
-                <button onclick="window.sendChat()" class="bg-indigo-600 text-white w-11 h-11 rounded-xl flex items-center justify-center hover:bg-indigo-700 transition shadow-sm flex-shrink-0"><i class="fa-solid fa-paper-plane"></i></button>
-            </div>
+<div id="chat-container" class="hidden fixed bottom-24 right-6 w-80 sm:w-96 bg-white shadow-2xl rounded-2xl border border-slate-200 z-[10001] flex-col h-[450px] overflow-hidden">
+    <div class="bg-gradient-to-r from-indigo-700 to-indigo-500 text-white p-4 flex justify-between items-center">
+        <h3 class="font-bold"><i class="fa-solid fa-comments"></i> Let's Chat!</h3>
+        <div class="flex gap-3">
+            <button onclick="window.clearAllChats()" class="admin-only hidden" title="Clear all chats"><i class="fa-solid fa-trash-can"></i></button>
+            <button onclick="window.toggleChat()" aria-label="Close chat"><i class="fa-solid fa-xmark"></i></button>
         </div>
     </div>
+    <div id="chat-setup-view" class="flex-1 flex flex-col items-center justify-center p-6 bg-slate-50">
+        <div class="bg-indigo-100 text-indigo-600 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-4"><i class="fa-solid fa-user-ninja"></i></div>
+        <h4 class="font-bold text-slate-800 mb-2">Choose a Nickname</h4>
+        <p class="text-xs text-slate-500 text-center mb-6">Join the global discussion. Pick a display name.</p>
+        <input type="text" id="chat-name-input" placeholder="E.g., DarkKnight" maxlength="15" class="w-full border p-3 rounded-xl text-sm mb-4 text-center font-bold" onkeypress="if(event.key==='Enter')window.joinChat()">
+        <button onclick="window.joinChat()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl">Join Global Chat</button>
+    </div>
+    <div id="chat-interface-view" class="hidden flex-1 flex-col bg-slate-50 overflow-hidden">
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-3 text-sm flex flex-col custom-scrollbar" aria-live="polite"></div>
+        <div class="p-3 bg-white border-t flex gap-2 items-center">
+            <input type="text" id="chat-input" maxlength="500" placeholder="Type a message..." class="min-w-0 flex-1 border bg-slate-50 rounded-xl px-4 py-2.5 text-sm" onkeypress="if(event.key==='Enter')window.sendChat()">
+            <button onclick="window.sendChat()" class="bg-indigo-600 text-white w-11 h-11 rounded-xl" aria-label="Send message"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
 
-    <!-- Main Content -->
-    <main id="main-content" class="p-4 md:p-6 lg:p-8 w-full max-w-screen-xl mx-auto flex-1 flex flex-col items-center">
-        
-        <!-- Header -->
-        <header class="flex flex-row justify-between items-center w-full mb-8 pb-4 border-b border-slate-200">
-            <div>
-                <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-800"><span class="text-indigo-600">Comm</span>Space</h1>
+<main id="main-content" class="p-4 md:p-6 lg:p-8 w-full max-w-screen-xl mx-auto flex-1 flex flex-col items-center">
+<header class="app-header flex justify-between items-center w-full mb-8 pb-5">
+    <div class="flex items-center gap-3">
+        <div class="brand-mark"><i class="fa-solid fa-layer-group"></i></div>
+        <div><h1 class="text-2xl md:text-3xl font-extrabold text-slate-800"><span class="text-indigo-600">Comm</span>Space</h1><p class="text-xs md:text-sm text-slate-500">Attendance information hub</p></div>
+    </div>
+    <div class="flex items-center gap-2">
+        <button id="header-admin-btn" onclick="window.openAdminAuth()" class="hidden bg-slate-800 text-white px-3 py-2.5 rounded-xl text-sm font-bold"><i class="fa-solid fa-gear"></i> <span class="hidden sm:inline">Admin</span></button>
+        <button onclick="window.openShiftModal()" class="bg-indigo-600 text-white px-3 md:px-5 py-2.5 rounded-xl flex items-center gap-2 text-sm font-bold"><i class="fa-solid fa-calendar-days"></i><span>Shift Calendar</span></button>
+    </div>
+</header>
+
+<div class="w-full max-w-3xl flex flex-col gap-6 animate-bounce-in">
+<section class="surface-card rounded-3xl p-6 md:p-10 text-center relative overflow-hidden">
+    <div class="relative z-10">
+        <div class="inline-flex items-center gap-2 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 px-3 py-1.5 text-xs font-bold mb-6"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> PORTAL UPDATE</div>
+        <div class="text-5xl md:text-6xl mb-5">🎉</div>
+        <h2 class="text-2xl md:text-4xl font-extrabold text-slate-800 mb-4">Congratulations Friends!</h2>
+        <p class="text-slate-600 text-base md:text-lg mb-8 leading-relaxed">Finally, the contractors built a website where you can see your attendance. From now on, this site will not be available to view your attendance anymore.</p>
+        <div class="flex justify-center mb-7"><a href="https://tr.ee/GOA" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 bg-indigo-600 text-white font-bold px-8 py-4 rounded-full shadow-lg hover:bg-indigo-700"><i class="fa-solid fa-arrow-up-right-from-square"></i> Go to New Portal</a></div>
+        <p class="text-slate-600 text-sm bg-slate-50 p-4 rounded-2xl border text-left"><i class="fa-solid fa-circle-info text-indigo-500 mr-2"></i>As of now, use the same short URL that I made for you (<a href="https://tr.ee/GOA" target="_blank" rel="noopener noreferrer" class="text-indigo-600 font-bold">tr.ee/GOA</a>) or click the floating Check Attendance button.</p>
+    </div>
+</section>
+
+<section class="rounded-3xl p-6 md:p-8 border border-amber-200 bg-gradient-to-br from-amber-50 to-white">
+    <div class="flex items-start gap-4">
+        <div class="bg-amber-100 text-amber-600 w-12 h-12 rounded-2xl flex items-center justify-center text-xl"><i class="fa-solid fa-lightbulb"></i></div>
+        <div>
+            <h3 class="text-lg md:text-xl font-bold text-amber-950 mb-2">Suggestions for Contractors</h3>
+            <p class="text-amber-900 text-sm md:text-base mb-3">Dear contractors, kindly add features like allowing employees to see their punch-in and punch-out timing.</p>
+            <p class="text-amber-900 text-sm md:text-base mb-4">Bring a dynamic shift calendar—when a user searches their ID, it should show their specific shift for a better touch.</p>
+            <p class="text-amber-950 text-sm font-bold bg-amber-100 p-3 rounded-xl"><i class="fa-solid fa-arrows-rotate mr-2"></i>Also, please try to update the data daily!</p>
+        </div>
+    </div>
+</section>
+</div>
+
+<footer class="text-center text-xs text-slate-500 pt-10 pb-12 mt-auto w-full">
+    <a href="https://www.instagram.com/sandeepbiswalg" target="_blank" rel="noopener noreferrer" class="mb-7 flex items-center justify-center gap-4 bg-white border px-6 py-4 rounded-2xl shadow-sm hover:shadow-md w-full max-w-sm mx-auto">
+        <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-slate-100"><i class="fa-brands fa-instagram text-2xl"></i></div>
+        <div class="text-left"><span class="font-bold text-slate-800 text-sm">Meet the maker 👨‍💻</span><span class="block text-xs mt-1">Follow @sandeepbiswalg</span></div>
+    </a>
+    <div class="bg-white px-4 py-3 rounded-xl border max-w-lg mx-auto">CommSpace is an independent community portal featuring engaging content, updates, and experiences.</div>
+    <p class="mt-3 font-semibold">© <script>document.write(new Date().getFullYear())</script> <a href="https://imsbg.github.io/" class="text-indigo-600">Sandeep Biswal G Apps</a></p>
+</footer>
+</main>
+
+<!-- Admin login -->
+<div id="admin-login-modal" onclick="if(event.target===this)window.closeAdminAuth()" class="modal-backdrop fixed inset-0 bg-slate-900/40 z-[150] p-4 flex justify-center items-center opacity-0 pointer-events-none transition-opacity">
+    <div id="admin-login-content" class="bg-white rounded-2xl w-full max-w-sm shadow-2xl flex flex-col">
+        <div class="p-5 border-b flex justify-between items-center bg-slate-50 rounded-t-2xl"><h3 class="font-bold text-slate-800 text-lg"><i class="fa-solid fa-lock"></i> Admin Login</h3><button onclick="window.closeAdminAuth()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+        <div class="p-6 flex flex-col gap-4">
+            <input type="text" id="admin-user-input" placeholder="Admin Username" autocomplete="username" class="w-full border p-3 rounded-xl text-sm uppercase font-bold">
+            <input type="password" id="admin-pwd-input" placeholder="Admin Password" autocomplete="current-password" class="w-full border p-3 rounded-xl text-sm" onkeypress="if(event.key==='Enter')window.verifyAdmin()">
+            <p id="admin-login-error" role="alert" class="text-rose-500 text-xs font-bold hidden"></p>
+            <button onclick="window.verifyAdmin()" id="admin-login-btn" class="w-full bg-slate-800 text-white font-bold py-3.5 rounded-xl">Authenticate</button>
+        </div>
+    </div>
+</div>
+
+<!-- Admin settings -->
+<div id="admin-modal" onclick="if(event.target===this)window.closeAdminModal()" class="modal-backdrop fixed inset-0 bg-slate-900/40 z-[200] p-4 flex justify-center items-center opacity-0 pointer-events-none transition-opacity">
+    <div id="admin-content" class="bg-white rounded-2xl w-full max-w-md shadow-2xl flex flex-col">
+        <div class="p-5 border-b flex justify-between items-center bg-slate-50 rounded-t-2xl"><h3 class="font-bold text-slate-800 text-lg"><i class="fa-solid fa-gear"></i> Admin Panel</h3><button onclick="window.closeAdminModal()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+        <div class="p-6">
+            <h4 class="font-bold text-slate-700 mb-2 text-sm">Global Chat Settings</h4>
+            <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border"><span class="text-xs font-bold text-slate-600">Enable Chat Feature</span><input type="checkbox" id="admin-chat-toggle" onchange="window.saveChatToggle()" checked></div>
+            <p class="text-xs text-slate-400 text-center mt-4">Other admin features have been stripped as the primary site is migrating.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Shift calendar -->
+<div id="shift-modal" onclick="if(event.target===this)window.closeShiftModal()" class="modal-backdrop fixed inset-0 bg-slate-900/40 z-[500] p-2 md:p-6 opacity-0 pointer-events-none transition-opacity">
+    <div id="shift-modal-content" class="bg-white rounded-2xl w-full max-h-[95vh] flex flex-col lg:flex-row overflow-y-auto max-w-6xl mx-auto relative shadow-2xl custom-scrollbar">
+        <button onclick="window.closeShiftModal()" class="absolute top-3 right-3 bg-slate-100 rounded-full h-10 w-10 text-xl z-20" aria-label="Close calendar"><i class="fa-solid fa-xmark"></i></button>
+        <div class="p-4 md:p-6 flex-1 flex flex-col bg-slate-50/80 min-w-0">
+            <div class="flex justify-between items-center mb-6 pr-12">
+                <button onclick="window.changeShiftMonth(-1)" class="w-10 h-10 rounded-full bg-white border" aria-label="Previous month"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="text-center"><h3 id="sc-month-title" class="text-lg md:text-xl font-bold">Month Year</h3><span class="text-xs text-slate-500">Shift calendar</span></div>
+                <button onclick="window.changeShiftMonth(1)" class="w-10 h-10 rounded-full bg-white border" aria-label="Next month"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
-            <div class="flex items-center gap-3">
-                <button id="header-admin-btn" onclick="window.openAdminAuth()" class="hidden bg-slate-800 text-white px-3 md:px-4 py-2.5 rounded-xl shadow-sm hover:bg-slate-700 transition flex items-center justify-center gap-2 text-sm font-bold cursor-pointer">
-                    <i class="fa-solid fa-gear"></i> <span class="hidden sm:inline">Admin</span>
-                </button>
-                <button onclick="window.openShiftModal()" class="bg-indigo-600 text-white px-4 md:px-5 py-2.5 rounded-xl shadow-md hover:bg-indigo-700 transition flex items-center justify-center gap-2 text-sm font-bold" title="View Shift Calendar">
-                    <i class="fa-solid fa-calendar-days"></i> <span>Shift Calendar</span>
-                </button>
-            </div>
-        </header>
+            <div class="grid grid-cols-7 gap-1 md:gap-2 text-center font-bold text-xs text-slate-500 mb-2"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+            <div id="sc-days" class="grid grid-cols-7 gap-1 md:gap-2 content-start"></div>
+            <div class="flex flex-wrap gap-2 mt-5 text-[11px] font-bold"><span class="px-2.5 py-1 rounded-full sc-shift-A">A Shift</span><span class="px-2.5 py-1 rounded-full sc-shift-B">B Shift</span><span class="px-2.5 py-1 rounded-full sc-shift-C">C Shift</span><span class="px-2.5 py-1 rounded-full sc-shift-OFF">Off</span><span class="px-2.5 py-1 rounded-full sc-holiday">Holiday</span></div>
+        </div>
 
-        <!-- Congratulations & Notice Container -->
-        <div class="w-full max-w-3xl flex flex-col gap-6 animate-bounce-in opacity-0">
-            
-            <!-- Main Success Card -->
-            <div class="bg-white rounded-3xl p-8 md:p-10 shadow-xl border border-slate-100 text-center relative overflow-hidden">
-                <div class="absolute -top-12 -right-12 w-40 h-40 bg-indigo-50 rounded-full opacity-50"></div>
-                <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-emerald-50 rounded-full opacity-50"></div>
-                
-                <div class="text-5xl md:text-6xl mb-6 relative z-10 animate-bounce">🎉</div>
-                <h2 class="text-2xl md:text-4xl font-extrabold text-slate-800 mb-4 tracking-tight relative z-10">Congratulations Friends!</h2>
-                <p class="text-slate-600 text-base md:text-lg font-medium mb-8 leading-relaxed relative z-10">
-                    Finally, the contractors built a website where you can see your attendance. 
-                    From now on, this site will not be available to view your attendance anymore.
-                </p>
-
-                <div class="flex justify-center relative z-10 mb-8">
-                    <a href="https://tr.ee/GOA" target="_blank" class="group relative flex items-center justify-center gap-3 bg-indigo-600 text-white font-bold text-lg md:text-xl px-10 py-4 rounded-full shadow-[0_0_20px_rgba(79,70,229,0.4)] transition-all transform hover:-translate-y-1 hover:scale-105 hover:bg-indigo-700 overflow-hidden">
-                        <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-black"></span>
-                        <i class="fa-solid fa-link z-10"></i> <span class="z-10">Go to New Portal</span>
-                    </a>
-                </div>
-
-                <p class="text-slate-500 text-sm italic font-medium relative z-10 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                    <i class="fa-solid fa-circle-info text-indigo-400 mr-2"></i> As of now, as I can see they do not have any proper website, so use the same short URL that I made for you (<a href="https://tr.ee/GOA" target="_blank" class="text-indigo-600 hover:underline font-bold">tr.ee/GOA</a>) or just click the floating "Check Attendance" button.
-                </p>
-            </div>
-
-            <!-- Suggestions for Contractors Card -->
-            <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-6 md:p-8 shadow-md border border-amber-200 fade-in-up" style="animation-delay: 0.2s; opacity: 0;">
-                <div class="flex items-start gap-4">
-                    <div class="bg-amber-100 text-amber-600 w-12 h-12 rounded-full flex items-center justify-center text-xl flex-shrink-0 mt-1 shadow-sm border border-amber-200">
-                        <i class="fa-solid fa-lightbulb"></i>
+        <aside class="w-full lg:w-80 p-5 md:p-6 bg-white lg:border-l border-slate-200 flex flex-col flex-shrink-0">
+            <div class="mb-5 border-b pb-5">
+                <h4 class="font-bold text-slate-800 mb-3"><i class="fa-solid fa-eye text-blue-500"></i> Personal Shift View</h4>
+                <div class="bg-slate-50 p-4 rounded-xl border space-y-3">
+                    <div>
+                        <label for="local-shift-pattern" class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Shift Pattern</label>
+                        <select id="local-shift-pattern" onchange="window.renderShiftCalendar()" class="w-full border rounded-lg p-2.5 bg-white text-sm font-medium">
+                            <option value="ACB" selected>3 Shifts (A - C - B)</option>
+                            <option value="BC">2 Shifts (B - C)</option>
+                        </select>
                     </div>
                     <div>
-                        <h3 class="text-lg md:text-xl font-bold text-amber-900 mb-2">Suggestions for Contractors</h3>
-                        <p class="text-amber-800 text-sm md:text-base font-medium leading-relaxed mb-3">
-                            Dear contractors, kindly add features like allowing employees to see their punch-in and punch-out timing. 
-                        </p>
-                        <p class="text-amber-800 text-sm md:text-base font-medium leading-relaxed mb-3">
-                            Bring a dynamic shift calendar—when a user searches their ID, it should show their specific shift for a better touch. 
-                        </p>
-                        <p class="text-amber-900 text-sm md:text-base font-bold bg-amber-100 inline-block px-4 py-2 rounded-xl border border-amber-200">
-                            <i class="fa-solid fa-arrows-rotate mr-2"></i> Also, please try to update the data daily!
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        
-        <footer class="text-center text-xs text-slate-500 pt-10 pb-12 relative flex flex-col items-center mt-auto w-full fade-in-up" style="animation-delay: 0.4s; opacity: 0;">
-            <a href="https://www.instagram.com/sandeepbiswalg" target="_blank" class="mb-8 flex items-center justify-center gap-4 bg-white border border-slate-200 px-6 py-4 rounded-xl shadow-sm hover:shadow-md transition-all group w-full max-w-sm mx-auto cursor-pointer">
-                <div class="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-xl bg-slate-100 text-slate-800 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors duration-300">
-                    <i class="fa-brands fa-instagram text-2xl"></i>
-                </div>
-                <div class="text-left flex flex-col justify-center">
-                    <span class="font-bold text-slate-800 text-sm leading-tight">Meet the maker 👨‍💻</span>
-                    <span class="text-xs text-slate-500 font-medium leading-tight mt-1">Liked this project? Follow <span class="font-bold text-slate-700 group-hover:text-indigo-600">@sandeepbiswalg</span></span>
-                </div>
-            </a>
-            <div class="bg-white px-4 py-2 rounded-lg border border-slate-200 text-slate-500 font-medium text-xs max-w-lg">
-                CommSpace is an independent community portal featuring engaging content, updates, and experiences.
-            </div>
-            <p class="mt-3 font-semibold">© <script>document.write(new Date().getFullYear())</script> <a href="https://imsbg.github.io/" target="_blank" class="text-indigo-600 hover:underline">Sandeep Biswal G Apps</a></p>
-        </footer>
-    </main>
-
-    <!-- Admin Authentication Modal -->
-    <div id="admin-login-modal" onclick="if(event.target === this) window.closeAdminAuth()" class="fixed inset-0 bg-slate-900/40 z-[150] p-4 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300">
-        <div id="admin-login-content" class="bg-white border border-slate-100 rounded-2xl w-full max-w-sm shadow-xl transform scale-95 transition-transform duration-300 flex flex-col relative">
-            <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50 rounded-t-2xl">
-                <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2"><i class="fa-solid fa-lock text-slate-600"></i> Admin Login</h3>
-                <button onclick="window.closeAdminAuth()" class="text-slate-400 hover:text-rose-500 text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 transition"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="p-6 flex flex-col gap-4">
-                <input type="text" id="admin-user-input" placeholder="Admin Username" class="w-full border border-slate-200 p-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50 uppercase font-bold text-slate-700">
-                <input type="password" id="admin-pwd-input" placeholder="Admin Password" class="w-full border border-slate-200 p-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50" onkeypress="if(event.key === 'Enter') window.verifyAdmin();">
-                <p id="admin-login-error" class="text-rose-500 text-xs font-bold hidden bg-rose-50 p-2 rounded-lg border border-rose-100"><i class="fa-solid fa-circle-exclamation"></i> Invalid credentials.</p>
-                <button onclick="window.verifyAdmin()" id="admin-login-btn" class="w-full bg-slate-800 text-white font-bold py-3.5 rounded-xl hover:bg-slate-700 transition shadow-md flex justify-center items-center gap-2">
-                    Authenticate
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Admin Config Modal -->
-    <div id="admin-modal" onclick="if(event.target === this) window.closeAdminModal()" class="fixed inset-0 bg-slate-900/40 z-[200] p-4 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300">
-        <div id="admin-content" class="bg-white border border-slate-100 rounded-2xl w-full max-w-md shadow-xl transform scale-95 transition-transform duration-300 flex flex-col max-h-[90vh]">
-            <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50 rounded-t-2xl">
-                <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2"><i class="fa-solid fa-gear text-slate-600"></i> Admin Panel</h3>
-                <button onclick="window.closeAdminModal()" class="text-slate-400 hover:text-rose-500 text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 transition"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="p-6 overflow-y-auto custom-scrollbar flex-1 flex flex-col">
-                
-                <!-- Global Chat Settings -->
-                <div class="mb-4 pb-4 border-b border-slate-200">
-                   <h4 class="font-bold text-slate-700 mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-message text-slate-400"></i> Global Chat Settings</h4>
-                   <p class="text-xs text-slate-500 mb-3">Enable or disable the public chat for all users.</p>
-                   <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-200">
-                       <span class="text-xs font-bold text-slate-600 uppercase tracking-wider">Enable Chat Feature</span>
-                       <label class="relative inline-flex items-center cursor-pointer">
-                           <input type="checkbox" id="admin-chat-toggle" onchange="window.saveChatToggle()" class="sr-only peer" checked>
-                           <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-                       </label>
-                   </div>
-                </div>
-                
-                <div class="text-xs text-slate-400 text-center mt-2 italic font-medium">
-                    Note: Other admin features (Users / Database metrics) have been stripped as the primary site is migrating.
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Shift Modal -->
-    <div id="shift-modal" onclick="if(event.target === this) window.closeShiftModal()" class="fixed inset-0 bg-slate-900/40 z-[500] p-2 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div id="shift-modal-content" class="bg-white border border-slate-100 rounded-2xl w-full max-h-[95vh] h-auto flex flex-col lg:flex-row scale-95 transition-transform duration-300 overflow-y-auto max-w-6xl mx-auto relative shadow-xl custom-scrollbar cursor-default">
-             <button onclick="window.closeShiftModal()" class="absolute top-4 right-4 text-slate-600 bg-slate-100 shadow-sm border border-slate-200 hover:bg-slate-200 rounded-full h-10 w-10 text-xl z-20 transition flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
-             
-             <div class="p-4 md:p-6 flex-1 flex flex-col bg-slate-50">
-                <div class="flex justify-between items-center mb-6">
-                    <button onclick="window.changeShiftMonth(-1)" class="w-10 h-10 rounded-full bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 flex items-center justify-center font-bold transition shadow-sm">&lt;</button>
-                    <div class="flex flex-col items-center">
-                        <h3 id="sc-month-title" class="text-lg md:text-xl font-bold text-slate-800">Month Year</h3>
-                    </div>
-                    <button onclick="window.changeShiftMonth(1)" class="w-10 h-10 rounded-full bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 flex items-center justify-center font-bold transition shadow-sm">&gt;</button>
-                </div>
-                <div class="grid grid-cols-7 gap-1 md:gap-2 text-center font-bold text-[10px] md:text-xs text-slate-500 mb-2 uppercase tracking-wider"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
-                <div id="sc-days" class="grid grid-cols-7 gap-1 md:gap-2 flex-1 content-start"></div>
-             </div>
-             
-             <!-- Admin Shift Settings & Holidays -->
-             <div class="w-full lg:w-80 p-5 md:p-6 bg-white lg:border-l border-slate-200 flex flex-col flex-shrink-0">
-                
-                <div class="mb-5 border-b border-slate-100 pb-5">
-                    <h4 class="font-bold text-slate-800 mb-3 text-base flex items-center gap-2"><i class="fa-solid fa-eye text-blue-500"></i> Personal Shift View</h4>
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                        <label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase tracking-wide">Preview My Shift</label>
-                        <select id="local-shift-override" onchange="window.renderShiftCalendar()" class="w-full border border-slate-200 rounded-lg p-2.5 bg-white outline-none focus:ring-2 focus:ring-blue-500 font-medium text-sm transition-all">
-                            <option value="">-- Use Global Settings --</option>
+                        <label for="local-shift-override" class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Preview My Base Shift</label>
+                        <select id="local-shift-override" onchange="window.renderShiftCalendar()" class="w-full border rounded-lg p-2.5 bg-white text-sm font-medium">
+                            <option value="">Use Default Base Shift</option>
                             <option value="A">Base: A Shift</option>
                             <option value="B">Base: B Shift</option>
                             <option value="C">Base: C Shift</option>
                         </select>
                     </div>
+                    <p class="text-[11px] text-slate-500">Preview only. Your choice here does not update the global schedule.</p>
                 </div>
+            </div>
 
-                <div class="admin-only hidden">
-                    <h4 class="font-bold text-slate-800 mb-3 text-base flex items-center gap-2"><i class="fa-solid fa-gear text-indigo-500"></i> Global Shift Settings</h4>
-                    <div class="space-y-4 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
-                        <div><label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase tracking-wide">Shift Pattern</label><select id="sc-setup-pattern" onchange="window.onPatternChange()" class="w-full border border-slate-200 rounded-lg p-2.5 bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-sm transition-all"><option value="ACB">3 Shifts (A - C - B)</option><option value="BC">2 Shifts (Only B & C)</option></select></div>
-                        <div><label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase tracking-wide">Current/Base Shift</label><select id="sc-setup-shift" onchange="window.saveGlobalShiftSettings()" class="w-full border border-slate-200 rounded-lg p-2.5 bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-sm transition-all"></select></div>
-                        <div><label class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase tracking-wide">Start Date</label><input type="date" id="sc-setup-date" onchange="window.saveGlobalShiftSettings()" class="w-full border border-slate-200 rounded-lg p-2.5 bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-sm transition-all"></div>
-                    </div>
+            <div class="admin-only hidden">
+                <h4 class="font-bold text-slate-800 mb-3"><i class="fa-solid fa-gear text-indigo-500"></i> Global Shift Settings</h4>
+                <div class="space-y-4 mb-6 bg-slate-50 p-4 rounded-xl border">
+                    <div><label for="sc-setup-pattern" class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Global Pattern</label><select id="sc-setup-pattern" onchange="window.onPatternChange()" class="w-full border rounded-lg p-2.5 bg-white text-sm"><option value="ACB">3 Shifts (A - C - B)</option><option value="BC">2 Shifts (B - C)</option></select></div>
+                    <div><label for="sc-setup-shift" class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Base Shift</label><select id="sc-setup-shift" onchange="window.saveGlobalShiftSettings()" class="w-full border rounded-lg p-2.5 bg-white text-sm"></select></div>
+                    <div><label for="sc-setup-date" class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Start Date</label><input type="date" id="sc-setup-date" onchange="window.saveGlobalShiftSettings()" class="w-full border rounded-lg p-2.5 bg-white text-sm"></div>
                 </div>
-                <h4 class="font-bold text-slate-800 mb-3 text-base flex items-center gap-2"><i class="fa-solid fa-gift text-rose-500"></i> Holidays 2026</h4>
-                <div id="sc-holiday-list" class="space-y-2 flex-1 pr-2 overflow-y-auto custom-scrollbar"></div>
-             </div>
-        </div>
+            </div>
+            <h4 class="font-bold text-slate-800 mb-3"><i class="fa-solid fa-gift text-rose-500"></i> Holidays 2026</h4>
+            <div id="sc-holiday-list" class="space-y-2 flex-1 overflow-y-auto custom-scrollbar"></div>
+        </aside>
     </div>
+</div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getDatabase, ref, get, set, push, onChildAdded, remove, onChildRemoved, query, limitToLast, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import {getDatabase,ref,get,set,push,onChildAdded,onChildRemoved,remove,query,limitToLast,onValue} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCeNFC0hZaz7H9nxsiYwtMbrbsoncliNqQ",
-      authDomain: "sg-fun.firebaseapp.com",
-      databaseURL: "https://sg-fun-default-rtdb.firebaseio.com",
-      projectId: "sg-fun",
-      storageBucket: "sg-fun.firebasestorage.app",
-      messagingSenderId: "70359168339",
-      appId: "1:70359168339:web:94d5ecf8b08ffe880c9da6"
-    };
+const firebaseConfig={
+    apiKey:"AIzaSyCeNFC0hZaz7H9nxsiYwtMbrbsoncliNqQ",
+    authDomain:"sg-fun.firebaseapp.com",
+    databaseURL:"https://sg-fun-default-rtdb.firebaseio.com",
+    projectId:"sg-fun",
+    storageBucket:"sg-fun.firebasestorage.app",
+    messagingSenderId:"70359168339",
+    appId:"1:70359168339:web:94d5ecf8b08ffe880c9da6"
+};
+const app=initializeApp(firebaseConfig);
+const db=getDatabase(app);
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+window.chatEnabled=true;
+window.isAdmin=false;
+window.showAdminBtn=location.hash==='#admin';
+window.calCurrentDate=new Date();
 
-    // Global variables
-    window.chatEnabled = true;
-    window.isAdmin = false;
-    window.showAdminBtn = window.location.hash === '#admin';
-    window.calCurrentDate = new Date(); 
-    if(window.calCurrentDate.getFullYear() !== 2026) window.calCurrentDate.setFullYear(2026);
-    
-    // Helpers
-    function getLogicalToday() { return new Date(); }
-    function formatISODate(d) {
-        const y = d.getFullYear();
-        const m = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        return `${y}-${m}-${day}`;
-    }
+function isoDate(d){
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function monday(d){
+    const date=new Date(d);
+    date.setHours(0,0,0,0);
+    const day=date.getDay();
+    date.setDate(date.getDate()-(day===0?6:day-1));
+    return date;
+}
+window.SEQUENCES={ACB:['A','C','B'],BC:['B','C']};
+window.holidays2026={
+    "2026-01-01":"New Year Day",
+    "2026-01-26":"Republic Day",
+    "2026-04-03":"Good Friday",
+    "2026-04-14":"Ambedkar Jayanti",
+    "2026-05-01":"May Day",
+    "2026-08-15":"Independence Day",
+    "2026-09-14":"Ganesh Chaturthi",
+    "2026-09-15":"Ganesh Chaturthi",
+    "2026-10-02":"Gandhi Jayanti",
+    "2026-10-20":"Dussehra",
+    "2026-12-19":"Goa Liberation Day",
+    "2026-12-25":"Christmas Day"
+};
 
-    // Initialize App Core
-    window.startApp = function() {
-        if(window.showAdminBtn) {
-            document.getElementById('header-admin-btn').classList.remove('hidden');
+const defaultShiftSettings={
+    pattern:'ACB',
+    baseDate:'2026-01-01',
+    baseShift:'B'
+};
+
+window.shiftSettings={...defaultShiftSettings};
+
+window.startApp=async function(){
+    if(window.showAdminBtn)document.getElementById('header-admin-btn').classList.remove('hidden');
+
+    onValue(ref(db,'settings/chatEnabled'),snap=>{
+        window.chatEnabled=snap.exists()?snap.val():true;
+        const toggle=document.getElementById('admin-chat-toggle');
+        if(toggle)toggle.checked=window.chatEnabled;
+        const fab=document.getElementById('chat-fab-btn');
+        if(fab){
+            if(window.chatEnabled||window.isAdmin)fab.classList.remove('hidden');
+            else{fab.classList.add('hidden');document.getElementById('chat-container').classList.add('hidden');}
         }
-
-        // Listen to Chat Enabled state globally
-        onValue(ref(db, 'settings/chatEnabled'), (snap) => {
-            const isEnabled = snap.exists() ? snap.val() : true;
-            window.chatEnabled = isEnabled;
-            const toggleEl = document.getElementById('admin-chat-toggle');
-            if(toggleEl) toggleEl.checked = isEnabled;
-            
-            const chatFab = document.getElementById('chat-fab-btn');
-            if (chatFab) {
-                 if(isEnabled || window.isAdmin) {
-                     chatFab.classList.remove('hidden');
-                 } else {
-                     chatFab.classList.add('hidden');
-                     document.getElementById('chat-container').classList.add('hidden'); // Force close if open
-                 }
-            }
-        });
-
-        // Fetch Settings (Shift)
-        get(ref(db, 'settings')).then(snap => {
-            const defaultShift = { pattern: 'ACB', baseDate: formatISODate(getLogicalToday()), baseShift: 'A' };
-            if (snap.exists()) {
-                const settings = snap.val();
-                window.shiftSettings = settings.shift || defaultShift;
-            } else {
-                window.shiftSettings = defaultShift;
-            }
-        });
-    };
-
-    // Auto-start since login is bypassed
-    window.startApp();
-
-    window.addEventListener('scroll', () => {
-        const fab = document.getElementById('backToTopFab');
-        if (window.scrollY > 150) { fab.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4'); fab.classList.add('opacity-100'); } 
-        else { fab.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4'); fab.classList.remove('opacity-100'); }
     });
 
-    // Shift Setup Logic
-    window.SEQUENCES = { 'ACB': ['A', 'C', 'B'], 'BC': ['B', 'C'] };
-    window.holidays2026 = { "2026-01-01": "New Year Day", "2026-01-26": "Republic Day", "2026-04-03": "Good Friday", "2026-04-14": "Ambedkar Jayanti", "2026-05-01": "May Day", "2026-08-15": "Independence Day", "2026-09-14": "Ganesh Chaturthi", "2026-09-15": "Ganesh Chaturthi", "2026-10-02": "Gandhi Jayanti", "2026-10-20": "Dussehra", "2026-12-19": "Goa Liberation Day", "2026-12-25": "Christmas Day" };
+    try{
+        const snap=await get(ref(db,'settings'));
+        const saved=snap.exists()?(snap.val().shift||{}):{};
 
-    function getMonday(d) { const date = new Date(d); date.setHours(0,0,0,0); const day = date.getDay(); const diff = date.getDate() - day + (day === 0 ? -6 : 1); return new Date(date.setDate(diff)); }
-    
-    window.getShiftForDate = function(dateObj) { 
-        if (!window.shiftSettings) return 'A';
-        if (dateObj.getDay() === 0) return 'OFF'; 
-        
-        let baseShiftToUse = window.shiftSettings.baseShift;
-        const override = document.getElementById('local-shift-override')?.value;
-        if (override) baseShiftToUse = override;
+        // Keep the saved global settings, but default to A-C-B when no pattern exists.
+        window.shiftSettings={
+            ...defaultShiftSettings,
+            ...saved,
+            pattern:saved.pattern||'ACB',
+            baseDate:'2026-01-01',
+            baseShift:'B'
+        };
 
-        const targetMon = getMonday(dateObj), baseMon = getMonday(new Date(window.shiftSettings.baseDate)); 
-        const diffWeeks = Math.floor(Math.round((targetMon - baseMon) / (1000 * 60 * 60 * 24)) / 7); 
-        const activeSeq = window.SEQUENCES[window.shiftSettings.pattern] || window.SEQUENCES['ACB']; 
-        let baseIndex = activeSeq.indexOf(baseShiftToUse); 
-        if (baseIndex === -1) baseIndex = 0; 
-        let currentIndex = (baseIndex + diffWeeks) % activeSeq.length; 
-        if (currentIndex < 0) currentIndex += activeSeq.length; 
-        return activeSeq[currentIndex]; 
-    }
-
-    window.updateShiftDropdown = function() { 
-        const shiftSelect = document.getElementById('sc-setup-shift'); 
-        const pattern = window.shiftSettings.pattern; shiftSelect.innerHTML = ''; 
-        if (pattern === 'ACB') { shiftSelect.innerHTML = '<option value="A">A Shift</option><option value="B">B Shift</option><option value="C">C Shift</option>'; } 
-        else if (pattern === 'BC') { shiftSelect.innerHTML = '<option value="B">B Shift</option><option value="C">C Shift</option>'; if (window.shiftSettings.baseShift === 'A') window.shiftSettings.baseShift = 'B'; } 
-        shiftSelect.value = window.shiftSettings.baseShift; 
-    }
-    
-    window.onPatternChange = function() { window.shiftSettings.pattern = document.getElementById('sc-setup-pattern').value; window.updateShiftDropdown(); window.saveGlobalShiftSettings(); }
-
-    window.renderShiftCalendar = function() {
-        const y = window.calCurrentDate.getFullYear(), m = window.calCurrentDate.getMonth(); const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; document.getElementById('sc-month-title').innerText = `${monthNames[m]} ${y}`; const grid = document.getElementById('sc-days'); grid.innerHTML = ''; const firstDay = new Date(y, m, 1).getDay(), daysInMonth = new Date(y, m + 1, 0).getDate();
-        const logicalToday = getLogicalToday();
-        
-        for (let i = 0; i < firstDay; i++) { grid.innerHTML += `<div class="border border-slate-100 bg-slate-50/50 rounded-xl min-h-[48px]"></div>`; }
-        for (let d = 1; d <= daysInMonth; d++) {
-            const cDate = new Date(y, m, d), isoDate = formatISODate(cDate), sCode = window.getShiftForDate(cDate), isHol = window.holidays2026[isoDate];
-            let cls = `sc-cell sc-shift-${sCode}`; let isToday = (d === logicalToday.getDate() && m === logicalToday.getMonth() && y === logicalToday.getFullYear());
-            if (isToday) cls += ' ring-2 ring-indigo-500 ring-offset-2 scale-105 shadow-sm z-10'; if (isHol) cls += ' sc-holiday';
-            grid.innerHTML += `<div class="${cls} text-xs md:text-sm transition hover:scale-105 rounded-xl"><div class="font-bold text-slate-700 ${isHol ? 'text-amber-900' : ''} ${isToday && !isHol ? 'text-indigo-900' : ''}">${d}</div><div class="text-[9px] md:text-xs font-bold mt-1 px-2 py-0.5 rounded-full bg-white border border-slate-200/50 tracking-wider">${sCode}</div></div>`;
+        // Prevent an invalid A base shift when the saved global pattern is B-C.
+        if(window.shiftSettings.pattern==='BC'&&!['B','C'].includes(window.shiftSettings.baseShift)){
+            window.shiftSettings.baseShift='B';
         }
-        const totalRendered = firstDay + daysInMonth; const remainder = (7 - (totalRendered % 7)) % 7;
-        for(let i=0; i<remainder; i++) { grid.innerHTML += `<div class="border border-slate-100 bg-slate-50/50 rounded-xl min-h-[48px]"></div>`; }
-        
-        let holHtml = ''; Object.keys(window.holidays2026).sort().forEach(dateStr => { let hd = new Date(dateStr); if(hd.getFullYear() === y && hd.getMonth() === m) { holHtml += `<div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm flex justify-between items-center"><span class="font-bold text-amber-700">${hd.getDate()} ${monthNames[m]}</span> <span class="text-amber-900 font-semibold text-right">${window.holidays2026[dateStr]}</span></div>`; } });
-        if(!holHtml) holHtml = `<div class="text-sm text-slate-400 text-center font-medium mt-4 bg-white p-4 rounded-xl border border-slate-200">No public holidays this month</div>`; document.getElementById('sc-holiday-list').innerHTML = holHtml;
-    }
 
-    window.changeShiftMonth = function(dir) { window.calCurrentDate.setMonth(window.calCurrentDate.getMonth() + dir); window.renderShiftCalendar(); }
-
-    window.openShiftModal = function() { 
-        if(!window.shiftSettings) window.shiftSettings = { pattern: 'ACB', baseDate: formatISODate(getLogicalToday()), baseShift: 'A' };
-        document.getElementById('sc-setup-pattern').value = window.shiftSettings.pattern; 
-        window.updateShiftDropdown(); 
-        document.getElementById('sc-setup-date').value = window.shiftSettings.baseDate;
-        
-        const localOverride = document.getElementById('local-shift-override');
-        if (localOverride) localOverride.value = ''; // Reset local override
-        
-        window.renderShiftCalendar();
-        
-        document.getElementById('shift-modal').classList.remove('opacity-0', 'pointer-events-none'); 
-        document.getElementById('shift-modal-content').classList.remove('scale-95'); 
-    }
-    window.closeShiftModal = function() { document.getElementById('shift-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('shift-modal-content').classList.add('scale-95'); }
-    
-    // Admin functions
-    window.openAdminAuth = function() {
-        if(window.isAdmin) {
-            window.openAdminModal();
-        } else {
-            document.getElementById('admin-login-modal').classList.remove('opacity-0', 'pointer-events-none');
-            document.getElementById('admin-login-content').classList.remove('scale-95');
-            document.getElementById('admin-user-input').focus();
-        }
-    }
-
-    window.closeAdminAuth = function() {
-        document.getElementById('admin-login-modal').classList.add('opacity-0', 'pointer-events-none');
-        document.getElementById('admin-login-content').classList.add('scale-95');
-        document.getElementById('admin-login-error').classList.add('hidden');
-    }
-
-    window.verifyAdmin = async function() {
-        const u = document.getElementById('admin-user-input').value.trim().toUpperCase();
-        const p = document.getElementById('admin-pwd-input').value.trim();
-        const btn = document.getElementById('admin-login-btn');
-        const err = document.getElementById('admin-login-error');
-
-        if(!u || !p) { err.innerText = "Please enter both fields."; err.classList.remove('hidden'); return; }
-
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...';
-        btn.disabled = true;
-        err.classList.add('hidden');
-
-        try {
-            const adminSnap = await get(ref(db, `admin_creds`));
-            if(adminSnap.exists() && adminSnap.val().username.toUpperCase() === u && adminSnap.val().password === p) {
-                window.isAdmin = true;
-                document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
-                window.closeAdminAuth();
-                window.openAdminModal();
-                btn.innerHTML = 'Authenticate';
-                btn.disabled = false;
-                
-                // Keep chat fab unhidden in case it was hidden and we logged in as admin
-                document.getElementById('chat-fab-btn').classList.remove('hidden');
-            } else {
-                throw new Error("Invalid username or password.");
-            }
-        } catch(e) {
-            err.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${e.message}`;
-            err.classList.remove('hidden');
-            btn.innerHTML = 'Authenticate';
-            btn.disabled = false;
-        }
-    };
-
-    window.openAdminModal = function() { 
-        document.getElementById('admin-modal').classList.remove('opacity-0', 'pointer-events-none'); 
-        document.getElementById('admin-content').classList.remove('scale-95'); 
-    }
-    window.closeAdminModal = function() { document.getElementById('admin-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('admin-content').classList.add('scale-95'); }
-    
-    // Chat Toggle Logic
-    window.toggleChat = function() {
-        const chat = document.getElementById('chat-container');
-        if(chat.classList.contains('hidden')) {
-            chat.classList.remove('hidden'); 
-            setTimeout(() => chat.classList.remove('scale-0', 'opacity-0'), 10);
-            
-            if (!localStorage.getItem('chat_username')) {
-                document.getElementById('chat-setup-view').classList.remove('hidden');
-                document.getElementById('chat-interface-view').classList.add('hidden');
-                document.getElementById('chat-interface-view').classList.remove('flex');
-            } else {
-                document.getElementById('chat-setup-view').classList.add('hidden');
-                document.getElementById('chat-interface-view').classList.remove('hidden');
-                document.getElementById('chat-interface-view').classList.add('flex');
-                
-                const chatList = document.getElementById('chat-messages');
-                chatList.scrollTop = chatList.scrollHeight;
-            }
-        } else {
-            chat.classList.add('scale-0', 'opacity-0'); 
-            setTimeout(() => chat.classList.add('hidden'), 300);
-        }
-    }
-
-    window.joinChat = function() {
-        const nameInput = document.getElementById('chat-name-input').value.trim();
-        if (nameInput.length < 3) return alert("Name must be at least 3 characters.");
-        localStorage.setItem('chat_username', nameInput);
-        
-        document.getElementById('chat-setup-view').classList.add('hidden');
-        document.getElementById('chat-interface-view').classList.remove('hidden');
-        document.getElementById('chat-interface-view').classList.add('flex');
-    }
-
-    window.saveGlobalShiftSettings = function() {
-        window.shiftSettings.pattern = document.getElementById('sc-setup-pattern').value; 
-        window.shiftSettings.baseShift = document.getElementById('sc-setup-shift').value; 
-        window.shiftSettings.baseDate = document.getElementById('sc-setup-date').value || window.shiftSettings.baseDate; 
-        set(ref(db, 'settings/shift'), window.shiftSettings).then(() => {
+        if(document.getElementById('shift-modal').dataset.initialized==='true'){
             window.renderShiftCalendar();
-        }).catch(e => alert("Error saving shift: " + e.message));
-    }
-    
-    // Admin Tools - Global Chat Settings Enable/Disable
-    window.saveChatToggle = async function() {
-        const isEnabled = document.getElementById('admin-chat-toggle').checked;
-        try {
-            await set(ref(db, 'settings/chatEnabled'), isEnabled);
-        } catch(e) {
-            alert("Error saving chat settings: " + e.message);
         }
+    }catch(error){
+        console.error('Could not load shift settings:',error);
+    }
+};
+window.startApp();
+
+window.addEventListener('scroll',()=>{
+    const fab=document.getElementById('backToTopFab');
+    if(window.scrollY>150){
+        fab.classList.remove('opacity-0','pointer-events-none');
+        fab.classList.add('opacity-100');
+    }else{
+        fab.classList.add('opacity-0','pointer-events-none');
+        fab.classList.remove('opacity-100');
+    }
+});
+
+window.getShiftForDate=function(dateObj){
+    const settings=window.shiftSettings||defaultShiftSettings;
+    if(dateObj.getDay()===0)return 'OFF';
+
+    // The personal preview defaults to A-C-B, regardless of a saved B-C global pattern.
+    const pattern=document.getElementById('local-shift-pattern')?.value||'ACB';
+    const seq=window.SEQUENCES[pattern]||window.SEQUENCES.ACB;
+
+    // The personal preview starts from B by default, even if Firebase has an older C setting.
+    let baseShift=document.getElementById('local-shift-override')?.value||'B';
+    if(!seq.includes(baseShift))baseShift=seq[0];
+
+    const targetMonday=monday(dateObj);
+    const baseMonday=monday(new Date(`${settings.baseDate||isoDate(new Date())}T00:00:00`));
+    const weeks=Math.round((targetMonday-baseMonday)/604800000);
+    const baseIndex=Math.max(0,seq.indexOf(baseShift));
+    return seq[((baseIndex+weeks)%seq.length+seq.length)%seq.length];
+};
+
+window.updateShiftDropdown=function(){
+    const select=document.getElementById('sc-setup-shift');
+    const pattern=document.getElementById('sc-setup-pattern').value||'ACB';
+    const seq=window.SEQUENCES[pattern]||window.SEQUENCES.ACB;
+    let base=window.shiftSettings.baseShift||'B';
+    if(!seq.includes(base))base=seq[0];
+    select.replaceChildren();
+
+    seq.forEach(shift=>{
+        const option=document.createElement('option');
+        option.value=shift;
+        option.textContent=`${shift} Shift`;
+        select.appendChild(option);
+    });
+    select.value=base;
+};
+
+window.onPatternChange=function(){
+    const pattern=document.getElementById('sc-setup-pattern').value||'ACB';
+    window.shiftSettings.pattern=pattern;
+    if(pattern==='BC'&&!['B','C'].includes(window.shiftSettings.baseShift)){
+        window.shiftSettings.baseShift='B';
+    }
+    window.updateShiftDropdown();
+    window.saveGlobalShiftSettings();
+};
+
+window.renderShiftCalendar=function(){
+    const date=window.calCurrentDate;
+    const year=date.getFullYear();
+    const month=date.getMonth();
+    const monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+    document.getElementById('sc-month-title').textContent=`${monthNames[month]} ${year}`;
+    const grid=document.getElementById('sc-days');
+    grid.replaceChildren();
+
+    const firstDay=new Date(year,month,1).getDay();
+    const totalDays=new Date(year,month+1,0).getDate();
+
+    for(let i=0;i<firstDay;i++){
+        const blank=document.createElement('div');
+        blank.className='border border-slate-100 bg-white/60 rounded-xl min-h-[48px]';
+        grid.appendChild(blank);
     }
 
-    // ==========================================
-    // CHAT LOGIC 
-    // ==========================================
-    const chatContainerList = document.getElementById('chat-messages');
-    const chatQuery = query(ref(db, 'chat'), limitToLast(50));
-    
-    onChildAdded(chatQuery, (snap) => {
-        const msg = snap.val();
-        const msgKey = snap.key;
-        
-        const myName = localStorage.getItem('chat_username') || "Anonymous";
-        const isMe = msg.name === myName;
-        
-        const adminClass = window.isAdmin ? '' : 'hidden';
-        const delBtnHTML = `<button onclick="window.deleteChatMessage('${msgKey}')" class="admin-only ${adminClass} text-rose-500 hover:text-rose-700 ml-2" title="Delete Message"><i class="fa-solid fa-trash text-xs"></i></button>`;
-        
-        const alignWrapper = isMe ? 'justify-end' : 'justify-start';
-        
-        let timeString = '';
-        if(msg.timestamp) {
-            const d = new Date(msg.timestamp);
-            timeString = d.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
-        }
+    const now=new Date();
+    for(let day=1;day<=totalDays;day++){
+        const current=new Date(year,month,day);
+        const key=isoDate(current);
+        const shift=window.getShiftForDate(current);
+        const holiday=window.holidays2026[key];
+        const today=day===now.getDate()&&month===now.getMonth()&&year===now.getFullYear();
 
-        const nameHeader = isMe ? 
-            `<div class="text-[9px] font-bold text-slate-400 mb-0.5 mr-1 flex justify-end items-center w-full">${delBtnHTML} <span class="font-normal text-slate-300 mr-1.5">${timeString}</span> You</div>` : 
-            `<div class="text-[9px] font-bold text-slate-400 mb-0.5 ml-1 flex justify-between items-center w-full"><span>${msg.name} <span class="font-normal text-slate-300 ml-1.5">${timeString}</span></span> ${delBtnHTML}</div>`;
-            
-        const bubbleColor = isMe ? 'chat-me' : 'chat-other';
-        
-        chatContainerList.innerHTML += `
-            <div id="chat-${msgKey}" class="flex ${alignWrapper} w-full fade-in-up mb-2">
-                <div class="flex flex-col max-w-[85%]">
-                    ${nameHeader}
-                    <div class="flex items-center justify-end">
-                        <div class="chat-bubble ${bubbleColor} shadow-sm">${msg.text}</div>
-                    </div>
-                </div>
-            </div>`;
-        
-        chatContainerList.scrollTop = chatContainerList.scrollHeight;
+        const cell=document.createElement('div');
+        cell.className=`sc-cell sc-shift-${shift} ${holiday?'sc-holiday':''} ${today?'ring-2 ring-indigo-500 ring-offset-2':''}`;
+
+        const number=document.createElement('div');
+        number.className='text-xs md:text-sm font-bold';
+        number.textContent=day;
+
+        const badge=document.createElement('div');
+        badge.className='text-[9px] md:text-xs font-extrabold mt-1 px-2 py-0.5 rounded-full bg-white/80 border border-slate-200/60';
+        badge.textContent=shift;
+        cell.append(number,badge);
+
+        if(holiday){
+            const tag=document.createElement('div');
+            tag.className='text-[8px] mt-1 text-center';
+            tag.textContent='Holiday';
+            cell.appendChild(tag);
+            cell.title=holiday;
+        }
+        grid.appendChild(cell);
+    }
+
+    const remaining=(7-((firstDay+totalDays)%7))%7;
+    for(let i=0;i<remaining;i++){
+        const blank=document.createElement('div');
+        blank.className='border border-slate-100 bg-white/60 rounded-xl min-h-[48px]';
+        grid.appendChild(blank);
+    }
+
+    const list=document.getElementById('sc-holiday-list');
+    list.replaceChildren();
+    const holidays=Object.keys(window.holidays2026).sort().filter(key=>{
+        const d=new Date(`${key}T00:00:00`);
+        return d.getFullYear()===year&&d.getMonth()===month;
     });
 
-    onChildRemoved(ref(db, 'chat'), (snap) => {
-        const el = document.getElementById(`chat-${snap.key}`);
-        if(el) el.remove();
+    if(!holidays.length){
+        const empty=document.createElement('div');
+        empty.className='text-sm text-slate-400 text-center mt-4 bg-slate-50 p-4 rounded-xl border';
+        empty.textContent='No public holidays this month';
+        list.appendChild(empty);
+    }
+
+    holidays.forEach(key=>{
+        const row=document.createElement('div');
+        row.className='p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm flex justify-between gap-3';
+        const day=document.createElement('span');
+        day.className='font-bold text-amber-700 whitespace-nowrap';
+        day.textContent=`${Number(key.slice(8))} ${monthNames[month]}`;
+        const name=document.createElement('span');
+        name.className='text-amber-900 font-semibold text-right';
+        name.textContent=window.holidays2026[key];
+        row.append(day,name);
+        list.appendChild(row);
     });
+};
 
-    window.sendChat = function() {
-        const input = document.getElementById('chat-input');
-        const text = input.value.trim();
-        const chatName = localStorage.getItem('chat_username');
-        
-        if(!text) return;
-        if(!chatName) return alert("Please set a name first.");
-        
-        const msgObj = { name: chatName, text: text, timestamp: Date.now() };
-        
-        push(ref(db, 'chat'), msgObj).then(() => { input.value = ''; }).catch(e => alert("Error sending: " + e.message));
-    };
+window.changeShiftMonth=function(delta){
+    window.calCurrentDate.setMonth(window.calCurrentDate.getMonth()+delta);
+    window.renderShiftCalendar();
+};
 
-    window.deleteChatMessage = async function(key) {
-        if(confirm("Are you sure you want to delete this message?")) {
-            try { await remove(ref(db, `chat/${key}`)); } catch(e) { alert("Error deleting message: " + e.message); }
+window.openShiftModal=function(){
+    const settings=window.shiftSettings||defaultShiftSettings;
+    document.getElementById('sc-setup-pattern').value=settings.pattern||'ACB';
+    window.updateShiftDropdown();
+    document.getElementById('sc-setup-date').value=settings.baseDate||isoDate(new Date());
+
+    // Default the personal preview to the 3-shift A → C → B rotation, based at B.
+    // This intentionally overrides any older saved C base shift for the preview.
+    document.getElementById('local-shift-pattern').value='ACB';
+    document.getElementById('local-shift-override').value='B';
+
+    window.calCurrentDate=new Date();
+    window.renderShiftCalendar();
+    document.getElementById('shift-modal').dataset.initialized='true';
+    document.getElementById('shift-modal').classList.remove('opacity-0','pointer-events-none');
+    document.body.style.overflow='hidden';
+};
+
+window.closeShiftModal=function(){
+    document.getElementById('shift-modal').classList.add('opacity-0','pointer-events-none');
+    document.body.style.overflow='';
+};
+
+window.openAdminAuth=function(){
+    if(window.isAdmin){window.openAdminModal();return;}
+    document.getElementById('admin-login-modal').classList.remove('opacity-0','pointer-events-none');
+    document.getElementById('admin-user-input').focus();
+    document.body.style.overflow='hidden';
+};
+
+window.closeAdminAuth=function(){
+    document.getElementById('admin-login-modal').classList.add('opacity-0','pointer-events-none');
+    document.getElementById('admin-login-error').classList.add('hidden');
+    document.body.style.overflow='';
+};
+
+window.verifyAdmin=async function(){
+    const username=document.getElementById('admin-user-input').value.trim().toUpperCase();
+    const password=document.getElementById('admin-pwd-input').value;
+    const button=document.getElementById('admin-login-btn');
+    const error=document.getElementById('admin-login-error');
+
+    if(!username||!password){
+        error.textContent='Please enter both fields.';
+        error.classList.remove('hidden');
+        return;
+    }
+
+    button.disabled=true;
+    button.textContent='Authenticating...';
+    error.classList.add('hidden');
+
+    try{
+        const snap=await get(ref(db,'admin_creds'));
+        const creds=snap.val();
+        if(!snap.exists()||!creds||String(creds.username).toUpperCase()!==username||creds.password!==password){
+            throw new Error('Invalid username or password.');
         }
-    };
-    
-    window.clearAllChats = async function() {
-        if(confirm("Are you sure you want to permanently delete ALL chat messages?")) {
-            try { 
-                await remove(ref(db, 'chat')); 
-                document.getElementById('chat-messages').innerHTML = '';
-                alert("All chats cleared.");
-            } catch(e) { alert("Error clearing chats: " + e.message); }
-        }
-    };
+        window.isAdmin=true;
+        document.querySelectorAll('.admin-only').forEach(el=>el.classList.remove('hidden'));
+        window.closeAdminAuth();
+        window.openAdminModal();
+        document.getElementById('chat-fab-btn').classList.remove('hidden');
+    }catch(err){
+        error.textContent=err.message||'Authentication failed.';
+        error.classList.remove('hidden');
+    }finally{
+        button.disabled=false;
+        button.textContent='Authenticate';
+    }
+};
+
+window.openAdminModal=function(){
+    document.getElementById('admin-modal').classList.remove('opacity-0','pointer-events-none');
+    document.body.style.overflow='hidden';
+};
+window.closeAdminModal=function(){
+    document.getElementById('admin-modal').classList.add('opacity-0','pointer-events-none');
+    document.body.style.overflow='';
+};
+
+window.saveGlobalShiftSettings=async function(){
+    const pattern=document.getElementById('sc-setup-pattern').value||'ACB';
+    const baseShift=document.getElementById('sc-setup-shift').value;
+    const baseDate=document.getElementById('sc-setup-date').value||isoDate(new Date());
+
+    window.shiftSettings={...window.shiftSettings,pattern,baseShift,baseDate};
+    try{
+        await set(ref(db,'settings/shift'),window.shiftSettings);
+        window.renderShiftCalendar();
+    }catch(error){
+        alert('Error saving shift settings: '+error.message);
+    }
+};
+
+window.saveChatToggle=async function(){
+    try{
+        await set(ref(db,'settings/chatEnabled'),document.getElementById('admin-chat-toggle').checked);
+    }catch(error){
+        alert('Error saving chat settings: '+error.message);
+    }
+};
+
+window.toggleChat=function(){
+    const chat=document.getElementById('chat-container');
+    if(chat.classList.contains('hidden')){
+        chat.classList.remove('hidden');
+        const name=localStorage.getItem('chat_username');
+        document.getElementById('chat-setup-view').classList.toggle('hidden',!!name);
+        document.getElementById('chat-interface-view').classList.toggle('hidden',!name);
+        document.getElementById('chat-interface-view').classList.toggle('flex',!!name);
+        document.getElementById('chat-messages').scrollTop=document.getElementById('chat-messages').scrollHeight;
+    }else{
+        chat.classList.add('hidden');
+    }
+};
+
+window.joinChat=function(){
+    const name=document.getElementById('chat-name-input').value.trim();
+    if(name.length<3||name.length>15)return alert('Name must be between 3 and 15 characters.');
+    localStorage.setItem('chat_username',name);
+    document.getElementById('chat-setup-view').classList.add('hidden');
+    document.getElementById('chat-interface-view').classList.remove('hidden');
+    document.getElementById('chat-interface-view').classList.add('flex');
+};
+
+const chatList=document.getElementById('chat-messages');
+const seenMessages=new Set();
+onChildAdded(query(ref(db,'chat'),limitToLast(50)),snap=>{
+    if(seenMessages.has(snap.key))return;
+    seenMessages.add(snap.key);
+    const msg=snap.val()||{};
+    const name=String(msg.name||'Anonymous').slice(0,30);
+    const body=String(msg.text||'').slice(0,500);
+    const isMe=name===(localStorage.getItem('chat_username')||'Anonymous');
+
+    const wrapper=document.createElement('div');
+    wrapper.id=`chat-${snap.key}`;
+    wrapper.className=`flex ${isMe?'justify-end':'justify-start'} w-full mb-2`;
+
+    const inner=document.createElement('div');
+    inner.className='flex flex-col max-w-[85%]';
+
+    const header=document.createElement('div');
+    header.className=`text-[9px] font-bold text-slate-400 mb-1 flex gap-2 ${isMe?'justify-end':'justify-between'}`;
+
+    const who=document.createElement('span');
+    who.textContent=isMe?'You':name;
+    const time=document.createElement('span');
+    if(msg.timestamp){
+        time.textContent=new Date(msg.timestamp).toLocaleString('en-IN',{timeZone:'Asia/Kolkata',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    }
+    header.append(who,time);
+
+    if(window.isAdmin){
+        const del=document.createElement('button');
+        del.className='text-rose-500';
+        del.innerHTML='<i class="fa-solid fa-trash"></i>';
+        del.onclick=()=>window.deleteChatMessage(snap.key);
+        header.appendChild(del);
+    }
+
+    const bubble=document.createElement('div');
+    bubble.className=`chat-bubble ${isMe?'chat-me':'chat-other'} shadow-sm`;
+    bubble.textContent=body;
+    inner.append(header,bubble);
+    wrapper.appendChild(inner);
+    chatList.appendChild(wrapper);
+    while(chatList.children.length>50)chatList.firstElementChild.remove();
+    chatList.scrollTop=chatList.scrollHeight;
+});
+
+onChildRemoved(ref(db,'chat'),snap=>{
+    document.getElementById(`chat-${snap.key}`)?.remove();
+    seenMessages.delete(snap.key);
+});
+
+window.sendChat=function(){
+    const input=document.getElementById('chat-input');
+    const body=input.value.trim();
+    const name=localStorage.getItem('chat_username');
+    if(!body)return;
+    if(!name)return alert('Please choose a nickname first.');
+    push(ref(db,'chat'),{name,text:body.slice(0,500),timestamp:Date.now()})
+        .then(()=>input.value='')
+        .catch(err=>alert('Error sending message: '+err.message));
+};
+
+window.deleteChatMessage=async function(key){
+    if(!window.isAdmin)return alert('Admin access required.');
+    if(confirm('Delete this message?')){
+        try{await remove(ref(db,`chat/${key}`));}
+        catch(error){alert('Could not delete message: '+error.message);}
+    }
+};
+
+window.clearAllChats=async function(){
+    if(!window.isAdmin)return alert('Admin access required.');
+    if(confirm('Permanently delete all chat messages?')){
+        try{await remove(ref(db,'chat'));chatList.replaceChildren();seenMessages.clear();}
+        catch(error){alert('Could not clear chat: '+error.message);}
+    }
+};
+
+document.addEventListener('keydown',event=>{
+    if(event.key==='Escape'){
+        window.closeShiftModal();
+        window.closeAdminAuth();
+        window.closeAdminModal();
+        document.getElementById('chat-container').classList.add('hidden');
+    }
+});
 </script>
 </body>
 </html>
