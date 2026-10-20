@@ -43,7 +43,7 @@ a{text-decoration:none}
 .custom-scrollbar::-webkit-scrollbar{width:6px;height:6px}
 .custom-scrollbar::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:8px}
 .custom-scrollbar::-webkit-scrollbar-thumb:hover{background:#94a3b8}
-.promo-banner{isolation:isolate;position:relative;overflow:hidden;width:100%;display:flex;align-items:center;justify-content:center;gap:14px;padding:15px 20px;color:white;text-align:left;background:linear-gradient(110deg,#7c3aed,#db2777 36%,#f97316 72%,#facc15);background-size:220% 220%;animation:promoGradient 9s ease infinite;box-shadow:0 8px 28px #be185d33;z-index:60;border-bottom:1px solid #ffffff59}
+.promo-banner{isolation:isolate;position:sticky;top:0;overflow:hidden;width:100%;display:flex;align-items:center;justify-content:center;gap:14px;padding:15px 20px;color:white;text-align:left;background:linear-gradient(110deg,#7c3aed,#db2777 36%,#f97316 72%,#facc15);background-size:220% 220%;animation:promoGradient 9s ease infinite;box-shadow:0 8px 28px #be185d33;z-index:1000;border-bottom:1px solid #ffffff59}
 .promo-banner:before{content:"";position:absolute;inset:-80% auto -80% -30%;width:22%;transform:rotate(22deg);background:linear-gradient(90deg,transparent,#ffffff4d,transparent);animation:promoShine 5s ease-in-out infinite;z-index:-1;pointer-events:none}
 .promo-icon{display:grid;place-items:center;width:43px;height:43px;flex:0 0 43px;padding:3px;overflow:hidden;border-radius:14px;background:#ffffff33;border:1px solid #ffffff7a;box-shadow:0 5px 16px #460a3229,inset 0 1px #ffffff73;backdrop-filter:blur(8px)}
 .promo-icon img{display:block;width:100%;height:100%;object-fit:cover;border-radius:10px}
@@ -56,7 +56,63 @@ a{text-decoration:none}
 @keyframes promoGradient{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 @keyframes promoShine{0%,15%{left:-35%}50%,100%{left:130%}}
 @media(max-width:640px){.promo-banner{gap:10px;padding:12px 13px}.promo-icon{width:36px;height:36px;flex-basis:36px;border-radius:12px}.promo-icon img{border-radius:8px}.promo-kicker{font-size:9px}.promo-title{font-size:12px}.promo-subtitle{display:none}.promo-cta{padding:10px 12px;font-size:11px;gap:6px}}
+/* Live Firebase visitor counter */
+#visitor-counter-float{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:35;display:flex;align-items:center;gap:9px;padding:10px 15px;border:1px solid #c7d2fe;border-radius:999px;background:rgba(255,255,255,.94);color:#1e293b;box-shadow:0 8px 28px #0f172a22;backdrop-filter:blur(14px);font-size:12px;font-weight:800;white-space:nowrap;max-width:calc(100vw - 150px)}
+#visitor-counter-float .visitor-live-dot{width:8px;height:8px;flex:0 0 8px;border-radius:50%;background:#10b981;box-shadow:0 0 0 4px #10b98120}
+#visitor-count-number{font-variant-numeric:tabular-nums;color:#4f46e5;min-width:3ch;display:inline-flex;align-items:center;white-space:pre}
+.odometer-digit{display:inline-block;position:relative;height:1.2em;line-height:1.2em;width:.64em;overflow:hidden;vertical-align:bottom}
+.odometer-strip{display:flex;flex-direction:column;transform:translateY(-10em);transition:transform .48s cubic-bezier(.22,.75,.25,1);will-change:transform}
+.odometer-strip span{height:1.2em;line-height:1.2em;display:block;text-align:center;flex:0 0 1.2em}
+.odometer-digit.no-motion .odometer-strip{transition:none!important}
+.odometer-separator{display:inline-block;width:.3em;text-align:center;color:#64748b}
+@media(prefers-reduced-motion:reduce){.odometer-strip{transition:none!important}}
+#visitor-counter-status{font-size:10px;color:#64748b;font-weight:600}
+@media(max-width:640px){#visitor-counter-float{bottom:76px;padding:8px 11px;gap:7px;font-size:11px;max-width:calc(100vw - 24px)}#visitor-counter-status{display:none}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+/* Keep the calendar modal above the sticky promotional banner */
+#shift-modal{z-index:2000!important}
+#shift-modal-content{position:relative;z-index:2001}
+
+/* Responsive shift calendar navigation and today's shift card */
+.sc-calendar-toolbar{display:grid;grid-template-columns:44px minmax(0,1fr) auto 44px;align-items:center;gap:8px;margin-bottom:16px;padding:10px;border:1px solid #e2e8f0;border-radius:16px;background:#fff;position:sticky;top:8px;z-index:5;box-shadow:0 5px 18px #0f172a0b}
+.sc-nav-btn{min-width:42px;height:42px;border:1px solid #dbe2ee;border-radius:12px;background:#fff;color:#334155;display:inline-flex;align-items:center;justify-content:center;font-weight:800;transition:background .2s,transform .2s}
+.sc-nav-btn:hover{background:#eef2ff;transform:translateY(-1px)}
+.sc-today-btn{height:38px;padding:0 13px;border:0;border-radius:11px;background:#4f46e5;color:#fff;font-size:12px;font-weight:800;white-space:nowrap}
+.sc-today-summary{display:flex;align-items:center;gap:12px;margin:0 0 16px;padding:14px 16px;border:1px solid #c7d2fe;border-radius:16px;background:linear-gradient(115deg,#eef2ff,#fff 72%);box-shadow:0 6px 18px #4f46e50b}
+.sc-today-letter{width:48px;height:48px;flex:0 0 48px;border-radius:14px;display:grid;place-items:center;font-size:21px;font-weight:900;background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd}
+.sc-today-letter.shift-A{background:#dcfce7;color:#166534;border-color:#bbf7d0}.sc-today-letter.shift-B{background:#e0f2fe;color:#0369a1;border-color:#bae6fd}.sc-today-letter.shift-C{background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff}.sc-today-letter.shift-OFF{background:#ffe4e6;color:#be123c;border-color:#fecdd3}.sc-today-letter.shift-HOLIDAY{background:#fef3c7;color:#92400e;border-color:#fcd34d}
+.sc-today-heading{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:900;color:#64748b}.sc-today-value{font-size:16px;font-weight:900;color:#172033;line-height:1.3}.sc-today-date{font-size:11px;color:#64748b;margin-top:3px}
+#sc-days{grid-template-columns:repeat(7,minmax(0,1fr));}
+#sc-days .sc-cell{min-width:0;min-height:66px;padding:7px 2px;}
+#sc-days .sc-cell .text-xs{line-height:1.15}
+@media(max-width:640px){
+ #shift-modal{padding:8px!important;align-items:flex-start!important;overflow-y:auto}
+ #shift-modal-content{width:100%;max-height:calc(100dvh - 16px);height:auto;overflow-y:auto;border-radius:18px;margin:0 auto}
+ #shift-modal-content>div:first-of-type{padding:12px!important}
+ .sc-calendar-toolbar{grid-template-columns:40px minmax(0,1fr) auto 40px;gap:5px;padding:7px;margin:0 0 12px;top:0}
+ .sc-nav-btn{min-width:38px;height:40px;border-radius:11px}
+ .sc-today-btn{height:36px;padding:0 9px;font-size:11px}
+ #sc-month-title{font-size:15px!important;line-height:1.2}
+ .sc-month-subtitle{font-size:10px!important}
+ #sc-days{gap:4px!important}
+ #sc-days .sc-cell{min-height:56px;border-radius:10px;padding:6px 1px;font-size:12px}
+ #sc-days .sc-cell .text-xs{font-size:11px}
+ #sc-days .sc-cell .text-\[9px\]{font-size:9px}
+ .sc-weekdays{gap:4px!important;font-size:10px!important;margin-bottom:6px!important}
+ .sc-today-summary{padding:11px 12px;margin-bottom:12px;gap:10px}
+ .sc-today-letter{width:42px;height:42px;flex-basis:42px;border-radius:12px;font-size:18px}
+ .sc-today-value{font-size:14px}
+ .sc-shift-time{font-size:clamp(6px,1.7vw,8px);line-height:1.05;letter-spacing:-.25px;transform:none;transform-origin:center;white-space:normal;overflow-wrap:normal;max-width:100%;text-align:center;margin-top:3px;font-weight:800}
+ #shift-modal aside{padding:16px!important;border-top:1px solid #e2e8f0}
+ #shift-modal .sc-legend{gap:6px!important;margin-top:12px!important}
+ #shift-modal .sc-legend span{font-size:10px!important;padding:5px 8px!important}
+ #shift-modal-content>button{position:absolute;top:10px;right:10px;z-index:30;margin:0;box-shadow:0 3px 12px #0f172a18}
+ #shift-modal-content>div:first-of-type{padding-top:58px!important}
+ .sc-shift-time{font-size:clamp(6px,1.7vw,8px);line-height:1.05;color:#475569;font-weight:800;margin-top:3px;white-space:normal;letter-spacing:-.25px;max-width:100%;font-variant-numeric:tabular-nums;text-align:center;overflow-wrap:normal}
+ #sc-holiday-heading-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+ #sc-all-holidays-btn{font-size:10px;padding:7px 9px;border-radius:9px;background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;font-weight:800;white-space:nowrap}
+}
+@media(max-width:360px){.sc-calendar-toolbar{grid-template-columns:34px minmax(0,1fr) auto 34px;gap:3px;padding:5px}.sc-nav-btn{min-width:32px;height:36px}#sc-days .sc-cell{min-height:49px}#sc-days{gap:3px!important}.sc-today-btn{padding:0 6px;font-size:10px}.sc-shift-time{font-size:6px;line-height:1;letter-spacing:-.3px;transform:none;white-space:normal}#shift-modal-content>button{top:8px;right:8px;width:34px;height:34px}}
 .app-header{border-bottom:1px solid #e2e8f0d9}
 .brand-mark{display:grid;place-items:center;width:43px;height:43px;border-radius:14px;color:white;background:linear-gradient(145deg,#6366f1,#4338ca);box-shadow:0 8px 18px #4f46e538}
 .surface-card{background:#ffffffe0;border:1px solid #e2e8f0d9;box-shadow:0 12px 35px #0f172a0e;backdrop-filter:blur(12px)}
@@ -129,6 +185,14 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
             <button onclick="window.sendChat()" class="bg-indigo-600 text-white w-11 h-11 rounded-xl" aria-label="Send message"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
     </div>
+</div>
+
+<div id="visitor-counter-float" role="status" aria-live="polite" aria-label="Total website visits">
+    <span class="visitor-live-dot" aria-hidden="true"></span>
+    <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
+    <span>Total visits</span>
+    <span id="visitor-count-number">—</span>
+    <span id="visitor-counter-status">Live</span>
 </div>
 
 <main id="main-content" class="p-4 md:p-6 lg:p-8 w-full max-w-screen-xl mx-auto flex-1 flex flex-col items-center">
@@ -208,14 +272,19 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
     <div id="shift-modal-content" class="bg-white rounded-2xl w-full max-h-[95vh] flex flex-col lg:flex-row overflow-y-auto max-w-6xl mx-auto relative shadow-2xl custom-scrollbar">
         <button onclick="window.closeShiftModal()" class="absolute top-3 right-3 bg-slate-100 rounded-full h-10 w-10 text-xl z-20" aria-label="Close calendar"><i class="fa-solid fa-xmark"></i></button>
         <div class="p-4 md:p-6 flex-1 flex flex-col bg-slate-50/80 min-w-0">
-            <div class="flex justify-between items-center mb-6 pr-12">
-                <button onclick="window.changeShiftMonth(-1)" class="w-10 h-10 rounded-full bg-white border" aria-label="Previous month"><i class="fa-solid fa-chevron-left"></i></button>
-                <div class="text-center"><h3 id="sc-month-title" class="text-lg md:text-xl font-bold">Month Year</h3><span class="text-xs text-slate-500">Shift calendar</span></div>
-                <button onclick="window.changeShiftMonth(1)" class="w-10 h-10 rounded-full bg-white border" aria-label="Next month"><i class="fa-solid fa-chevron-right"></i></button>
+            <div class="sc-calendar-toolbar" aria-label="Calendar month navigation">
+                <button onclick="window.changeShiftMonth(-1)" class="sc-nav-btn" aria-label="Previous month" title="Previous month"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="text-center min-w-0"><h3 id="sc-month-title" class="text-lg md:text-xl font-bold">Month Year</h3><span class="sc-month-subtitle text-xs text-slate-500">Shift calendar</span></div>
+                <button onclick="window.goToShiftToday()" class="sc-today-btn" aria-label="Go to current month">Today</button>
+                <button onclick="window.changeShiftMonth(1)" class="sc-nav-btn" aria-label="Next month" title="Next month"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
-            <div class="grid grid-cols-7 gap-1 md:gap-2 text-center font-bold text-xs text-slate-500 mb-2"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+            <div id="sc-today-summary" class="sc-today-summary" role="status" aria-live="polite">
+                <div id="sc-today-letter" class="sc-today-letter">—</div>
+                <div class="min-w-0"><div class="sc-today-heading">Today's shift</div><div id="sc-today-value" class="sc-today-value">Checking today's shift…</div><div id="sc-today-date" class="sc-today-date"></div></div>
+            </div>
+            <div class="sc-weekdays grid grid-cols-7 gap-1 md:gap-2 text-center font-bold text-xs text-slate-500 mb-2"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
             <div id="sc-days" class="grid grid-cols-7 gap-1 md:gap-2 content-start"></div>
-            <div class="flex flex-wrap gap-2 mt-5 text-[11px] font-bold"><span class="px-2.5 py-1 rounded-full sc-shift-A">A Shift</span><span class="px-2.5 py-1 rounded-full sc-shift-B">B Shift</span><span class="px-2.5 py-1 rounded-full sc-shift-C">C Shift</span><span class="px-2.5 py-1 rounded-full sc-shift-OFF">Off</span><span class="px-2.5 py-1 rounded-full sc-holiday">Holiday</span></div>
+            <div class="sc-legend flex flex-wrap gap-2 mt-5 text-[11px] font-bold"><span class="px-2.5 py-1 rounded-full sc-shift-A">A Shift</span><span class="px-2.5 py-1 rounded-full sc-shift-B">B Shift</span><span class="px-2.5 py-1 rounded-full sc-shift-C">C Shift</span><span class="px-2.5 py-1 rounded-full sc-shift-OFF">Off</span><span class="px-2.5 py-1 rounded-full sc-holiday">Holiday</span></div>
         </div>
 
         <aside class="w-full lg:w-80 p-5 md:p-6 bg-white lg:border-l border-slate-200 flex flex-col flex-shrink-0">
@@ -238,6 +307,14 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
                             <option value="C">Base: C Shift</option>
                         </select>
                     </div>
+                    <div>
+                        <label for="local-shift-timing" class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Shift Timing</label>
+                        <select id="local-shift-timing" onchange="window.saveLocalShiftTiming();window.renderShiftCalendar()" class="w-full border rounded-lg p-2.5 bg-white text-sm font-medium">
+                            <option value="standard" selected>Standard (default)</option>
+                            <option value="early">Early shift (1 hour earlier)</option>
+                        </select>
+                        <p class="text-[10px] text-slate-500 mt-1">Standard: A 8 AM–4 PM · B 4 PM–12 AM · C 12 AM–8 AM</p>
+                    </div>
                     <p class="text-[11px] text-slate-500">Preview only. Your choice here does not update the global schedule.</p>
                 </div>
             </div>
@@ -250,7 +327,10 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
                     <div><label for="sc-setup-date" class="block text-[10px] font-bold text-slate-500 mb-1.5 uppercase">Start Date</label><input type="date" id="sc-setup-date" onchange="window.saveGlobalShiftSettings()" class="w-full border rounded-lg p-2.5 bg-white text-sm"></div>
                 </div>
             </div>
-            <h4 class="font-bold text-slate-800 mb-3"><i class="fa-solid fa-gift text-rose-500"></i> Holidays 2026</h4>
+            <div id="sc-holiday-heading-row" class="mb-3">
+                <h4 id="sc-holiday-heading" class="font-bold text-slate-800"><i class="fa-solid fa-gift text-rose-500"></i> Holidays 2026</h4>
+                <button id="sc-all-holidays-btn" type="button" onclick="window.toggleAllHolidays()" aria-pressed="false">All holidays</button>
+            </div>
             <div id="sc-holiday-list" class="space-y-2 flex-1 overflow-y-auto custom-scrollbar"></div>
         </aside>
     </div>
@@ -258,7 +338,7 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
 
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import {getDatabase,ref,get,set,push,onChildAdded,onChildRemoved,remove,query,limitToLast,onValue} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+import {getDatabase,ref,get,set,push,onChildAdded,onChildRemoved,remove,query,limitToLast,onValue,runTransaction} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
 const firebaseConfig={
     apiKey:"AIzaSyCeNFC0hZaz7H9nxsiYwtMbrbsoncliNqQ",
@@ -271,6 +351,141 @@ const firebaseConfig={
 };
 const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
+
+// Firebase Realtime Database visitor counter.
+// The displayed value comes from /visitors/total and stays synchronized live.
+// Every page load/refresh attempts one atomic increment; runTransaction avoids
+// lost increments when several visitors arrive at the same time.
+const visitorTotalRef = ref(db, 'visitors/total');
+const visitorCountEl = document.getElementById('visitor-count-number');
+const visitorStatusEl = document.getElementById('visitor-counter-status');
+const formatVisitorCount = value => Math.max(0, Number(value) || 0).toLocaleString('en-IN');
+
+// Rolling odometer display: initial value loads normally; afterwards only digits
+// that change roll upward (e.g. 212,306 -> 212,307 rolls only the final digit).
+let lastVisitorValue = null;
+let digitPositions = [];
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function renderVisitorOdometer(value, animate = true) {
+    const numericValue = Math.max(0, Math.floor(Number(value) || 0));
+    const formatted = numericValue.toLocaleString('en-IN');
+    const previousFormatted = lastVisitorValue === null
+        ? null
+        : lastVisitorValue.toLocaleString('en-IN');
+
+    if (previousFormatted === null || !animate || reducedMotion) {
+        visitorCountEl.textContent = formatted;
+        digitPositions = [];
+        let digitIndex = 0;
+        for (const char of formatted) {
+            if (/\d/.test(char)) {
+                digitPositions.push({ digit: Number(char), position: 10 + Number(char) });
+                digitIndex++;
+            } else {
+                digitPositions.push({ separator: char });
+            }
+        }
+        lastVisitorValue = numericValue;
+        return;
+    }
+
+    if (numericValue === lastVisitorValue) return;
+
+    // Rebuild only if the formatted length/grouping changed; preserve each digit's
+    // previous wheel position so 9 -> 0 continues rolling upward smoothly.
+    const oldDigits = previousFormatted.replace(/\D/g, '');
+    const newDigits = formatted.replace(/\D/g, '');
+    const oldLength = oldDigits.length;
+    const newLength = newDigits.length;
+    const previousPositions = digitPositions.filter(item => item && !('separator' in item));
+    const digitMeta = [];
+    let oldIndex = oldLength - 1;
+
+    for (let i = newLength - 1; i >= 0; i--) {
+        const digit = Number(newDigits[i]);
+        const oldDigit = oldIndex >= 0 ? Number(oldDigits[oldIndex]) : null;
+        const previousMeta = oldIndex >= 0 ? previousPositions[oldIndex] : null;
+        let startPosition = previousMeta?.position ?? (10 + (oldDigit === null ? digit : oldDigit));
+        let position = startPosition;
+        const changed = oldDigit !== null && digit !== oldDigit;
+        if (changed) {
+            position += (digit - oldDigit + 10) % 10;
+        }
+        digitMeta[i] = { digit, startPosition, position, changed };
+        oldIndex--;
+    }
+
+    visitorCountEl.replaceChildren();
+    let digitIndex = 0;
+    for (const char of formatted) {
+        if (/\d/.test(char)) {
+            const meta = digitMeta[digitIndex++];
+            const wheel = document.createElement('span');
+            wheel.className = 'odometer-digit' + (meta.changed ? '' : ' no-motion');
+            wheel.setAttribute('aria-hidden', 'true');
+            const strip = document.createElement('span');
+            strip.className = 'odometer-strip';
+            for (let cycle = 0; cycle < 3; cycle++) {
+                for (let n = 0; n <= 9; n++) {
+                    const number = document.createElement('span');
+                    number.textContent = String(n);
+                    strip.appendChild(number);
+                }
+            }
+            wheel.appendChild(strip);
+            visitorCountEl.appendChild(wheel);
+            // Set the starting position without animation, then roll changed digits.
+            strip.style.transition = 'none';
+            strip.style.transform = `translateY(-${meta.startPosition * 1.2}em)`;
+            if (meta.changed && !reducedMotion) {
+                requestAnimationFrame(() => {
+                    // Force the browser to commit the starting position before animating.
+                    void strip.offsetHeight;
+                    strip.style.transition = '';
+                    strip.style.transform = `translateY(-${meta.position * 1.2}em)`;
+                });
+            } else {
+                strip.style.transform = `translateY(-${meta.position * 1.2}em)`;
+            }
+        } else {
+            const separator = document.createElement('span');
+            separator.className = 'odometer-separator';
+            separator.textContent = char;
+            visitorCountEl.appendChild(separator);
+        }
+    }
+    digitPositions = digitMeta;
+    lastVisitorValue = numericValue;
+}
+
+// Listen continuously so updates made by any visitor or admin appear immediately.
+onValue(visitorTotalRef, snapshot => {
+    if (!snapshot.exists() || snapshot.val() === null) {
+        visitorStatusEl.textContent = 'No data';
+        return;
+    }
+    renderVisitorOdometer(snapshot.val(), true);
+    visitorStatusEl.textContent = 'Live';
+}, error => {
+    console.error('Could not read visitor count from Firebase:', error);
+    visitorStatusEl.textContent = 'Connection error';
+});
+
+// Increment on EVERY page load, including browser refreshes.
+// This is an atomic Firebase transaction, so concurrent visits are not overwritten.
+runTransaction(visitorTotalRef, currentValue => {
+    const currentCount = Math.max(0, Number(currentValue) || 0);
+    return currentCount + 1;
+}).then(result => {
+    if (!result.committed) {
+        console.warn('Firebase visitor count transaction was not committed.');
+        visitorStatusEl.textContent = 'Not updated';
+    }
+}).catch(error => {
+    console.error('Could not increment Firebase visitor count:', error);
+    visitorStatusEl.textContent = error.code === 'PERMISSION_DENIED' ? 'Rules: allow write' : 'Update failed';
+});
 
 window.chatEnabled=true;
 window.isAdmin=false;
@@ -301,6 +516,34 @@ window.holidays2026={
     "2026-10-20":"Dussehra",
     "2026-12-19":"Goa Liberation Day",
     "2026-12-25":"Christmas Day"
+};
+window.showAllHolidays=false;
+window.shiftTimingMode='standard';
+window.SHIFT_TIMINGS={
+    standard:{A:{full:'8 AM–4 PM',compact:'8 AM–4 PM'},B:{full:'4 PM–12 AM',compact:'4 PM–12 AM'},C:{full:'12 AM–8 AM',compact:'12 AM–8 AM'}},
+    early:{A:{full:'7 AM–3 PM',compact:'7 AM–3 PM'},B:{full:'3 PM–11 PM',compact:'3 PM–11 PM'},C:{full:'11 PM–7 AM',compact:'11 PM–7 AM'}}
+};
+window.getShiftTiming=function(shift){
+    if(!['A','B','C'].includes(shift)) return '';
+    const mode=document.getElementById('local-shift-timing')?.value||window.shiftTimingMode||'standard';
+    return window.SHIFT_TIMINGS[mode]?.[shift]?.full||window.SHIFT_TIMINGS.standard[shift].full;
+};
+window.getCompactShiftTiming=function(shift){
+    if(!['A','B','C'].includes(shift)) return '';
+    const mode=document.getElementById('local-shift-timing')?.value||window.shiftTimingMode||'standard';
+    return window.SHIFT_TIMINGS[mode]?.[shift]?.compact||window.SHIFT_TIMINGS.standard[shift].compact;
+};
+window.saveLocalShiftTiming=function(){
+    const select=document.getElementById('local-shift-timing');
+    if(!select)return;
+    window.shiftTimingMode=select.value||'standard';
+    try{localStorage.setItem('commspace_shift_timing',window.shiftTimingMode)}catch(e){}
+};
+window.toggleAllHolidays=function(){
+    window.showAllHolidays=!window.showAllHolidays;
+    const button=document.getElementById('sc-all-holidays-btn');
+    if(button){button.textContent=window.showAllHolidays?'This month':'All holidays';button.setAttribute('aria-pressed',String(window.showAllHolidays));}
+    window.renderShiftCalendar();
 };
 
 const defaultShiftSettings={
@@ -416,6 +659,21 @@ window.renderShiftCalendar=function(){
     const monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
 
     document.getElementById('sc-month-title').textContent=`${monthNames[month]} ${year}`;
+    const todayNow=new Date();
+    const todayShift=window.getShiftForDate(todayNow);
+    const todayKey=isoDate(todayNow);
+    const todayHoliday=window.holidays2026[todayKey];
+    const todayLetter=document.getElementById('sc-today-letter');
+    const todayValue=document.getElementById('sc-today-value');
+    const todayDate=document.getElementById('sc-today-date');
+    if(todayLetter && todayValue && todayDate){
+        const displayShift=todayHoliday?'HOLIDAY':todayShift;
+        todayLetter.className=`sc-today-letter shift-${displayShift}`;
+        todayLetter.textContent=todayHoliday?'H':(todayShift==='OFF'?'OFF':todayShift);
+        todayValue.textContent=todayHoliday?'Public Holiday':(todayShift==='OFF'?'Day Off':`${todayShift} Shift · ${window.getShiftTiming(todayShift)}`);
+        todayDate.textContent=todayNow.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+        if(todayHoliday) todayDate.textContent+=` · ${todayHoliday}`;
+    }
     const grid=document.getElementById('sc-days');
     grid.replaceChildren();
 
@@ -445,13 +703,21 @@ window.renderShiftCalendar=function(){
 
         const badge=document.createElement('div');
         badge.className='text-[9px] md:text-xs font-extrabold mt-1 px-2 py-0.5 rounded-full bg-white/80 border border-slate-200/60';
-        badge.textContent=shift;
+        badge.textContent=holiday?'HOLIDAY':shift;
+        if(holiday) badge.classList.add('text-[8px]');
         cell.append(number,badge);
+        if(!holiday && ['A','B','C'].includes(shift)){
+            const timing=document.createElement('div');
+            timing.className='sc-shift-time';
+            timing.textContent=window.getCompactShiftTiming(shift);
+            cell.appendChild(timing);
+            cell.title=`${shift} Shift · ${window.getShiftTiming(shift)}`;
+        }
 
         if(holiday){
             const tag=document.createElement('div');
             tag.className='text-[8px] mt-1 text-center';
-            tag.textContent='Holiday';
+            tag.textContent=holiday;
             cell.appendChild(tag);
             cell.title=holiday;
         }
@@ -468,14 +734,17 @@ window.renderShiftCalendar=function(){
     const list=document.getElementById('sc-holiday-list');
     list.replaceChildren();
     const holidays=Object.keys(window.holidays2026).sort().filter(key=>{
+        if(window.showAllHolidays)return true;
         const d=new Date(`${key}T00:00:00`);
         return d.getFullYear()===year&&d.getMonth()===month;
     });
+    const holidayHeading=document.getElementById('sc-holiday-heading');
+    if(holidayHeading)holidayHeading.innerHTML=`<i class="fa-solid fa-gift text-rose-500"></i> ${window.showAllHolidays?'All Holidays 2026':`Holidays ${year}`}`;
 
     if(!holidays.length){
         const empty=document.createElement('div');
         empty.className='text-sm text-slate-400 text-center mt-4 bg-slate-50 p-4 rounded-xl border';
-        empty.textContent='No public holidays this month';
+        empty.textContent=window.showAllHolidays?'No holidays are configured.':'No public holidays this month';
         list.appendChild(empty);
     }
 
@@ -494,8 +763,19 @@ window.renderShiftCalendar=function(){
 };
 
 window.changeShiftMonth=function(delta){
+    const currentDay=window.calCurrentDate.getDate();
+    window.calCurrentDate.setDate(1);
     window.calCurrentDate.setMonth(window.calCurrentDate.getMonth()+delta);
+    const maxDay=new Date(window.calCurrentDate.getFullYear(),window.calCurrentDate.getMonth()+1,0).getDate();
+    window.calCurrentDate.setDate(Math.min(currentDay,maxDay));
     window.renderShiftCalendar();
+};
+
+window.goToShiftToday=function(){
+    window.calCurrentDate=new Date();
+    window.renderShiftCalendar();
+    const todayCell=document.querySelector('#sc-days .sc-cell.ring-2');
+    if(todayCell) todayCell.scrollIntoView({behavior:'smooth',block:'nearest',inline:'nearest'});
 };
 
 window.openShiftModal=function(){
@@ -508,6 +788,12 @@ window.openShiftModal=function(){
     // This intentionally overrides any older saved C base shift for the preview.
     document.getElementById('local-shift-pattern').value='ACB';
     document.getElementById('local-shift-override').value='B';
+    const timingSelect=document.getElementById('local-shift-timing');
+    try{window.shiftTimingMode=localStorage.getItem('commspace_shift_timing')||'standard'}catch(e){window.shiftTimingMode='standard'}
+    if(timingSelect)timingSelect.value=window.shiftTimingMode;
+    window.showAllHolidays=false;
+    const holidayToggle=document.getElementById('sc-all-holidays-btn');
+    if(holidayToggle){holidayToggle.textContent='All holidays';holidayToggle.setAttribute('aria-pressed','false')}
 
     window.calCurrentDate=new Date();
     window.renderShiftCalendar();
