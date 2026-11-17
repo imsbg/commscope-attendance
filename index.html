@@ -99,8 +99,9 @@ a{text-decoration:none}
 .game-play-pill{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;background:#eef2ff;color:#4f46e5;font-size:12px;font-weight:800;transition:background .2s,color .2s,transform .2s}
 .game-card:hover .game-play-pill{background:#4f46e5;color:#fff;transform:translateX(2px)}
 
-/* Inline Shift Calendar & S1/S2/S3 Switcher */
-.shift-group-bar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:6px;border-radius:18px;background:#eef2f7;border:1px solid #e2e8f0}
+/* Inline Shift Calendar & Group Switcher */
+.shift-group-bar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:6px;border-radius:18px;background:#eef2f7;border:1px solid #e2e8f0;transition:all .24s ease}
+.shift-group-bar.two-shifts{grid-template-columns:repeat(2,minmax(0,1fr))}
 .shift-group-btn{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:10px 8px;border-radius:13px;border:1px solid transparent;background:transparent;color:#475569;font-weight:800;transition:all .24s cubic-bezier(.22,1,.36,1);will-change:transform}
 .shift-group-btn:hover:not(.active){background:rgba(255,255,255,.7);color:#1e293b}
 .shift-group-btn:active{transform:scale(.97)}
@@ -299,7 +300,7 @@ a{text-decoration:none}
         <div id="games-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5"></div>
     </section>
 
-    <!-- 3. Always-Open Shift Calendar Section with S1 / S2 / S3 Quick Switch -->
+    <!-- 3. Always-Open Shift Calendar Section -->
     <section id="shift-calendar-section" class="surface-card rounded-3xl overflow-hidden fade-in-up" style="animation-delay:.12s">
         <div class="p-4 md:p-6 border-b border-slate-200/80 bg-white/80 flex flex-col gap-4">
             <div class="flex flex-wrap items-center justify-between gap-3">
@@ -307,29 +308,16 @@ a{text-decoration:none}
                     <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-lg"><i class="fa-solid fa-calendar-days"></i></div>
                     <div>
                         <h3 class="text-lg md:text-xl font-extrabold text-slate-800">Shift Calendar</h3>
-                        <p class="text-xs text-slate-500">Switch between S1, S2 &amp; S3 or customize your pattern and timing</p>
+                        <p id="sc-header-subtitle" class="text-xs text-slate-500">Switch between S1, S2 &amp; S3 or customize your pattern and timing</p>
                     </div>
                 </div>
                 <div id="sc-active-badge" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-extrabold">
-                    <i class="fa-solid fa-users"></i> <span id="sc-active-group-label">Group S1 · Base B</span>
+                    <i class="fa-solid fa-users"></i> <span id="sc-active-group-label">Group S1 · Jan 1: B</span>
                 </div>
             </div>
 
-            <!-- S1, S2, S3 Quick Switch Buttons -->
-            <div class="shift-group-bar" role="tablist" aria-label="Select Shift Group">
-                <button type="button" id="btn-group-S1" onclick="window.selectShiftGroup('S1')" role="tab" aria-selected="true" class="shift-group-btn active">
-                    <span class="shift-group-code">S1</span>
-                    <span class="shift-group-sub">Jan 1: B Shift</span>
-                </button>
-                <button type="button" id="btn-group-S2" onclick="window.selectShiftGroup('S2')" role="tab" aria-selected="false" class="shift-group-btn">
-                    <span class="shift-group-code">S2</span>
-                    <span class="shift-group-sub">Jan 1: C Shift</span>
-                </button>
-                <button type="button" id="btn-group-S3" onclick="window.selectShiftGroup('S3')" role="tab" aria-selected="false" class="shift-group-btn">
-                    <span class="shift-group-code">S3</span>
-                    <span class="shift-group-sub">Jan 1: A Shift</span>
-                </button>
-            </div>
+            <!-- Dynamic Shift Group Switcher: S1/S2/S3 (3-Shift) or SA/SB (2-Shift) -->
+            <div id="shift-group-bar" class="shift-group-bar" role="tablist" aria-label="Select Shift Group"></div>
         </div>
 
         <div class="flex flex-col lg:flex-row">
@@ -360,7 +348,7 @@ a{text-decoration:none}
                 <div id="sc-days" class="grid grid-cols-7 gap-1 md:gap-2 content-start"></div>
 
                 <div class="sc-legend flex flex-wrap gap-2 mt-5 text-[11px] font-bold">
-                    <span class="px-2.5 py-1 rounded-full sc-shift-A">A Shift</span>
+                    <span id="legend-shift-A" class="px-2.5 py-1 rounded-full sc-shift-A">A Shift</span>
                     <span class="px-2.5 py-1 rounded-full sc-shift-B">B Shift</span>
                     <span class="px-2.5 py-1 rounded-full sc-shift-C">C Shift</span>
                     <span class="px-2.5 py-1 rounded-full sc-shift-OFF">Off</span>
@@ -705,7 +693,7 @@ runTransaction(visitorTotalRef, currentValue => {
 });
 
 // ==========================================
-// 3. Inline Shift Calendar (S1, S2, S3 + Pattern + Timing)
+// 3. Inline Shift Calendar (S1/S2/S3 for 3-Shift, SA/SB for 2-Shift)
 // ==========================================
 window.chatEnabled=true;
 window.isAdmin=false;
@@ -723,16 +711,30 @@ function monday(d){
     return date;
 }
 
-// S1 = Jan 1 B shift (current default), S2 = Jan 1 C shift, S3 = Jan 1 A shift
-window.SHIFT_GROUPS = {
-    S1: { label: 'S1', baseShift: 'B', desc: 'Jan 1: B Shift' },
-    S2: { label: 'S2', baseShift: 'C', desc: 'Jan 1: C Shift' },
-    S3: { label: 'S3', baseShift: 'A', desc: 'Jan 1: A Shift' }
+// 3-Shift groups: S1 (Jan 1: B), S2 (Jan 1: C), S3 (Jan 1: A)
+// 2-Shift groups: SA (Jan 1: B), SB (Jan 1: C)
+window.SHIFT_GROUPS_BY_PATTERN = {
+    ACB: {
+        S1: { label: 'S1', baseShift: 'B', desc: 'Jan 1: B Shift' },
+        S2: { label: 'S2', baseShift: 'C', desc: 'Jan 1: C Shift' },
+        S3: { label: 'S3', baseShift: 'A', desc: 'Jan 1: A Shift' }
+    },
+    BC: {
+        SA: { label: 'SA', baseShift: 'B', desc: 'Jan 1: B Shift' },
+        SB: { label: 'SB', baseShift: 'C', desc: 'Jan 1: C Shift' }
+    }
 };
-window.activeShiftGroup = 'S1';
+
+window.activeGroups = {
+    ACB: 'S1',
+    BC: 'SA'
+};
+
 try {
-    const savedGroup = localStorage.getItem('commspace_shift_group');
-    if (savedGroup && window.SHIFT_GROUPS[savedGroup]) window.activeShiftGroup = savedGroup;
+    const saved3 = localStorage.getItem('commspace_shift_group_ACB') || localStorage.getItem('commspace_shift_group');
+    if (saved3 && window.SHIFT_GROUPS_BY_PATTERN.ACB[saved3]) window.activeGroups.ACB = saved3;
+    const saved2 = localStorage.getItem('commspace_shift_group_BC');
+    if (saved2 && window.SHIFT_GROUPS_BY_PATTERN.BC[saved2]) window.activeGroups.BC = saved2;
 } catch (e) {}
 
 window.SEQUENCES={ACB:['A','C','B'],BC:['B','C']};
@@ -755,6 +757,17 @@ window.shiftTimingMode='standard';
 window.SHIFT_TIMINGS={
     standard:{A:{full:'8 AM–4 PM',compact:'8 AM–4 PM'},B:{full:'4 PM–12 AM',compact:'4 PM–12 AM'},C:{full:'12 AM–8 AM',compact:'12 AM–8 AM'}},
     early:{A:{full:'7 AM–3 PM',compact:'7 AM–3 PM'},B:{full:'3 PM–11 PM',compact:'3 PM–11 PM'},C:{full:'11 PM–7 AM',compact:'11 PM–7 AM'}}
+};
+
+window.getCurrentPattern=function(){
+    return document.getElementById('local-shift-pattern')?.value||'ACB';
+};
+
+window.getCurrentGroupInfo=function(){
+    const pattern=window.getCurrentPattern();
+    const groups=window.SHIFT_GROUPS_BY_PATTERN[pattern]||window.SHIFT_GROUPS_BY_PATTERN.ACB;
+    const activeKey=window.activeGroups[pattern];
+    return groups[activeKey]||Object.values(groups)[0];
 };
 
 window.getShiftTiming=function(shift){
@@ -781,41 +794,84 @@ window.saveLocalShiftTiming=function(){
 };
 
 window.onLocalOptionChange=function(){
-    const pattern=document.getElementById('local-shift-pattern')?.value||'ACB';
+    const pattern=window.getCurrentPattern();
     try{localStorage.setItem('commspace_shift_pattern',pattern)}catch(e){}
+    window.renderGroupButtons();
     window.animateCalendarSwitch();
 };
 
 window.selectShiftGroup=function(groupKey){
-    if(!window.SHIFT_GROUPS[groupKey]) return;
-    window.activeShiftGroup = groupKey;
-    try{localStorage.setItem('commspace_shift_group', groupKey)}catch(e){}
+    const pattern=window.getCurrentPattern();
+    const groups=window.SHIFT_GROUPS_BY_PATTERN[pattern]||window.SHIFT_GROUPS_BY_PATTERN.ACB;
+    if(!groups[groupKey]) return;
+    window.activeGroups[pattern] = groupKey;
+    try{localStorage.setItem(`commspace_shift_group_${pattern}`, groupKey)}catch(e){}
     window.updateGroupButtonsUI();
     window.animateCalendarSwitch();
 };
 
+window.renderGroupButtons=function(){
+    const pattern=window.getCurrentPattern();
+    const groups=window.SHIFT_GROUPS_BY_PATTERN[pattern]||window.SHIFT_GROUPS_BY_PATTERN.ACB;
+    const bar=document.getElementById('shift-group-bar');
+    if(!bar) return;
+
+    bar.classList.toggle('two-shifts', pattern === 'BC');
+    bar.replaceChildren();
+
+    Object.entries(groups).forEach(([key, info]) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.id = `btn-group-${key}`;
+        btn.className = 'shift-group-btn';
+        btn.setAttribute('role', 'tab');
+        btn.onclick = () => window.selectShiftGroup(key);
+
+        const code = document.createElement('span');
+        code.className = 'shift-group-code';
+        code.textContent = info.label;
+
+        const sub = document.createElement('span');
+        sub.className = 'shift-group-sub';
+        sub.textContent = info.desc;
+
+        btn.append(code, sub);
+        bar.appendChild(btn);
+    });
+
+    const legendA = document.getElementById('legend-shift-A');
+    if (legendA) legendA.classList.toggle('hidden', pattern === 'BC');
+
+    const subtitle = document.getElementById('sc-header-subtitle');
+    const noteEl = document.getElementById('pattern-note-text');
+    if (pattern === 'BC') {
+        if (subtitle) subtitle.textContent = 'Switch between SA & SB or customize your pattern and timing';
+        if (noteEl) noteEl.textContent = '2-Shift mode active: Quick-select SA or SB above to switch your shift group.';
+    } else {
+        if (subtitle) subtitle.textContent = 'Switch between S1, S2 & S3 or customize your pattern and timing';
+        if (noteEl) noteEl.textContent = 'Quick-select S1, S2, or S3 above to switch your shift group instantly.';
+    }
+
+    window.updateGroupButtonsUI();
+};
+
 window.updateGroupButtonsUI=function(){
-    const pattern=document.getElementById('local-shift-pattern')?.value||'ACB';
-    const groupInfo=window.SHIFT_GROUPS[window.activeShiftGroup]||window.SHIFT_GROUPS.S1;
-    ['S1','S2','S3'].forEach(key=>{
+    const pattern=window.getCurrentPattern();
+    const groups=window.SHIFT_GROUPS_BY_PATTERN[pattern]||window.SHIFT_GROUPS_BY_PATTERN.ACB;
+    const activeKey=window.activeGroups[pattern];
+    const groupInfo=window.getCurrentGroupInfo();
+
+    Object.keys(groups).forEach(key=>{
         const btn=document.getElementById(`btn-group-${key}`);
         if(!btn) return;
-        const isActive=key===window.activeShiftGroup;
+        const isActive=key===activeKey;
         btn.classList.toggle('active',isActive);
         btn.setAttribute('aria-selected',String(isActive));
     });
 
     const activeLabel=document.getElementById('sc-active-group-label');
     const todayGroupTag=document.getElementById('sc-today-group-tag');
-    const noteEl=document.getElementById('pattern-note-text');
-    let effectiveBase=groupInfo.baseShift;
-    if(pattern==='BC'&&!['B','C'].includes(effectiveBase)){
-        effectiveBase='B';
-        if(noteEl) noteEl.textContent='2-Shift (B-C) mode active: S3 maps to B Shift.';
-    } else if(noteEl) {
-        noteEl.textContent='Quick-select S1, S2, or S3 above to switch your shift group instantly.';
-    }
-    if(activeLabel) activeLabel.textContent=`Group ${groupInfo.label} · Jan 1: ${effectiveBase}`;
+    if(activeLabel) activeLabel.textContent=`Group ${groupInfo.label} · Jan 1: ${groupInfo.baseShift}`;
     if(todayGroupTag) todayGroupTag.textContent=groupInfo.label;
 };
 
@@ -857,10 +913,10 @@ window.getShiftForDate=function(dateObj){
     const settings=window.shiftSettings||defaultShiftSettings;
     if(dateObj.getDay()===0)return 'OFF';
 
-    const pattern=document.getElementById('local-shift-pattern')?.value||'ACB';
+    const pattern=window.getCurrentPattern();
     const seq=window.SEQUENCES[pattern]||window.SEQUENCES.ACB;
 
-    const groupInfo=window.SHIFT_GROUPS[window.activeShiftGroup]||window.SHIFT_GROUPS.S1;
+    const groupInfo=window.getCurrentGroupInfo();
     let baseShift=groupInfo.baseShift||'B';
     if(!seq.includes(baseShift))baseShift=seq[0];
 
@@ -1039,6 +1095,7 @@ function initInlineShiftCalendar() {
         if (timingSelect) timingSelect.value = window.shiftTimingMode;
     } catch (e) {}
     window.saveLocalShiftTiming();
+    window.renderGroupButtons();
     window.renderShiftCalendar();
 }
 
